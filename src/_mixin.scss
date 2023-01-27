@@ -1,0 +1,22 @@
+@mixin main-button {
+  border: solid 1px $black;
+    font-family: 'Merriweather', serif;
+    padding: 1em;
+    border-radius: 5em;
+    background-color: $main;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+
+@mixin form-lable{
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+
+@mixin form-input{
+  padding: 0.5em;
+  border: none;
+  background-color: transparent;
+  border-bottom: solid 1px $black;
+}
