@@ -1,0 +1,30 @@
+@import "../../colors.scss";
+@import "../../mixin.scss";
+
+.user-profile{
+  &__main-container{
+    display: flex;
+    flex-direction: column;
+    padding: 1em;
+  }
+  &__profile-info{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    margin-bottom: 1em;
+    border-bottom: solid 1px $black;
+    padding: .5em;
+    align-items: center;
+  }
+  &__button{
+    @include main-button;
+    width: fit-content;
+    justify-self: end;
+  }
+  &__add-ph{
+    @include main-button;
+    display: block;
+  }
+  &__no-ph{
+    text-align: center;
+  }
+}
