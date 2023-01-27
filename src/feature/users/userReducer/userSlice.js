@@ -1,12 +1,11 @@
-/* eslint-disable*/
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import createUser from '../services/users';
+import { createSlice } from '@reduxjs/toolkit';
+import { createUser } from '../services/users';
 
-const BASE_URL = process.env.REACT_APP_BASE_URL;
+// const BASE_URL = process.env.REACT_APP_BASE_URL;
 
 const initialState = {
   userData: [],
-}
+};
 
 const usersSlice = createSlice({
   name: 'userData',
@@ -16,8 +15,10 @@ const usersSlice = createSlice({
     //   state.userData = action.payload;
     // });
     builder.addCase(createUser.fulfilled, (state, action) => {
-      state.userData = action.payload;
+      const newState = { ...state };
+      newState.userData = action.payload;
     });
+
     // builder.addCase(updateUser.fulfilled, (state, action) => {
     //   state.userData = action.payload;
     // });

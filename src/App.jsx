@@ -3,9 +3,7 @@ import RegisterForm from './feature/users/components/RegisterForm/RegisterForm';
 
 const App = () => (
   <div className="App">
-    <header className="App-header">
-      <RegisterForm />
-    </header>
+    <RegisterForm />
   </div>
 );
 

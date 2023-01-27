@@ -1,9 +1,7 @@
-/* eslint-disable */
-// import './styles.css';
-import useForm from '../../../../hooks/useForm';
 import { useDispatch } from 'react-redux';
-import createUser from '../../services/users';
-
+import useForm from '../../../../hooks/useForm';
+import { createUser } from '../../services/users';
+import './RegisterForm.scss';
 
 const LoginForm = () => {
   const { form, handleChange } = useForm({}); // get form hook
@@ -27,25 +25,38 @@ const LoginForm = () => {
 
   return (
     <section className="login-form">
-      <h2>Registrarse</h2>
+      <h2 className="login-form__header">Registrarse</h2>
       <form
-      action=""
-      onSubmit={handleSubmit}
-      id= "login-form__form">
-        <label htmlFor="email">
-          email
-          <input id="email" name="email" type="text" onChange={handleChange} />
+        action=""
+        onSubmit={handleSubmit}
+        id="login-form__form"
+        className="login-form__form"
+      >
+        <label htmlFor="email" className="login-form__label">
+          Email
+          <input
+            id="email"
+            name="email"
+            type="text"
+            className="login-form__input"
+            onChange={handleChange}
+          />
         </label>
-        <label htmlFor="password">
-          password
+        <label htmlFor="password" className="login-form__label">
+          Password
           <input
             id="password"
             name="password"
             type="password"
+            className="login-form__input"
             onChange={handleChange}
           />
         </label>
-        <button type="submit" onClick={handleClick}>
+        <button
+          type="submit"
+          onClick={handleClick}
+          className="login-form__submit-button"
+        >
           Registrarse
         </button>
       </form>
