@@ -1,11 +1,13 @@
 import './LoginForm.scss';
 import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import useForm from '../../../../hooks/useForm';
 import { login } from '../../services/auth';
 
 const LoginForm = () => {
   const { form, handleChange } = useForm({}); // get form hook
-  const dispatch = useDispatch(); // use dispatch
+  const dispatch = useDispatch(); // use dispatch hook
+  const navigate = useNavigate(); // use navigation hook
 
   // On click, reset form
   const handleClick = () => {
@@ -18,6 +20,7 @@ const LoginForm = () => {
 
     try {
       dispatch(login(form));
+      navigate('/profile');
     } catch (error) {
       throw new Error(error);
     }

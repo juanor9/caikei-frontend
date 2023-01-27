@@ -1,3 +1,5 @@
+@import "./colors.scss";
+
 @mixin main-button {
   border: solid 1px $black;
     font-family: 'Merriweather', serif;
@@ -6,6 +8,11 @@
     background-color: $main;
     font-weight: 600;
     transition: all 0.2s ease;
+    color: $black;
+    text-decoration: none;
+    &:hover{
+      box-shadow: 0px 0.5em 0px 0px $black;
+    }
 }
 
 @mixin form-lable{

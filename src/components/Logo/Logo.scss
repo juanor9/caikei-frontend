@@ -1,0 +1,17 @@
+@import "../../colors.scss";
+
+.logo-link{
+  color: $black;
+  text-decoration: none;
+
+}
+.logo{
+  font-family: 'Urbanist', sans-serif;
+  font-weight: 900;
+  font-size: 2em;
+  padding: .5em;
+  margin: 0;
+}
+[lang='ja'] {
+  color: $accent
+}

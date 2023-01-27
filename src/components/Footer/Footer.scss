@@ -1,0 +1,26 @@
+@import "../../colors.scss";
+@import "../../mixin.scss";
+
+.footer{
+  background-color: $black;
+  color: $base;
+  padding: 3em;
+  margin-top: 2em;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  font-size: .7em;
+  &__logo{
+    font-family: 'Urbanist', sans-serif;
+    font-weight: 900;
+    font-size: 3em;
+  }
+  &__ja {
+    color: rgba(255, 255, 255, 0.3);
+  }
+}
+@media (min-width: 768px) {
+  .footer{
+    flex-direction: row;
+  }
+}
