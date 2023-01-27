@@ -1,7 +1,7 @@
+import './LoginForm.scss';
 import { useDispatch } from 'react-redux';
 import useForm from '../../../../hooks/useForm';
-import { createUser } from '../../services/users';
-import './RegisterForm.scss';
+import { login } from '../../services/auth';
 
 const LoginForm = () => {
   const { form, handleChange } = useForm({}); // get form hook
@@ -9,7 +9,7 @@ const LoginForm = () => {
 
   // On click, reset form
   const handleClick = () => {
-    document.getElementById('register-form__form').reset();
+    document.getElementById('login-form__form').reset();
   };
 
   // On submit, prevent form submission and dispatch service
@@ -17,51 +17,50 @@ const LoginForm = () => {
     event.preventDefault();
 
     try {
-      dispatch(createUser(form));
+      dispatch(login(form));
     } catch (error) {
       throw new Error(error);
     }
   };
 
   return (
-    <section className="register-form">
-      <h2 className="register-form__header">Registrarse</h2>
+    <section className="login-form">
+      <h2 className="login-form__header">Iniciar sesión</h2>
       <form
         action=""
+        className="login-form__form"
+        id="login-form__form"
         onSubmit={handleSubmit}
-        id="register-form__form"
-        className="register-form__form"
       >
-        <label htmlFor="email" className="register-form__label">
+        <label htmlFor="email" className="login-form__label">
           Email
           <input
-            id="email"
-            name="email"
             type="text"
-            className="register-form__input"
+            name="email"
+            id="email"
+            className="login-form__input"
             onChange={handleChange}
           />
         </label>
-        <label htmlFor="password" className="register-form__label">
+        <label htmlFor="password" className="login-form__label">
           Password
           <input
-            id="password"
-            name="password"
             type="password"
-            className="register-form__input"
+            name="password"
+            id="password"
+            className="login-form__input"
             onChange={handleChange}
           />
         </label>
         <button
           type="submit"
+          className="login-form__submit-button"
           onClick={handleClick}
-          className="register-form__submit-button"
         >
-          Registrarse
+          Iniciar sesión
         </button>
       </form>
     </section>
   );
 };
-
 export default LoginForm;
