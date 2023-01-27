@@ -1,5 +1,5 @@
 import './App.css';
-import RegisterForm from './components/RegisterForm/RegisterForm';
+import RegisterForm from './feature/users/components/RegisterForm/RegisterForm';
 
 const App = () => (
   <div className="App">
