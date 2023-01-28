@@ -11,7 +11,7 @@
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     margin-bottom: 1em;
-    border-bottom: solid 1px $black;
+    border-bottom: solid 1px $black-light;
     padding: .5em;
     align-items: center;
   }
@@ -26,5 +26,20 @@
   }
   &__no-ph{
     text-align: center;
+  }
+}
+.modal-form{
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+  &__label{
+    @include form-lable;
+  }
+  &__input{
+    @include form-input;
+  }
+  &__button{
+    @include main-button;
+    margin-top: 1em;
   }
 }
