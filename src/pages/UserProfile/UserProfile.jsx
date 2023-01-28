@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { getUser, updateUser } from '../../feature/users/services/users';
@@ -12,6 +12,7 @@ import './UserProfile.scss';
 
 const UserProfile = () => {
   const dispatch = useDispatch(); // use dispatch hook
+  const navigate = useNavigate(); // use navigation hook
   const userToken = localStorage.getItem('login-token'); // get user token from local storage
   const { userData } = useSelector((state) => state.user); // get user data from redux
   const {
@@ -31,6 +32,18 @@ const UserProfile = () => {
   // On click for password, reset form
   const handleClickPassword = () => {
     document.getElementById('new-password-form').reset();
+  };
+
+  // On click for deactivate, deactivate account
+  const handleClickDeactivate = () => {
+    try {
+      const deactivate = { isActive: false };
+      const data = { deactivate, userId: _id };
+      dispatch(updateUser(data));
+      navigate('/');
+    } catch (error) {
+      throw new Error(error);
+    }
   };
 
   // On submit for email, prevent form submission and dispatch service
@@ -65,14 +78,24 @@ const UserProfile = () => {
         throw new Error(error);
       }
     }
-  }, [email]);
+  }, []);
 
   return (
     <div className="user-profile">
       <TopNav />
       <main className="user-profile__main-container">
         <section className="user-profile__profile-section">
-          <h2>Perfil</h2>
+          <div className="user-profile__profile-header">
+            <h2>Perfil</h2>
+            <button
+              type="button"
+              className="user-profile__deactivate"
+              onClick={handleClickDeactivate}
+            >
+              Desactivar cuenta
+            </button>
+          </div>
+
           <div className="user-profile__profile-info">
             <b>Email: </b>
             {email}
