@@ -7,6 +7,14 @@
     flex-direction: column;
     padding: 1em;
   }
+  &__profile-header{
+    display: flex;
+    justify-content: space-between;
+  }
+  &__deactivate{
+    @include ternary-button;
+    width: fit-content;
+  }
   &__profile-info{
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;

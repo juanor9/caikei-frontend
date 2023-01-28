@@ -1,31 +1,44 @@
 @import "./colors.scss";
 
 @mixin main-button {
+  background-color: $main;
+  border-radius: 5em;
   border: solid 1px $black;
-    font-family: 'Merriweather', serif;
-    padding: 1em;
-    border-radius: 5em;
-    background-color: $main;
-    font-weight: 600;
-    transition: all 0.2s ease;
-    color: $black;
-    text-decoration: none;
-    &:hover{
-      box-shadow: 0px 0.5em 0px 0px $black;
-    }
+  color: $black;
+  font-family: "Merriweather", serif;
+  font-weight: 600;
+  padding: 1em;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  &:hover {
+    box-shadow: 0px 0.5em 0px 0px $black;
+  }
 }
 
-@mixin form-lable{
+@mixin ternary-button {
+  border: none;
+  font-family: "Merriweather", serif;
+  padding: 0;
+  background-color: transparent;
+  font-weight: 100;
+  color: $accent;
+  text-decoration: none;
+  &:hover {
+    text-decoration: underline;
+    color: $dark-accent;
+  }
+}
+
+@mixin form-lable {
   display: flex;
   flex-direction: column;
   text-align: left;
 }
 
-@mixin form-input{
-  padding: 0.5em;
-  border: none;
+@mixin form-input {
   background-color: transparent;
+  border: none;
   border-bottom: solid 1px $black;
-  font-family: 'Merriweather', serif;
-
+  font-family: "Merriweather", serif;
+  padding: 0.5em;
 }

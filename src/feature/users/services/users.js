@@ -38,8 +38,14 @@ export const getUser = createAsyncThunk(
 export const updateUser = createAsyncThunk(
   'users/updateUser',
   async (formData) => {
+    console.log('in update');
     const token = localStorage.getItem('login-token');
-    const { form, userId } = formData;
+    console.log(formData);
+    let { form } = formData;
+    const { userId } = formData;
+    if (!formData.form) {
+      form = formData.deactivate;
+    }
     const options = {
       method: 'PATCH',
       headers: {
