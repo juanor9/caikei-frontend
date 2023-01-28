@@ -1,0 +1,39 @@
+@import '../../colors.scss';
+
+.modal-container{
+  background-color: rgba(0,0,0,.4);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 3;
+}
+.modal{
+  &__main{
+    background-color: #fff;
+    padding: 2em;
+    box-shadow: 0px 1em 1em 0px rgba(0,0,0,0.2);
+    position: relative;
+    display: block;
+    border-radius: 1em;
+  }
+  &__header{
+    display: flex;
+    margin-bottom: 1em;
+    height: 2em;
+  }
+  &__close{
+    position: absolute;
+    top: 1em;
+    right: 1em;
+    padding: .5em;
+    background-color: #fff;
+    color: $accent;
+    border: none;
+    font-size: 1.5em;
+  }
+}

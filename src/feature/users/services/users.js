@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
@@ -30,6 +31,30 @@ export const getUser = createAsyncThunk(
     };
     const res = await fetch(`${BASE_URL}/api/users`, options);
     const result = await res.json();
+    return result;
+  },
+);
+
+export const updateUser = createAsyncThunk(
+  'users/updateUser',
+  async (formData) => {
+    const token = localStorage.getItem('login-token');
+    const { form, userId } = formData;
+    const options = {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(form),
+    };
+    const res = await fetch(`${BASE_URL}/api/users/${userId}`, options);
+    const result = await res.json();
+
+    const { newToken } = result;
+    localStorage.clear();
+    localStorage.setItem('login-token', newToken);
+
     return result;
   },
 );
