@@ -1,0 +1,9 @@
+.topnav {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  &__logo{
+    width: fit-content;
+    justify-self: flex-start;
+  }
+}

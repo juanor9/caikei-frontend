@@ -3,7 +3,7 @@ import useForm from '../../../../hooks/useForm';
 import { createUser } from '../../services/users';
 import './RegisterForm.scss';
 
-const LoginForm = () => {
+const RegisterForm = () => {
   const { form, handleChange } = useForm({}); // get form hook
   const dispatch = useDispatch(); // use dispatch
 
@@ -25,7 +25,7 @@ const LoginForm = () => {
 
   return (
     <section className="register-form">
-      <h2 className="register-form__header">Registrarse</h2>
+      <h2 className="register-form__header">Crea tu cuenta</h2>
       <form
         action=""
         onSubmit={handleSubmit}
@@ -64,4 +64,4 @@ const LoginForm = () => {
   );
 };
 
-export default LoginForm;
+export default RegisterForm;
