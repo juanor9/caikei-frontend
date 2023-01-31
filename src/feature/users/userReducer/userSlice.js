@@ -3,8 +3,6 @@ import { createSlice } from '@reduxjs/toolkit';
 import { createUser, getUser } from '../services/users';
 import { login } from '../services/auth';
 
-// const BASE_URL = process.env.REACT_APP_BASE_URL;
-
 const initialState = {
   userData: [],
 };

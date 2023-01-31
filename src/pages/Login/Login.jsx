@@ -1,11 +1,12 @@
-import RegisterForm from '../../feature/users/components/RegisterForm/RegisterForm';
 import TopNav from '../../components/TopNav/TopNav';
+import './Login.scss';
+import LoginForm from '../../feature/users/components/LoginForm/LoginForm';
 
 const RegisterPage = () => (
   <div className="register">
     <TopNav />
     <div className="register__main-container">
-      <RegisterForm />
+      <LoginForm />
     </div>
   </div>
 );
