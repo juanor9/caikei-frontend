@@ -3,7 +3,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
-const createPublisher = createAsyncThunk(
+export const createPublisher = createAsyncThunk(
   'publishers/createPublisher',
   async (publisher) => {
     const token = publisher.user;
@@ -42,4 +42,38 @@ const createPublisher = createAsyncThunk(
   },
 );
 
-export default createPublisher;
+export const getPublisherById = createAsyncThunk(
+  'publishers/getPublisherById',
+  async (id) => {
+    const token = localStorage.getItem('login-token');
+    const options = {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    const res = await fetch(`${BASE_URL}/api/publishers/${id}`, options);
+    const result = await res.json();
+    return result;
+  },
+);
+
+export const updatePublisher = createAsyncThunk(
+  'publishers/updatePublisher',
+  async (updateData) => {
+    const token = localStorage.getItem('login-token');
+    const { publisherId, ...form } = updateData;
+    const options = {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(form),
+    };
+    const res = await fetch(`${BASE_URL}/api/publishers/${publisherId}`, options);
+    const result = await res.json();
+    return result;
+  },
+);

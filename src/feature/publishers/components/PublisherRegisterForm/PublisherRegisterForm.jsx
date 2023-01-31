@@ -1,10 +1,10 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import { uploadImage } from '../../../uploads/services/upload';
-import useForm from '../../../../hooks/useForm';
-import createPublisher from '../../services/publishers';
 import './PublisherRegisterForm.scss';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import { uploadImage } from '../../../uploads/services/upload';
+import { createPublisher } from '../../services/publishers';
+import useForm from '../../../../hooks/useForm';
 
 const PublisherRegisterForm = () => {
   const [file, setFile] = useState('');
@@ -80,7 +80,7 @@ const PublisherRegisterForm = () => {
       <form action="" id="publisher-registration__form" className="publisher-registration__form" onSubmit={handleSubmit}>
         <h3>Información general</h3>
 
-        <label htmlFor="email" className="publisher-registration__label">
+        <label htmlFor="name" className="publisher-registration__label">
           Nombre
           <input
             type="text"

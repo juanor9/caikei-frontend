@@ -1,0 +1,43 @@
+@import "../../../../colors.scss";
+@import "../../../../mixin.scss";
+
+.user-profile {
+  &__header {
+    display: flex;
+    justify-content: space-between;
+  }
+  &__deactivate {
+    @include ternary-button;
+  }
+  &__info {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1em;
+    border-bottom: solid 1px $black-light;
+    align-items: baseline;
+    & p {
+      display: flex;
+      flex-direction: column;
+    }
+  }
+  &__button {
+    @include main-button;
+    width: fit-content;
+  }
+  &__modal {
+    &-form {
+      display: flex;
+      flex-direction: column;
+    }
+    &-label{
+      @include form-lable;
+      margin-bottom: 1em
+    }
+    &-input{
+      @include form-input;
+    }
+    &-button{
+      @include main-button;
+    }
+  }
+}

@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import HomePage from './pages/Home/Home';
 import Footer from './components/Footer/Footer';
 import LoginPage from './pages/Login/Login';
-import UserProfile from './pages/UserProfile/UserProfile';
+import UserProfilePage from './pages/UserProfile/UserProfilePage';
 import PublisherRegister from './pages/PublisherRegister/PublisherRegister';
 import './App.scss';
 
@@ -16,7 +16,7 @@ const App = () => {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<LoginPage />} />
-        <Route path="/profile" element={<UserProfile />} />
+        <Route path="/profile" element={<UserProfilePage />} />
         <Route path="/publisher/register" element={<PublisherRegister />} />
       </Routes>
       <Footer />

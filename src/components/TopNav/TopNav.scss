@@ -1,9 +1,19 @@
+@import "../../colors.scss";
+@import "../../mixin.scss";
+
 .topnav {
   display: flex;
   flex-direction: row;
-  justify-content: flex-start;
+  justify-content: space-between;
+  align-items: baseline;
   &__logo{
     width: fit-content;
     justify-self: flex-start;
+  }
+  &__logout-button{
+    color: $accent;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
   }
 }
