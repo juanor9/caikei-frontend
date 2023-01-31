@@ -1,0 +1,59 @@
+@import "../../../../colors.scss";
+@import "../../../../mixin.scss";
+
+.publisher-registration {
+  padding: 1em;
+  &__logo {
+    margin-bottom: 2em;
+    &-form {
+      display: flex;
+      flex-direction: column;
+      gap: 1em;
+    }
+    &-button{
+      @include main-button
+    }
+    &-caption{
+      text-align: center;
+      font-size: .6em;
+    }
+    &-preview{
+      width: 100%;
+      margin: 0;
+      padding: 3em;
+      & img{
+        max-width: 100%;
+        border: $dark-accent;
+        border-style: double;
+        padding: .5em;
+      }
+    }
+  }
+  &__form{
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+  }
+  &__label {
+    @include form-lable;
+  }
+  &__input{
+    @include form-input;
+  }
+  &__button{
+    @include main-button;
+  }
+  &__id-label{
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+  }
+}
+@media (min-width: 768px) {
+  .publisher-registration{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+  }
+
+}
