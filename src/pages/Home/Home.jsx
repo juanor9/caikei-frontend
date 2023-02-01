@@ -1,6 +1,7 @@
 import './Home.scss';
 import TopNav from '../../components/TopNav/TopNav';
 import RegisterForm from '../../feature/users/components/RegisterForm/RegisterForm';
+import ThemaForm from '../../feature/books/components/ThemaForm';
 
 const HomePage = () => (
   <div className="homepage">
@@ -19,6 +20,7 @@ const HomePage = () => (
         </div>
       </section>
     </div>
+    <ThemaForm />
   </div>
 );
 
