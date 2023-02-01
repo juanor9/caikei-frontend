@@ -1,0 +1,35 @@
+@import "../../../../colors.scss";
+@import "../../../../mixin.scss";
+
+.register-book{
+  display: flex;
+  gap: 1em;
+  flex-direction: column;
+  &__form{
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+    &-label{
+      @include form-lable;
+    }
+    &-input{
+      @include form-input;
+    }
+    &-button{
+      @include main-button;
+    }
+  }
+  &logo{
+    &-preview{
+      width: 100%;
+      & img{
+        max-width: 100%;
+      }
+    }
+  }
+}
+@media (min-width: 768px) {
+  .register-book{
+    flex-direction: row;
+  }
+}
