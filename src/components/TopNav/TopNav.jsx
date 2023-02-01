@@ -17,6 +17,11 @@ const TopNav = () => {
     <header className="topnav">
       <Logo className="topnav__logo" />
       <nav>
+        <ul>
+          <Link to="/catalogue">Catálogo</Link>
+        </ul>
+      </nav>
+      <nav>
         {token
           ? <Link to="/profile"><FontAwesomeIcon icon={faUser} /></Link>
           : <Link to="/login"><FontAwesomeIcon icon={faUser} /></Link>}
