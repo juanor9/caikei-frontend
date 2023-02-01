@@ -5,6 +5,7 @@ import Footer from './components/Footer/Footer';
 import LoginPage from './pages/Login/Login';
 import UserProfilePage from './pages/UserProfile/UserProfilePage';
 import PublisherRegister from './pages/PublisherRegister/PublisherRegister';
+import CataloguePage from './pages/Catalogue/Catalogue';
 import './App.scss';
 
 const App = () => {
@@ -18,6 +19,7 @@ const App = () => {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/profile" element={<UserProfilePage />} />
         <Route path="/publisher/register" element={<PublisherRegister />} />
+        <Route path="/catalogue" element={<CataloguePage />} />
       </Routes>
       <Footer />
     </div>
