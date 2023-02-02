@@ -2,6 +2,9 @@
 import './Catalogue.scss';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { getUser } from '../../feature/users/services/users';
 import { getBooksByFilter } from '../../feature/books/services/books';
 import TopNav from '../../components/TopNav/TopNav';
@@ -34,16 +37,21 @@ const CataloguePage = () => {
     }
   }, [publisher]);
   return (
-    <div className="user-profile">
+    <div className="catalogue">
       <TopNav />
-      <main className="user-profile__main-container">
+      <main className="catalogue__main-container">
         <h2>Catálogo</h2>
-        <section>
+        <section className="catalogue__books-container">
+          <Link to="/book/register" className="catalogue__add-button">
+            <FontAwesomeIcon icon={faPlus} />
+            Añadir libro
+          </Link>
           {catalogue.map((book) => (
             <BookCard
               key={book._id}
               title={book.title}
               cover={book.cover}
+              bookId={book._id}
             />
           ))}
         </section>

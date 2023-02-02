@@ -1,0 +1,19 @@
+@import "../../colors.scss";
+@import "../../mixin.scss";
+
+.catalogue{
+&__main-container{
+  padding: 1em;
+}
+&__books-container{
+  display: flex;
+  gap: 1.5em 2em;
+  align-items: stretch;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+&__add-button{
+  @include main-button;
+  width: 100%;
+}
+}
