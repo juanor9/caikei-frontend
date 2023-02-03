@@ -8,6 +8,8 @@ import PublisherRegister from './pages/PublisherRegister/PublisherRegister';
 import CataloguePage from './pages/Catalogue/Catalogue';
 import BookRegisterPage from './pages/BookRegister/BookRegister';
 import BookPage from './pages/Book/Book';
+import RegisterLibraryPage from './pages/LibraryRegister/LibraryRegister';
+import LibrariesPage from './pages/Libraries/Libraries';
 import './App.scss';
 
 const App = () => {
@@ -24,6 +26,9 @@ const App = () => {
         <Route path="/catalogue" element={<CataloguePage />} />
         <Route path="/book/register" element={<BookRegisterPage />} />
         <Route path="/book/:id" element={<BookPage />} />
+        <Route path="/library/register" element={<RegisterLibraryPage />} />
+        <Route path="/libraries" element={<LibrariesPage />} />
+
       </Routes>
       <Footer />
     </div>
