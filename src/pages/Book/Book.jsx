@@ -1,12 +1,14 @@
 /* eslint-disable camelcase */
-/* eslint-disable no-unused-vars */
 import './Book.scss';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPenToSquare } from '@fortawesome/free-regular-svg-icons';
-import { getBookById, updateBookById } from '../../feature/books/services/books';
+import {
+  getBookById,
+  updateBookById,
+} from '../../feature/books/services/books';
 import useForm from '../../hooks/useForm';
 import TopNav from '../../components/TopNav/TopNav';
 
@@ -42,9 +44,7 @@ const BookPage = () => {
     event.preventDefault();
 
     try {
-      dispatch(
-        updateBookById({ form, id }),
-      );
+      dispatch(updateBookById({ form, id }));
       setReadOnly(true);
     } catch (error) {
       throw new Error(error);
@@ -61,11 +61,17 @@ const BookPage = () => {
     }
   }, []);
 
-  // useEffect(() => {
-  //   const pubDateN = new Date(pubDate);
-  //   const $pubDate = pubDateN.toISOString().match(/(\d{4}-\d{2}-\d{2})/)[0];
-  //   setDate($pubDate);
-  // }, [pubDate]);
+  useEffect(() => {
+    if (form && form.pubDate) {
+      setDate(new Date(form.pubDate).toISOString().split('T')[0]);
+    }
+  }, [form]);
+
+  useEffect(() => {
+    if (pubDate) {
+      setDate(new Date(pubDate).toISOString().split('T')[0]);
+    }
+  }, [pubDate]);
 
   return (
     <div className="book-page">
@@ -78,7 +84,6 @@ const BookPage = () => {
           </figure>
           <form action="" onSubmit={handleSubmit}>
             <label htmlFor="title" className="book-page__form-label">
-
               Titulo
               <div className="book-page__button-input">
                 <button
@@ -98,7 +103,6 @@ const BookPage = () => {
                   onChange={handleChange}
                 />
               </div>
-
             </label>
             <label htmlFor="isbn" className="book-page__form-label">
               Isbn
@@ -136,7 +140,7 @@ const BookPage = () => {
                   name="pubDate"
                   id="pubDate"
                   className="book-page__form-input"
-                  defaultValue={date}
+                  value={date}
                   readOnly={readOnly}
                   onChange={handleChange}
                 />
@@ -250,7 +254,8 @@ const BookPage = () => {
             <label htmlFor="size" className="book-page__form-label">
               Medidas
               <div className="book-page__size-container">
-                <label htmlFor="width">Ancho
+                <label htmlFor="width">
+                  Ancho
                   <div className="book-page__button-input">
                     <button
                       type="button"
@@ -270,7 +275,8 @@ const BookPage = () => {
                     />
                   </div>
                 </label>
-                <label htmlFor="height">Alto
+                <label htmlFor="height">
+                  Alto
                   <div className="book-page__button-input">
                     <button
                       type="button"
@@ -332,7 +338,9 @@ const BookPage = () => {
                 />
               </div>
             </label>
-            <button type="submit" className="book-page__form-button">Guardar cambios</button>
+            <button type="submit" className="book-page__form-button">
+              Guardar cambios
+            </button>
           </form>
         </section>
       </main>
