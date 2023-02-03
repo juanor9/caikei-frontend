@@ -37,6 +37,10 @@
     border: solid 1px $black;
     border-radius: 0.2em;
   }
+  &__deactivate-button {
+    @include ternary-button;
+    margin:auto;
+  }
 }
 @media (min-width: 768px) {
   .book-page {
