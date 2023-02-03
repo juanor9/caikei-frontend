@@ -1,0 +1,17 @@
+@import "../../../../colors.scss";
+@import "../../../../mixin.scss";
+.register-library{
+  &__form{
+    display: flex;
+    flex-direction: column;
+    &-label{
+      @include form-lable;
+    }
+    &-input{
+      @include form-input;
+    }
+    &-submit{
+      @include main-button;
+    }
+  }
+}

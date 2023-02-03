@@ -19,6 +19,7 @@ const TopNav = () => {
       <nav>
         <ul>
           <Link to="/catalogue">Catálogo</Link>
+          <Link to="/libraries">Librerías</Link>
         </ul>
       </nav>
       <nav>
