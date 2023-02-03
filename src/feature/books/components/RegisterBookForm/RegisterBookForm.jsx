@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { uploadImage } from '../../../uploads/services/upload';
 import { createBook } from '../../services/books';
 import { getUser } from '../../../users/services/users';
@@ -12,6 +13,7 @@ const RegisterBookForm = () => {
   const { form, handleChange } = useForm({});
   const { publisher } = useSelector((state) => state.user.userData);
   const { uploads } = useSelector((state) => state.upload);
+  const navigate = useNavigate();
   const userToken = localStorage.getItem('login-token');
 
   const dispatch = useDispatch();
@@ -40,6 +42,7 @@ const RegisterBookForm = () => {
       dispatch(
         createBook({ ...form, publisher, cover: uploads }),
       );
+      navigate('/catalogue');
     } catch (error) {
       throw new Error(error);
     }
@@ -71,9 +74,9 @@ const RegisterBookForm = () => {
           </button>
 
           {uploads ? (
-            <figure className="register-book__logo-preview">
+            <figure className="register-book__cover-preview">
               <img src={uploads} alt="" />
-              <figcaption className="register-book__logo-caption">Cubierta</figcaption>
+              <figcaption className="register-book__cover-caption">Cubierta</figcaption>
             </figure>
           ) : null}
         </label>

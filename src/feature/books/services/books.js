@@ -37,3 +37,38 @@ export const getBooksByFilter = createAsyncThunk(
     return result;
   },
 );
+
+export const getBookById = createAsyncThunk(
+  'books/getBookById',
+  async (id) => {
+    const options = {
+      method: 'GET',
+      headers: {
+        'content-type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    const res = await fetch(`${BASE_URL}/api/books/${id}`, options);
+    const result = await res.json();
+    return result;
+  },
+);
+
+export const updateBookById = createAsyncThunk(
+  'books/updateBook',
+  async (data) => {
+    const { form, id } = data;
+    const options = {
+      method: 'PATCH',
+      headers: {
+        'content-type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(form),
+    };
+
+    const res = await fetch(`${BASE_URL}/api/books/${id}`, options);
+    const result = await res.json();
+    return result;
+  },
+);
