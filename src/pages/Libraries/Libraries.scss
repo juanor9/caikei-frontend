@@ -1,0 +1,14 @@
+@import "../../colors.scss";
+@import "../../mixin.scss";
+
+.libraries{
+  &__add-button{
+    @include main-button;
+    width: 100%;
+  }
+  &__libraries-container{
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 2em;
+  }
+}

@@ -3,9 +3,9 @@ import './RegisterLibraryForm.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import useForm from '../../../../hooks/useForm';
 import { getUser } from '../../../users/services/users';
 import { createLibrary } from '../../services/libraries';
+import useForm from '../../../../hooks/useForm';
 
 const RegisterLibraryForm = () => {
   const { form, handleChange } = useForm({});
@@ -46,6 +46,16 @@ const RegisterLibraryForm = () => {
             type="text"
             name="name"
             id="name"
+            className="register-library__form-input"
+            onChange={handleChange}
+          />
+        </label>
+        <label htmlFor="discount" className="register-library__form-label">
+          Descuento
+          <input
+            type="number"
+            name="discount"
+            id="discount"
             className="register-library__form-input"
             onChange={handleChange}
           />

@@ -93,7 +93,10 @@ const BookPage = () => {
             <img src={cover} alt={title} className="book-page__cover-img" />
           </figure>
           <form action="" onSubmit={handleSubmit}>
-            <label htmlFor="title" className="book-page__form-label">
+            <label
+              htmlFor="title"
+              className="book-page__form-label"
+            >
               Titulo
               <div className="book-page__button-input">
                 <button
