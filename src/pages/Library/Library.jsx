@@ -40,6 +40,16 @@ const LibraryPage = () => {
     }
   };
 
+  const handleClickDeactivate = () => {
+    try {
+      const deactivate = { isActive: false };
+      const data = { deactivate, id };
+      dispatch(updateLibrary(data));
+    } catch (error) {
+      throw new Error(error);
+    }
+  };
+
   useEffect(() => {
     if (id) {
       try {
@@ -196,6 +206,7 @@ const LibraryPage = () => {
           <button
             type="button"
             className="library-page__deactivate-button"
+            onClick={handleClickDeactivate}
           >
             Desactivar librería
           </button>
