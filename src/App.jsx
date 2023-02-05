@@ -10,6 +10,7 @@ import BookRegisterPage from './pages/BookRegister/BookRegister';
 import BookPage from './pages/Book/Book';
 import RegisterLibraryPage from './pages/LibraryRegister/LibraryRegister';
 import LibrariesPage from './pages/Libraries/Libraries';
+import LibraryPage from './pages/Library/Library';
 import './App.scss';
 
 const App = () => {
@@ -28,6 +29,7 @@ const App = () => {
         <Route path="/book/:id" element={<BookPage />} />
         <Route path="/library/register" element={<RegisterLibraryPage />} />
         <Route path="/libraries" element={<LibrariesPage />} />
+        <Route path="/library/:id" element={<LibraryPage />} />
 
       </Routes>
       <Footer />

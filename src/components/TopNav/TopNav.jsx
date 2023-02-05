@@ -18,8 +18,9 @@ const TopNav = () => {
       <Logo className="topnav__logo" />
       <nav>
         <ul>
-          <Link to="/catalogue">Catálogo</Link>
-          <Link to="/libraries">Librerías</Link>
+          <li><Link to="/catalogue">Catálogo</Link></li>
+          <li><Link to="/libraries">Librerías</Link></li>
+
         </ul>
       </nav>
       <nav>
