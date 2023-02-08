@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import './MovementRegister.scss';
 import TopNav from '../../components/TopNav/TopNav';
-import MovementRegisterForm from '../../feature/movements/MovementRegisterForm/MovementRegisterForm';
+import MovementRegisterForm from '../../feature/movements/components/MovementRegisterForm/MovementRegisterForm';
 
 const RegisterMovementPage = () => (
   <div className="user-profile">

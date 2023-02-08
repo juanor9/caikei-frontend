@@ -1,18 +1,23 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-param-reassign */
 import './MovementRegisterForm.scss';
-import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import Select from 'react-select';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getUser } from '../../users/services/users';
-import { getBooksByFilter } from '../../books/services/books';
-import useForm from '../../../hooks/useForm';
-import { createMovement } from '../services/movements';
+import Select from 'react-select';
+import { getUser } from '../../../users/services/users';
+import { getBooksByFilter } from '../../../books/services/books';
+import { createMovement } from '../../services/movements';
+import useForm from '../../../../hooks/useForm';
+import RegisterRemisionForm from '../RegisterRemisionForm/RegisterRemisionForm';
+import RegisterDevolutionForm from '../RegisterDevolutionForm/RegisterDevolutionForm';
 
 const MovementRegisterForm = () => {
   const [kind, setKind] = useState('');
   const { form, handleChange } = useForm({});
+  // States for remsion
+  const [remisionFrom, setRemisionFrom] = useState(null);
+  const [remisionTo, setRemisionTo] = useState(null);
 
   // Get data from redux
   const userToken = localStorage.getItem('login-token');
@@ -27,23 +32,22 @@ const MovementRegisterForm = () => {
     value: book._id,
     label: book.title,
   }));
-  const [selectedOption, setSelectedOption] = useState(null);
+  const [selectedBooks, setSelectedBooks] = useState(null);
   const handleChangeBooks = (selected) => {
-    setSelectedOption(selected);
+    setSelectedBooks(selected);
   };
   // Add selected books to the book data
   const [formBookData, setFormBookData] = useState([]);
 
   useEffect(() => {
-    if (selectedOption && selectedOption.length > 0) {
-      selectedOption.map((option) => {
+    if (selectedBooks && selectedBooks.length > 0) {
+      selectedBooks.map((option) => {
         const { value } = option;
         setFormBookData(formBookData.concat({ id: value }));
         return formBookData;
       });
     }
-  }, [selectedOption]);
-
+  }, [selectedBooks]);
   // gross total
   const [grossTotal, setGrossTotal] = useState(0);
 
@@ -72,10 +76,13 @@ const MovementRegisterForm = () => {
       return bookData;
     });
     setFormBookData(NewFormData);
-
-    const totals = formBookData.map((i) => i.total);
-    setGrossTotal(totals.reduce((a, b) => a + b));
   };
+  useEffect(() => {
+    const totals = formBookData.map((i) => i.total);
+    if (totals.length > 0) {
+      setGrossTotal(totals.reduce((a, b) => a + b));
+    }
+  }, [formBookData]);
 
   // catch kind of movement
   const handleChangeKindMod = (event) => {
@@ -93,9 +100,7 @@ const MovementRegisterForm = () => {
     event.preventDefault();
 
     try {
-      dispatch(
-        createMovement(formfulldata),
-      );
+      dispatch(createMovement(formfulldata));
       navigate('/movements');
     } catch (error) {
       throw new Error(error);
@@ -125,6 +130,7 @@ const MovementRegisterForm = () => {
   useEffect(() => {
     const { internalId, date } = form;
     setFormfulldata({
+      ...formfulldata,
       internalId,
       date,
       kind,
@@ -132,7 +138,41 @@ const MovementRegisterForm = () => {
       grossTotal,
       publisher,
     });
-  }, [form, formBookData, grossTotal]);
+    if (kind === 'remisión') {
+      setFormfulldata({
+        ...formfulldata,
+        internalId,
+        date,
+        kind,
+        books: formBookData,
+        grossTotal,
+        publisher,
+        from: remisionFrom,
+        to: remisionTo,
+      });
+    }
+    if (kind === 'devolución') {
+      setFormfulldata({
+        ...formfulldata,
+        internalId,
+        date,
+        kind,
+        books: formBookData,
+        grossTotal,
+        publisher,
+        from: remisionFrom,
+        to: remisionTo,
+      });
+    }
+  }, [
+    form,
+    kind,
+    formBookData,
+    grossTotal,
+    publisher,
+    remisionFrom,
+    remisionTo,
+  ]);
 
   return (
     <form action="" className="movement-form" onSubmit={handleSubmit}>
@@ -165,7 +205,7 @@ const MovementRegisterForm = () => {
           <input
             type="radio"
             name="kind"
-            id="ingreso"
+            id="remisión"
             value="remisión"
             onChange={handleChangeKindMod}
           />{' '}
@@ -175,8 +215,8 @@ const MovementRegisterForm = () => {
           <input
             type="radio"
             name="kind"
-            id="ingreso"
-            value="devloución"
+            id="devolución"
+            value="devolución"
             onChange={handleChangeKindMod}
           />{' '}
           Devolución
@@ -185,13 +225,19 @@ const MovementRegisterForm = () => {
           <input
             type="radio"
             name="kind"
-            id="ingreso"
+            id="liquidación"
             value="liquidación"
             onChange={handleChangeKindMod}
           />{' '}
           Liquidación
         </label>
       </label>
+      {kind === 'remisión' ? (
+        <RegisterRemisionForm from={setRemisionFrom} to={setRemisionTo} />
+      ) : null}
+      {kind === 'devolución' ? (
+        <RegisterDevolutionForm from={setRemisionFrom} to={setRemisionTo} />
+      ) : null}
       <p> Libros</p>
       <Select
         id="books"
@@ -201,8 +247,8 @@ const MovementRegisterForm = () => {
         isMulti
         onChange={handleChangeBooks}
       />
-      {selectedOption && selectedOption.length > 0
-        ? selectedOption.map((book) => (
+      {selectedBooks && selectedBooks.length > 0
+        ? selectedBooks.map((book) => (
           <div key={book.value}>
             <label htmlFor={book.value}>
               Libro
