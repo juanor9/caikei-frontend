@@ -1,14 +1,16 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-param-reassign */
-import './MovementRegisterForm.scss';
-import { useEffect, useState } from 'react';
+import './RegisterReceptionForm.scss';
 import { useDispatch, useSelector } from 'react-redux';
-import Select from 'react-select';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getUser } from '../../users/services/users';
-import { getBooksByFilter } from '../../books/services/books';
-import useForm from '../../../hooks/useForm';
-import { createMovement } from '../services/movements';
+import Select from 'react-select';
+import { getUser } from '../../../users/services/users';
+import { getBooksByFilter } from '../../../books/services/books';
+import { createMovement } from '../../services/movements';
+import useForm from '../../../../hooks/useForm';
+import { getLibrariesByPublisher } from '../../../libraries/services/libraries';
+import { getPublisherById } from '../../../publishers/services/publishers';
 
 const MovementRegisterForm = () => {
   const [kind, setKind] = useState('');
@@ -27,23 +29,60 @@ const MovementRegisterForm = () => {
     value: book._id,
     label: book.title,
   }));
-  const [selectedOption, setSelectedOption] = useState(null);
+  const [selectedBooks, setSelectedBooks] = useState(null);
   const handleChangeBooks = (selected) => {
-    setSelectedOption(selected);
+    setSelectedBooks(selected);
   };
   // Add selected books to the book data
   const [formBookData, setFormBookData] = useState([]);
 
   useEffect(() => {
-    if (selectedOption && selectedOption.length > 0) {
-      selectedOption.map((option) => {
+    if (selectedBooks && selectedBooks.length > 0) {
+      selectedBooks.map((option) => {
         const { value } = option;
         setFormBookData(formBookData.concat({ id: value }));
         return formBookData;
       });
     }
-  }, [selectedOption]);
+  }, [selectedBooks]);
 
+  // get all storages
+  useEffect(() => {
+    if (publisher) {
+      try {
+        dispatch(getLibrariesByPublisher(publisher));
+        dispatch(getPublisherById(publisher));
+      } catch (error) {
+        throw new Error(error);
+      }
+    }
+  }, [publisher]);
+  const { library } = useSelector((state) => state.library);
+  const publisherData = useSelector((state) => state.publisher.publisher);
+  const [storages, setStorages] = useState([]);
+  useEffect(() => {
+    if (Array.isArray(library)) {
+      setStorages([...storages, ...library, publisherData]);
+    }
+  }, [library, publisherData]);
+  const storagesSelect = storages.map((storage) => ({
+    value: storage._id,
+    label: storage.name,
+  }));
+
+  // Para ReactSelect From
+  const [selectedFrom, setselectedFrom] = useState({
+    value: '63e0f2f8b7fbc17be761a93a',
+    label: 'Tanuki',
+  });
+  const handleChangeFrom = (selected) => {
+    setselectedFrom(selected);
+  };
+    // Para ReactSelect To
+  const [selectedTo, setselectedTo] = useState(null);
+  const handleChangeTo = (selected) => {
+    setselectedTo(selected);
+  };
   // gross total
   const [grossTotal, setGrossTotal] = useState(0);
 
@@ -72,10 +111,13 @@ const MovementRegisterForm = () => {
       return bookData;
     });
     setFormBookData(NewFormData);
-
-    const totals = formBookData.map((i) => i.total);
-    setGrossTotal(totals.reduce((a, b) => a + b));
   };
+  useEffect(() => {
+    const totals = formBookData.map((i) => i.total);
+    if (totals.length > 0) {
+      setGrossTotal(totals.reduce((a, b) => a + b));
+    }
+  }, [formBookData]);
 
   // catch kind of movement
   const handleChangeKindMod = (event) => {
@@ -93,9 +135,7 @@ const MovementRegisterForm = () => {
     event.preventDefault();
 
     try {
-      dispatch(
-        createMovement(formfulldata),
-      );
+      dispatch(createMovement(formfulldata));
       navigate('/movements');
     } catch (error) {
       throw new Error(error);
@@ -165,7 +205,7 @@ const MovementRegisterForm = () => {
           <input
             type="radio"
             name="kind"
-            id="ingreso"
+            id="remisión"
             value="remisión"
             onChange={handleChangeKindMod}
           />{' '}
@@ -175,7 +215,7 @@ const MovementRegisterForm = () => {
           <input
             type="radio"
             name="kind"
-            id="ingreso"
+            id="devloución"
             value="devloución"
             onChange={handleChangeKindMod}
           />{' '}
@@ -185,13 +225,42 @@ const MovementRegisterForm = () => {
           <input
             type="radio"
             name="kind"
-            id="ingreso"
+            id="liquidación"
             value="liquidación"
             onChange={handleChangeKindMod}
           />{' '}
           Liquidación
         </label>
       </label>
+      {kind === 'remisión' ? (
+        <>
+          <div>
+            Desde
+            <Select
+              id="from"
+              options={storagesSelect}
+              isSearchable
+              isClearable
+              defaultValue={{
+                value: '63e0f2f8b7fbc17be761a93a',
+                label: 'Tanuki',
+              }}
+              onChange={handleChangeFrom}
+            />
+          </div>
+
+          <div>
+            Hacia
+            <Select
+              id="from"
+              options={storagesSelect}
+              isSearchable
+              isClearable
+              onChange={handleChangeTo}
+            />
+          </div>
+        </>
+      ) : null}
       <p> Libros</p>
       <Select
         id="books"
@@ -201,8 +270,8 @@ const MovementRegisterForm = () => {
         isMulti
         onChange={handleChangeBooks}
       />
-      {selectedOption && selectedOption.length > 0
-        ? selectedOption.map((book) => (
+      {selectedBooks && selectedBooks.length > 0
+        ? selectedBooks.map((book) => (
           <div key={book.value}>
             <label htmlFor={book.value}>
               Libro
