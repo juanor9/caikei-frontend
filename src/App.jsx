@@ -1,17 +1,20 @@
+import './App.scss';
 import { Routes, Route } from 'react-router-dom';
 import { useEffect } from 'react';
-import HomePage from './pages/Home/Home';
-import Footer from './components/Footer/Footer';
-import LoginPage from './pages/Login/Login';
-import UserProfilePage from './pages/UserProfile/UserProfilePage';
-import PublisherRegister from './pages/PublisherRegister/PublisherRegister';
-import CataloguePage from './pages/Catalogue/Catalogue';
-import BookRegisterPage from './pages/BookRegister/BookRegister';
 import BookPage from './pages/Book/Book';
-import RegisterLibraryPage from './pages/LibraryRegister/LibraryRegister';
+import BookRegisterPage from './pages/BookRegister/BookRegister';
+import CataloguePage from './pages/Catalogue/Catalogue';
+import Footer from './components/Footer/Footer';
+import HomePage from './pages/Home/Home';
 import LibrariesPage from './pages/Libraries/Libraries';
 import LibraryPage from './pages/Library/Library';
-import './App.scss';
+import LoginPage from './pages/Login/Login';
+import PublisherRegister from './pages/PublisherRegister/PublisherRegister';
+import RegisterLibraryPage from './pages/LibraryRegister/LibraryRegister';
+import UserProfilePage from './pages/UserProfile/UserProfilePage';
+import MovementsPage from './pages/Movements/Movements';
+import MovementPage from './pages/Movement/Movement';
+import RegisterMovementPage from './pages/MovementRegister/MovementRegister';
 
 const App = () => {
   useEffect(() => {
@@ -21,15 +24,18 @@ const App = () => {
     <div className="app-container">
       <Routes>
         <Route path="/" element={<HomePage />} />
+        <Route path="/book/:id" element={<BookPage />} />
+        <Route path="/book/register" element={<BookRegisterPage />} />
+        <Route path="/catalogue" element={<CataloguePage />} />
+        <Route path="/libraries" element={<LibrariesPage />} />
+        <Route path="/library/:id" element={<LibraryPage />} />
+        <Route path="/library/register" element={<RegisterLibraryPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/profile" element={<UserProfilePage />} />
         <Route path="/publisher/register" element={<PublisherRegister />} />
-        <Route path="/catalogue" element={<CataloguePage />} />
-        <Route path="/book/register" element={<BookRegisterPage />} />
-        <Route path="/book/:id" element={<BookPage />} />
-        <Route path="/library/register" element={<RegisterLibraryPage />} />
-        <Route path="/libraries" element={<LibrariesPage />} />
-        <Route path="/library/:id" element={<LibraryPage />} />
+        <Route path="/movements" element={<MovementsPage />} />
+        <Route path="/movement/:id" element={<MovementPage />} />
+        <Route path="/movement/register" element={<RegisterMovementPage />} />
 
       </Routes>
       <Footer />

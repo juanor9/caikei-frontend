@@ -6,6 +6,7 @@
   flex-direction: row;
   justify-content: space-between;
   align-items: baseline;
+  border-bottom: 1px solid $black-light;
   &__logo{
     width: fit-content;
     justify-self: flex-start;
@@ -15,5 +16,21 @@
     border: none;
     background-color: transparent;
     cursor: pointer;
+  }
+  &__ul{
+    display: flex;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    gap: 1em;
+  }
+  &__link{
+    color: $black;
+    font-weight: 400;
+    text-decoration: none;
+    &:hover{
+      color: $accent;
+      text-decoration: underline;
+    }
   }
 }

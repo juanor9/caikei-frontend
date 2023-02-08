@@ -17,9 +17,10 @@ const TopNav = () => {
     <header className="topnav">
       <Logo className="topnav__logo" />
       <nav>
-        <ul>
-          <li><Link to="/catalogue">Catálogo</Link></li>
-          <li><Link to="/libraries">Librerías</Link></li>
+        <ul className="topnav__ul">
+          <li><Link to="/catalogue" className="topnav__link">Catálogo</Link></li>
+          <li><Link to="/libraries" className="topnav__link">Librerías</Link></li>
+          <li><Link to="/movements" className="topnav__link">Movimientos </Link></li>
 
         </ul>
       </nav>
