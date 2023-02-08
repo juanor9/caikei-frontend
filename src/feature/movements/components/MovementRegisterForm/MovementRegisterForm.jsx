@@ -9,12 +9,15 @@ import { getUser } from '../../../users/services/users';
 import { getBooksByFilter } from '../../../books/services/books';
 import { createMovement } from '../../services/movements';
 import useForm from '../../../../hooks/useForm';
-import { getLibrariesByPublisher } from '../../../libraries/services/libraries';
-import { getPublisherById } from '../../../publishers/services/publishers';
+import RegisterRemisionForm from '../RegisterRemisionForm/RegisterRemisionForm';
+import RegisterDevolutionForm from '../RegisterDevolutionForm/RegisterDevolutionForm';
 
 const MovementRegisterForm = () => {
   const [kind, setKind] = useState('');
   const { form, handleChange } = useForm({});
+  // States for remsion
+  const [remisionFrom, setRemisionFrom] = useState(null);
+  const [remisionTo, setRemisionTo] = useState(null);
 
   // Get data from redux
   const userToken = localStorage.getItem('login-token');
@@ -127,6 +130,7 @@ const MovementRegisterForm = () => {
   useEffect(() => {
     const { internalId, date } = form;
     setFormfulldata({
+      ...formfulldata,
       internalId,
       date,
       kind,
@@ -134,7 +138,41 @@ const MovementRegisterForm = () => {
       grossTotal,
       publisher,
     });
-  }, [form, formBookData, grossTotal]);
+    if (kind === 'remisión') {
+      setFormfulldata({
+        ...formfulldata,
+        internalId,
+        date,
+        kind,
+        books: formBookData,
+        grossTotal,
+        publisher,
+        from: remisionFrom,
+        to: remisionTo,
+      });
+    }
+    if (kind === 'devolución') {
+      setFormfulldata({
+        ...formfulldata,
+        internalId,
+        date,
+        kind,
+        books: formBookData,
+        grossTotal,
+        publisher,
+        from: remisionFrom,
+        to: remisionTo,
+      });
+    }
+  }, [
+    form,
+    kind,
+    formBookData,
+    grossTotal,
+    publisher,
+    remisionFrom,
+    remisionTo,
+  ]);
 
   return (
     <form action="" className="movement-form" onSubmit={handleSubmit}>
@@ -177,8 +215,8 @@ const MovementRegisterForm = () => {
           <input
             type="radio"
             name="kind"
-            id="devloución"
-            value="devloución"
+            id="devolución"
+            value="devolución"
             onChange={handleChangeKindMod}
           />{' '}
           Devolución
@@ -194,6 +232,12 @@ const MovementRegisterForm = () => {
           Liquidación
         </label>
       </label>
+      {kind === 'remisión' ? (
+        <RegisterRemisionForm from={setRemisionFrom} to={setRemisionTo} />
+      ) : null}
+      {kind === 'devolución' ? (
+        <RegisterDevolutionForm from={setRemisionFrom} to={setRemisionTo} />
+      ) : null}
       <p> Libros</p>
       <Select
         id="books"

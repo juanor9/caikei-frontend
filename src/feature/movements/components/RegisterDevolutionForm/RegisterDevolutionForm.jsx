@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getLibrariesByPublisher } from '../../../libraries/services/libraries';
 import { getPublisherById } from '../../../publishers/services/publishers';
 
-const RegisterRemisionForm = ({ from, to }) => {
+const RegisterDevolutionForm = ({ from, to }) => {
   const dispatch = useDispatch();
   const { publisher } = useSelector((state) => state.user.userData);
 
@@ -26,17 +26,17 @@ const RegisterRemisionForm = ({ from, to }) => {
   const [storages, setStorages] = useState([]);
   const [storagesSelect, setStoragesSelect] = useState([]);
   // FROM
-  const [selectedFrom, setSelectedFrom] = useState({
-    value: '63e0f2f8b7fbc17be761a93a',
-    label: 'Tanuki',
-  });
+  const [selectedFrom, setSelectedFrom] = useState(null);
   const handleChangeFrom = (selected) => {
     setSelectedFrom(selected);
   };
   //----------------------------------------------
 
   // TO
-  const [selectedTo, setSelectedTo] = useState(null);
+  const [selectedTo, setSelectedTo] = useState({
+    value: '63e0f2f8b7fbc17be761a93a',
+    label: 'Tanuki',
+  });
   const handleChangeTo = (selected) => {
     setSelectedTo(selected);
   };
@@ -78,10 +78,6 @@ const RegisterRemisionForm = ({ from, to }) => {
         options={storagesSelect}
         isSearchable
         isClearable
-        defaultValue={{
-          value: '63e0f2f8b7fbc17be761a93a',
-          label: 'Tanuki',
-        }}
         onChange={handleChangeFrom}
       />
       <p>Hacia</p>
@@ -91,9 +87,13 @@ const RegisterRemisionForm = ({ from, to }) => {
         isSearchable
         isClearable
         onChange={handleChangeTo}
+        defaultValue={{
+          value: '63e0f2f8b7fbc17be761a93a',
+          label: 'Tanuki',
+        }}
       />
     </>
   );
 };
 
-export default RegisterRemisionForm;
+export default RegisterDevolutionForm;
