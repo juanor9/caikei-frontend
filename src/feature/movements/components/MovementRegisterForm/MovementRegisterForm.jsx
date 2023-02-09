@@ -1,18 +1,17 @@
-/* eslint-disable no-unused-vars */
 /* eslint-disable no-param-reassign */
 import './MovementRegisterForm.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Select from 'react-select';
-import { getUser } from '../../../users/services/users';
-import { getBooksByFilter } from '../../../books/services/books';
 import { createMovement } from '../../services/movements';
-import useForm from '../../../../hooks/useForm';
-import RegisterRemisionForm from '../RegisterRemisionForm/RegisterRemisionForm';
-import RegisterDevolutionForm from '../RegisterDevolutionForm/RegisterDevolutionForm';
-import RegisterSaleForm from '../RegisterSaleForm/RegisterSaleForm';
+import { getBooksByFilter } from '../../../books/services/books';
 import { getLibrariesById } from '../../../libraries/services/libraries';
+import { getUser } from '../../../users/services/users';
+import RegisterDevolutionForm from '../RegisterDevolutionForm/RegisterDevolutionForm';
+import RegisterRemisionForm from '../RegisterRemisionForm/RegisterRemisionForm';
+import RegisterSaleForm from '../RegisterSaleForm/RegisterSaleForm';
+import useForm from '../../../../hooks/useForm';
 
 const MovementRegisterForm = () => {
   const [kind, setKind] = useState('');
@@ -192,6 +191,7 @@ const MovementRegisterForm = () => {
       books: formBookData,
       grossTotal,
       publisher,
+      createdBy: publisher,
     });
     if (kind === 'remisión') {
       setFormfulldata({
@@ -206,6 +206,7 @@ const MovementRegisterForm = () => {
         from: remisionFrom,
         to: remisionTo,
         discount: remisionDiscount,
+        createdBy: publisher,
       });
     }
     if (kind === 'devolución') {
@@ -219,6 +220,7 @@ const MovementRegisterForm = () => {
         publisher,
         from: remisionFrom,
         to: remisionTo,
+        createdBy: publisher,
       });
     }
     if (kind === 'liquidación') {
@@ -233,6 +235,7 @@ const MovementRegisterForm = () => {
         publisher,
         from: remisionFrom,
         discount: salesDiscount,
+        createdBy: publisher,
       });
     }
   }, [
@@ -245,6 +248,7 @@ const MovementRegisterForm = () => {
     remisionTo,
     remisionDiscount,
     salesDiscount,
+    publisher,
   ]);
 
   // send data to backend
