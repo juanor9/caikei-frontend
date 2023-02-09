@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getUser } from '../../feature/users/services/users';
 import TopNav from '../../components/TopNav/TopNav';
-import { getLibrariesByPublisher } from '../../feature/libraries/services/libraries';
+import getLibrariesByPublisher from '../../feature/libraries/services/allLibraries';
 import LibraryCard from '../../feature/libraries/components/LibraryCard/LibraryCard';
 
 const MovementsPage = () => {
