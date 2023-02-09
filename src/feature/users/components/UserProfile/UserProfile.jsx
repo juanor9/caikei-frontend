@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 import { updateUser, getUser } from '../../services/users';
 import Modal from '../../../../components/Modal/Modal';
 import useForm from '../../../../hooks/useForm';
@@ -8,7 +8,7 @@ import './UserProfile.scss';
 
 const UserProfile = () => {
   const dispatch = useDispatch(); // use dispatch hook
-  const navigate = useNavigate(); // use navigation hook
+  // const navigate = useNavigate(); // use navigation hook
   const [emailModal, setEmailModal] = useState(false); // set email modal
   const [passwordModal, setPasswordModal] = useState(false); // set password modal
   const { form, handleChange } = useForm({}); // get form hook
@@ -18,16 +18,16 @@ const UserProfile = () => {
   const { email, _id } = userData; // get user data from redux
 
   // On click for deactivate, deactivate account
-  const handleClickDeactivate = () => {
-    try {
-      const deactivate = { isActive: false };
-      const data = { deactivate, userId: _id };
-      dispatch(updateUser(data));
-      navigate('/');
-    } catch (error) {
-      throw new Error(error);
-    }
-  };
+  // const handleClickDeactivate = () => {
+  //   try {
+  //     const deactivate = { isActive: false };
+  //     const data = { deactivate, userId: _id };
+  //     dispatch(updateUser(data));
+  //     navigate('/');
+  //   } catch (error) {
+  //     throw new Error(error);
+  //   }
+  // };
 
   // On submit for email, prevent form submission and dispatch service
   const handleSubmitEmail = async (event) => {
@@ -77,13 +77,13 @@ const UserProfile = () => {
     <section className="user-profile">
       <div className="user-profile__header">
         <h2>Perfil</h2>
-        <button
+        {/* <button
           type="button"
           className="user-profile__deactivate"
           onClick={handleClickDeactivate}
         >
           Desactivar cuenta
-        </button>
+        </button> */}
       </div>
 
       <div className="user-profile__info">

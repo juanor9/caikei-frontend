@@ -203,13 +203,13 @@ const LibraryPage = () => {
           <button type="submit" className="library-page__form-button">
             Guardar cambios
           </button>
-          <button
+          {/* <button
             type="button"
             className="library-page__deactivate-button"
             onClick={handleClickDeactivate}
           >
             Desactivar librería
-          </button>
+          </button> */}
         </form>
       </main>
     </div>

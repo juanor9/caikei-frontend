@@ -51,15 +51,15 @@ const BookPage = () => {
     }
   };
 
-  const handleClickDeactivate = () => {
-    try {
-      const deactivate = { isActive: false };
-      const data = { deactivate, id };
-      dispatch(updateBookById(data));
-    } catch (error) {
-      throw new Error(error);
-    }
-  };
+  // const handleClickDeactivate = () => {
+  //   try {
+  //     const deactivate = { isActive: false };
+  //     const data = { deactivate, id };
+  //     dispatch(updateBookById(data));
+  //   } catch (error) {
+  //     throw new Error(error);
+  //   }
+  // };
 
   useEffect(() => {
     if (id) {
@@ -355,13 +355,13 @@ const BookPage = () => {
             <button type="submit" className="book-page__form-button">
               Guardar cambios
             </button>
-            <button
+            {/* <button
               type="button"
               className="book-page__deactivate-button"
               onClick={handleClickDeactivate}
             >
               Desactivar libro
-            </button>
+            </button> */}
           </form>
         </section>
       </main>
