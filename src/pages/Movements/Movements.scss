@@ -1,14 +1,16 @@
 @import "../../colors.scss";
 @import "../../mixin.scss";
 
-.movements{
-  &__add-button{
+.movements {
+  &__add-button {
     @include main-button;
     width: 100%;
   }
-  &__libraries-container{
-    display: flex;
-    flex-wrap: wrap;
+  &__movements-container {
     margin-top: 2em;
   }
+}
+th, td {
+  border-bottom: 1px solid #ddd;
+  padding: 0.5em;
 }

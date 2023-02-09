@@ -1,0 +1,10 @@
+@import "../../../../colors.scss";
+@import "../../../../mixin.scss";
+
+.movement-card{
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+  gap: 1em;
+  padding: .3em;
+  border-bottom: solid 1px $black-light;
+}

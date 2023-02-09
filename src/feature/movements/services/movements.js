@@ -20,5 +20,18 @@ export const createMovement = createAsyncThunk(
     return result;
   },
 );
-
-export default createMovement;
+export const getMovementsByPublisher = createAsyncThunk(
+  'movements/getMovements',
+  async (id) => {
+    const options = {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    const res = await fetch(`${BASE_URL}/api/movements?createdBy=${id}`, options);
+    const result = await res.json();
+    return result;
+  },
+);
