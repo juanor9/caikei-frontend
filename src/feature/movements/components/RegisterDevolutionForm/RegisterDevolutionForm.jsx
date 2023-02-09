@@ -21,7 +21,7 @@ const RegisterDevolutionForm = ({ from, to }) => {
       }
     }
   }, [publisher]);
-  const { library } = useSelector((state) => state.library);
+  const { allLibraries } = useSelector((state) => state.allLibraries);
   const publisherData = useSelector((state) => state.publisher.publisher);
   const [storages, setStorages] = useState([]);
   const [storagesSelect, setStoragesSelect] = useState([]);
@@ -44,10 +44,10 @@ const RegisterDevolutionForm = ({ from, to }) => {
 
   // Get all storages, publisher included
   useEffect(() => {
-    if (Array.isArray(library)) {
-      setStorages([...library, publisherData]);
+    if (Array.isArray(allLibraries)) {
+      setStorages([...allLibraries, publisherData]);
     }
-  }, [library, publisherData]);
+  }, [allLibraries, publisherData]);
   useEffect(() => {
     setStoragesSelect(storages.map((storage) => ({
       value: storage._id,

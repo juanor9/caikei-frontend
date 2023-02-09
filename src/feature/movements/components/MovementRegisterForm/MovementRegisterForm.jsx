@@ -138,12 +138,14 @@ const MovementRegisterForm = () => {
   }, [remisionTo]);
   const { library } = useSelector((state) => state.library);
   useEffect(() => {
-    const libraryPublisherList = library.publishers;
-    if (Array.isArray(libraryPublisherList)) {
-      const PublisherInLibrary = libraryPublisherList.find(
-        (pub) => pub.publisherId === publisher,
-      );
-      setremisionDiscount(PublisherInLibrary.discount);
+    if (kind === 'remisión') {
+      const libraryPublisherList = library.publishers;
+      if (Array.isArray(libraryPublisherList)) {
+        const PublisherInLibrary = libraryPublisherList.find(
+          (pub) => pub.publisherId === publisher,
+        );
+        setremisionDiscount(PublisherInLibrary.discount);
+      }
     }
   }, [library]);
   const handleChangeRemisionDiscount = (event) => {
