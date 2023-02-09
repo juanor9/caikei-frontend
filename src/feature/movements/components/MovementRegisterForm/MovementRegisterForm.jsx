@@ -136,6 +136,7 @@ const MovementRegisterForm = () => {
       dispatch(getLibrariesById(remisionTo));
     }
   }, [remisionTo]);
+
   const { library } = useSelector((state) => state.library);
   useEffect(() => {
     if (kind === 'remisión') {
@@ -159,6 +160,39 @@ const MovementRegisterForm = () => {
       setNetTotal(grossTotal - (grossTotal * (remisionDiscount / 100)));
     }
   }, [remisionDiscount, grossTotal]);
+
+  // for remision discount
+  const [salesDiscount, setSalesDiscount] = useState(0);
+  useEffect(() => {
+    if (remisionFrom && remisionFrom !== publisher) {
+      dispatch(getLibrariesById(remisionFrom));
+    }
+  }, [remisionFrom]);
+
+  useEffect(() => {
+    if (kind === 'liquidación') {
+      const libraryPublisherList = library.publishers;
+      if (Array.isArray(libraryPublisherList)) {
+        const PublisherInLibrary = libraryPublisherList.find(
+          (pub) => pub.publisherId === publisher,
+        );
+        setSalesDiscount(PublisherInLibrary.discount);
+      }
+    }
+  }, [library]);
+
+  const handleChangeSalesDiscount = (event) => {
+    const { value } = event.target;
+    setSalesDiscount(value);
+  };
+
+  // for sales net total
+  useEffect(() => {
+    if (salesDiscount) {
+      setNetTotal(grossTotal - (grossTotal * (salesDiscount / 100)));
+    }
+  }, [salesDiscount, grossTotal]);
+
   // crear datos para solicitud
   useEffect(() => {
     const { internalId, date } = form;
@@ -269,7 +303,8 @@ const MovementRegisterForm = () => {
         </label>
       </label>
       {kind === 'remisión' ? (
-        <><RegisterRemisionForm from={setRemisionFrom} to={setRemisionTo} />
+        <>
+          <RegisterRemisionForm from={setRemisionFrom} to={setRemisionTo} />
           <label htmlFor="discount">
             Descuento
             <input
@@ -287,8 +322,22 @@ const MovementRegisterForm = () => {
         <RegisterDevolutionForm from={setRemisionFrom} to={setRemisionTo} />
       ) : null}
       {kind === 'liquidación' ? (
-        <RegisterSaleForm from={setRemisionFrom} />
+        <>
+          <RegisterSaleForm from={setRemisionFrom} />
+          <label htmlFor="discount">
+            Descuento
+            <input
+              type="discount"
+              name="discount"
+              id="discount"
+              key={`${Math.floor((Math.random() * 1000))}-min`}
+              defaultValue={salesDiscount}
+              onChange={handleChangeSalesDiscount}
+            />
+          </label>
+        </>
       ) : null}
+
       <p> Libros</p>
       <Select
         id="books"
@@ -329,7 +378,7 @@ const MovementRegisterForm = () => {
                 onChange={handleChangeBook}
               />
             </label>
-            {formBookData.length > 0
+            {formBookData.length > 0 && kind === 'remisión'
               ? formBookData.map((e) => (e.id === book.value && e.total ? (
                 <div key={`${e.id}-totals`}>
                   <p key={`${e.id}-grossSubtotal`}>
@@ -343,6 +392,20 @@ const MovementRegisterForm = () => {
                 </div>
               ) : null))
               : null}
+            {formBookData.length > 0 && kind === 'liquidación'
+              ? formBookData.map((e) => (e.id === book.value && e.total ? (
+                <div key={`${e.id}-totals`}>
+                  <p key={`${e.id}-grossSubtotal`}>
+                    <b>Subtotal bruto: </b>
+                    {e.total}
+                  </p>
+                  <p key={`${e.id}-netSubtotal`}>
+                    <b>Subtotal neto: </b>
+                    {e.total - (e.total * (salesDiscount / 100))}
+                  </p>
+                </div>
+              ) : null))
+              : null}
           </div>
         ))
         : null}
@@ -351,7 +414,7 @@ const MovementRegisterForm = () => {
           <b>Total bruto: </b>
           {grossTotal}
         </p>
-        {kind === 'remisión'
+        {kind === 'remisión' || kind === 'liquidación'
           ? (
             <p key={`${netTotal}nettotal`}>
               <b>Total neto: </b>
