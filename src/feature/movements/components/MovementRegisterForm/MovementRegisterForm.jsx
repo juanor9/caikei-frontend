@@ -129,6 +129,35 @@ const MovementRegisterForm = () => {
     }
   }, [publisher]);
 
+  // for remision discount
+  const [remisionDiscount, setremisionDiscount] = useState(0);
+  useEffect(() => {
+    if (remisionTo) {
+      dispatch(getLibrariesById(remisionTo));
+    }
+  }, [remisionTo]);
+  const { library } = useSelector((state) => state.library);
+  useEffect(() => {
+    const libraryPublisherList = library.publishers;
+    if (Array.isArray(libraryPublisherList)) {
+      const PublisherInLibrary = libraryPublisherList.find(
+        (pub) => pub.publisherId === publisher,
+      );
+      setremisionDiscount(PublisherInLibrary.discount);
+    }
+  }, [library]);
+  const handleChangeRemisionDiscount = (event) => {
+    const { value } = event.target;
+    setremisionDiscount(value);
+  };
+  // for remision net total
+  const [netTotal, setNetTotal] = useState(0);
+  useEffect(() => {
+    if (remisionDiscount) {
+      setNetTotal(grossTotal - (grossTotal * (remisionDiscount / 100)));
+    }
+  }, [remisionDiscount, grossTotal]);
+  // crear datos para solicitud
   useEffect(() => {
     const { internalId, date } = form;
     setFormfulldata({
@@ -148,9 +177,11 @@ const MovementRegisterForm = () => {
         kind,
         books: formBookData,
         grossTotal,
+        netTotal,
         publisher,
         from: remisionFrom,
         to: remisionTo,
+        discount: remisionDiscount,
       });
     }
     if (kind === 'devolución') {
@@ -174,24 +205,8 @@ const MovementRegisterForm = () => {
     publisher,
     remisionFrom,
     remisionTo,
+    remisionDiscount,
   ]);
-  // for remision discount
-  const [remisionDiscount, setremisionDiscount] = useState(0);
-  useEffect(() => {
-    if (remisionTo) {
-      dispatch(getLibrariesById(remisionTo));
-    }
-  }, [remisionTo]);
-  const { library } = useSelector((state) => state.library);
-  useEffect(() => {
-    const libraryPublisherList = library.publishers;
-    if (Array.isArray(libraryPublisherList)) {
-      const PublisherInLibrary = libraryPublisherList.find(
-        (pub) => pub.publisherId === publisher,
-      );
-      setremisionDiscount(PublisherInLibrary.discount);
-    }
-  }, [library]);
 
   return (
     <form action="" className="movement-form" onSubmit={handleSubmit}>
@@ -261,7 +276,7 @@ const MovementRegisterForm = () => {
               id="discount"
               key={`${Math.floor((Math.random() * 1000))}-min`}
               defaultValue={remisionDiscount}
-              // onChange={handleChange}
+              onChange={handleChangeRemisionDiscount}
             />
           </label>
         </>
@@ -329,10 +344,21 @@ const MovementRegisterForm = () => {
           </div>
         ))
         : null}
-      <p>
-        <b>Total bruto: </b>
-        {grossTotal}
-      </p>
+      <div key="totals">
+        <p key={`${grossTotal}grossTotal`}>
+          <b>Total bruto: </b>
+          {grossTotal}
+        </p>
+        {kind === 'remisión'
+          ? (
+            <p key={`${netTotal}nettotal`}>
+              <b>Total neto: </b>
+              {netTotal}
+            </p>
+          )
+          : null}
+      </div>
+
       <button type="submit">Guardar {kind}</button>
     </form>
   );
