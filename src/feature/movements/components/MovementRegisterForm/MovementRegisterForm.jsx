@@ -12,6 +12,7 @@ import useForm from '../../../../hooks/useForm';
 import RegisterRemisionForm from '../RegisterRemisionForm/RegisterRemisionForm';
 import RegisterDevolutionForm from '../RegisterDevolutionForm/RegisterDevolutionForm';
 import RegisterSaleForm from '../RegisterSaleForm/RegisterSaleForm';
+import { getLibrariesById } from '../../../libraries/services/libraries';
 
 const MovementRegisterForm = () => {
   const [kind, setKind] = useState('');
@@ -96,18 +97,6 @@ const MovementRegisterForm = () => {
     }
   };
 
-  // send data to backend
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-
-    try {
-      dispatch(createMovement(formfulldata));
-      navigate('/movements');
-    } catch (error) {
-      throw new Error(error);
-    }
-  };
-
   useEffect(() => {
     if (userToken) {
       try {
@@ -128,6 +117,71 @@ const MovementRegisterForm = () => {
     }
   }, [publisher]);
 
+  // for remision discount
+  const [remisionDiscount, setremisionDiscount] = useState(0);
+  useEffect(() => {
+    if (remisionTo) {
+      dispatch(getLibrariesById(remisionTo));
+    }
+  }, [remisionTo]);
+
+  const { library } = useSelector((state) => state.library);
+  useEffect(() => {
+    if (kind === 'remisión') {
+      const libraryPublisherList = library.publishers;
+      if (Array.isArray(libraryPublisherList)) {
+        const PublisherInLibrary = libraryPublisherList.find(
+          (pub) => pub.publisherId === publisher,
+        );
+        setremisionDiscount(PublisherInLibrary.discount);
+      }
+    }
+  }, [library]);
+  const handleChangeRemisionDiscount = (event) => {
+    const { value } = event.target;
+    setremisionDiscount(value);
+  };
+  // for remision net total
+  const [netTotal, setNetTotal] = useState(0);
+  useEffect(() => {
+    if (remisionDiscount) {
+      setNetTotal(grossTotal - (grossTotal * (remisionDiscount / 100)));
+    }
+  }, [remisionDiscount, grossTotal]);
+
+  // for remision discount
+  const [salesDiscount, setSalesDiscount] = useState(0);
+  useEffect(() => {
+    if (remisionFrom && remisionFrom !== publisher) {
+      dispatch(getLibrariesById(remisionFrom));
+    }
+  }, [remisionFrom]);
+
+  useEffect(() => {
+    if (kind === 'liquidación') {
+      const libraryPublisherList = library.publishers;
+      if (Array.isArray(libraryPublisherList)) {
+        const PublisherInLibrary = libraryPublisherList.find(
+          (pub) => pub.publisherId === publisher,
+        );
+        setSalesDiscount(PublisherInLibrary.discount);
+      }
+    }
+  }, [library]);
+
+  const handleChangeSalesDiscount = (event) => {
+    const { value } = event.target;
+    setSalesDiscount(value);
+  };
+
+  // for sales net total
+  useEffect(() => {
+    if (salesDiscount) {
+      setNetTotal(grossTotal - (grossTotal * (salesDiscount / 100)));
+    }
+  }, [salesDiscount, grossTotal]);
+
+  // crear datos para solicitud
   useEffect(() => {
     const { internalId, date } = form;
     setFormfulldata({
@@ -147,9 +201,11 @@ const MovementRegisterForm = () => {
         kind,
         books: formBookData,
         grossTotal,
+        netTotal,
         publisher,
         from: remisionFrom,
         to: remisionTo,
+        discount: remisionDiscount,
       });
     }
     if (kind === 'devolución') {
@@ -165,6 +221,20 @@ const MovementRegisterForm = () => {
         to: remisionTo,
       });
     }
+    if (kind === 'liquidación') {
+      setFormfulldata({
+        ...formfulldata,
+        internalId,
+        date,
+        kind,
+        books: formBookData,
+        grossTotal,
+        netTotal,
+        publisher,
+        from: remisionFrom,
+        discount: salesDiscount,
+      });
+    }
   }, [
     form,
     kind,
@@ -173,7 +243,21 @@ const MovementRegisterForm = () => {
     publisher,
     remisionFrom,
     remisionTo,
+    remisionDiscount,
+    salesDiscount,
   ]);
+
+  // send data to backend
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    try {
+      dispatch(createMovement(formfulldata));
+      navigate('/movements');
+    } catch (error) {
+      throw new Error(error);
+    }
+  };
 
   return (
     <form action="" className="movement-form" onSubmit={handleSubmit}>
@@ -234,14 +318,41 @@ const MovementRegisterForm = () => {
         </label>
       </label>
       {kind === 'remisión' ? (
-        <RegisterRemisionForm from={setRemisionFrom} to={setRemisionTo} />
+        <>
+          <RegisterRemisionForm from={setRemisionFrom} to={setRemisionTo} />
+          <label htmlFor="discount">
+            Descuento
+            <input
+              type="discount"
+              name="discount"
+              id="discount"
+              key={`${Math.floor((Math.random() * 1000))}-min`}
+              defaultValue={remisionDiscount}
+              onChange={handleChangeRemisionDiscount}
+            />
+          </label>
+        </>
       ) : null}
       {kind === 'devolución' ? (
         <RegisterDevolutionForm from={setRemisionFrom} to={setRemisionTo} />
       ) : null}
       {kind === 'liquidación' ? (
-        <RegisterSaleForm from={setRemisionFrom} />
+        <>
+          <RegisterSaleForm from={setRemisionFrom} />
+          <label htmlFor="discount">
+            Descuento
+            <input
+              type="discount"
+              name="discount"
+              id="discount"
+              key={`${Math.floor((Math.random() * 1000))}-min`}
+              defaultValue={salesDiscount}
+              onChange={handleChangeSalesDiscount}
+            />
+          </label>
+        </>
       ) : null}
+
       <p> Libros</p>
       <Select
         id="books"
@@ -282,21 +393,52 @@ const MovementRegisterForm = () => {
                 onChange={handleChangeBook}
               />
             </label>
-            {formBookData.length > 0
+            {formBookData.length > 0 && kind === 'remisión'
               ? formBookData.map((e) => (e.id === book.value && e.total ? (
-                <p key={`${e.id}-subtotal`}>
-                  <b>Subtotal: </b>
-                  {e.total}
-                </p>
+                <div key={`${e.id}-totals`}>
+                  <p key={`${e.id}-grossSubtotal`}>
+                    <b>Subtotal bruto: </b>
+                    {e.total}
+                  </p>
+                  <p key={`${e.id}-netSubtotal`}>
+                    <b>Subtotal neto: </b>
+                    {e.total - (e.total * (remisionDiscount / 100))}
+                  </p>
+                </div>
+              ) : null))
+              : null}
+            {formBookData.length > 0 && kind === 'liquidación'
+              ? formBookData.map((e) => (e.id === book.value && e.total ? (
+                <div key={`${e.id}-totals`}>
+                  <p key={`${e.id}-grossSubtotal`}>
+                    <b>Subtotal bruto: </b>
+                    {e.total}
+                  </p>
+                  <p key={`${e.id}-netSubtotal`}>
+                    <b>Subtotal neto: </b>
+                    {e.total - (e.total * (salesDiscount / 100))}
+                  </p>
+                </div>
               ) : null))
               : null}
           </div>
         ))
         : null}
-      <p>
-        <b>Total bruto: </b>
-        {grossTotal}
-      </p>
+      <div key="totals">
+        <p key={`${grossTotal}grossTotal`}>
+          <b>Total bruto: </b>
+          {grossTotal}
+        </p>
+        {kind === 'remisión' || kind === 'liquidación'
+          ? (
+            <p key={`${netTotal}nettotal`}>
+              <b>Total neto: </b>
+              {netTotal}
+            </p>
+          )
+          : null}
+      </div>
+
       <button type="submit">Guardar {kind}</button>
     </form>
   );

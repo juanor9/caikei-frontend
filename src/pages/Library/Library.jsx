@@ -63,10 +63,9 @@ const LibraryPage = () => {
     if (publishers) {
       const filteredPublisher = publishers.find((pub) => pub.publisherId === publisher);
       const discountPublisher = filteredPublisher.discount;
-      setDiscount(discountPublisher);
+      setDiscount(Number(discountPublisher));
     }
   }, [publishers, publisher]);
-
   useEffect(() => {
     try {
       dispatch(getUser(userToken));
@@ -111,9 +110,10 @@ const LibraryPage = () => {
                 <FontAwesomeIcon icon={faPenToSquare} />
               </button>
               <input
-                type="nmber"
+                type="number"
                 name="discount"
                 id="discount"
+                key={name}
                 defaultValue={discount}
                 disabled={disabled}
                 onChange={handleChange}

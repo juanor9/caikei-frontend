@@ -325,6 +325,7 @@ const BookPage = () => {
                   type="color"
                   name="color"
                   id="color"
+                  key={`${isbn}-color`}
                   defaultValue={color}
                   disabled={readOnly}
                 />

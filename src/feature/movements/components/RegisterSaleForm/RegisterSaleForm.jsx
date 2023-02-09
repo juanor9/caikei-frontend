@@ -3,7 +3,7 @@
 import Select from 'react-select';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getLibrariesByPublisher } from '../../../libraries/services/libraries';
+import getLibrariesByPublisher from '../../../libraries/services/allLibraries';
 import { getPublisherById } from '../../../publishers/services/publishers';
 
 const RegisterSaleForm = ({ from }) => {
@@ -21,7 +21,7 @@ const RegisterSaleForm = ({ from }) => {
       }
     }
   }, [publisher]);
-  const { library } = useSelector((state) => state.library);
+  const { allLibraries } = useSelector((state) => state.allLibraries);
   const publisherData = useSelector((state) => state.publisher.publisher);
   const [storages, setStorages] = useState([]);
   const [storagesSelect, setStoragesSelect] = useState([]);
@@ -34,10 +34,10 @@ const RegisterSaleForm = ({ from }) => {
 
   // Get all storages, publisher included
   useEffect(() => {
-    if (Array.isArray(library)) {
-      setStorages([...library, publisherData]);
+    if (Array.isArray(allLibraries)) {
+      setStorages([...allLibraries, publisherData]);
     }
-  }, [library, publisherData]);
+  }, [allLibraries, publisherData]);
   useEffect(() => {
     setStoragesSelect(storages.map((storage) => ({
       value: storage._id,
