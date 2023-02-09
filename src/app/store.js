@@ -5,6 +5,7 @@ import publisherReducer from '../feature/publishers/reducer/publisherSlice';
 import bookReducer from '../feature/books/reducer/bookSlice';
 import catalogueReducer from '../feature/books/reducer/catalogueSlice';
 import libraryReducer from '../feature/libraries/reducer/librarySlice';
+import allLibrariesReducer from '../feature/libraries/reducer/allLibrariesSlice';
 
 const store = configureStore({
   reducer: {
@@ -14,6 +15,7 @@ const store = configureStore({
     book: bookReducer,
     catalogue: catalogueReducer,
     library: libraryReducer,
+    allLibraries: allLibrariesReducer,
   },
   devTools: process.env.NODE_ENV !== 'production',
 });

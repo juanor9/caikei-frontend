@@ -3,7 +3,7 @@
 import Select from 'react-select';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getLibrariesByPublisher } from '../../../libraries/services/libraries';
+import getLibrariesByPublisher from '../../../libraries/services/allLibraries';
 import { getPublisherById } from '../../../publishers/services/publishers';
 
 const RegisterDevolutionForm = ({ from, to }) => {

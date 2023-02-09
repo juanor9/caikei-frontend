@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getUser } from '../../feature/users/services/users';
 import TopNav from '../../components/TopNav/TopNav';
-import { getLibrariesByPublisher } from '../../feature/libraries/services/libraries';
+import getLibrariesByPublisher from '../../feature/libraries/services/allLibraries';
 import LibraryCard from '../../feature/libraries/components/LibraryCard/LibraryCard';
 
 const LibrariesPage = () => {
@@ -13,7 +13,7 @@ const LibrariesPage = () => {
   const { publisher } = useSelector((state) => state.user.userData);
   const dispatch = useDispatch();
 
-  const { library } = useSelector((state) => state.library);
+  const { allLibraries } = useSelector((state) => state.allLibraries);
 
   useEffect(() => {
     if (userToken) {
@@ -41,8 +41,8 @@ const LibrariesPage = () => {
         <h2>Librerías</h2>
         <Link to="/library/register" className="libraries__add-button"> Añadir una librería</Link>
         <section className="libraries__libraries-container">
-          {library && Array.isArray(library)
-            ? library.map((lib) => (
+          {allLibraries && Array.isArray(allLibraries)
+            ? allLibraries.map((lib) => (
               <LibraryCard
                 key={lib._id}
                 name={lib.name}

@@ -12,6 +12,7 @@ import useForm from '../../../../hooks/useForm';
 import RegisterRemisionForm from '../RegisterRemisionForm/RegisterRemisionForm';
 import RegisterDevolutionForm from '../RegisterDevolutionForm/RegisterDevolutionForm';
 import RegisterSaleForm from '../RegisterSaleForm/RegisterSaleForm';
+import { getLibrariesById } from '../../../libraries/services/libraries';
 
 const MovementRegisterForm = () => {
   const [kind, setKind] = useState('');
@@ -174,6 +175,23 @@ const MovementRegisterForm = () => {
     remisionFrom,
     remisionTo,
   ]);
+  // for remision discount
+  const [remisionDiscount, setremisionDiscount] = useState(0);
+  useEffect(() => {
+    if (remisionTo) {
+      dispatch(getLibrariesById(remisionTo));
+    }
+  }, [remisionTo]);
+  const { library } = useSelector((state) => state.library);
+  useEffect(() => {
+    const libraryPublisherList = library.publishers;
+    if (Array.isArray(libraryPublisherList)) {
+      const PublisherInLibrary = libraryPublisherList.find(
+        (pub) => pub.publisherId === publisher,
+      );
+      setremisionDiscount(PublisherInLibrary.discount);
+    }
+  }, [library]);
 
   return (
     <form action="" className="movement-form" onSubmit={handleSubmit}>
@@ -234,7 +252,19 @@ const MovementRegisterForm = () => {
         </label>
       </label>
       {kind === 'remisión' ? (
-        <RegisterRemisionForm from={setRemisionFrom} to={setRemisionTo} />
+        <><RegisterRemisionForm from={setRemisionFrom} to={setRemisionTo} />
+          <label htmlFor="discount">
+            Descuento
+            <input
+              type="discount"
+              name="discount"
+              id="discount"
+              key={`${Math.floor((Math.random() * 1000))}-min`}
+              defaultValue={remisionDiscount}
+              // onChange={handleChange}
+            />
+          </label>
+        </>
       ) : null}
       {kind === 'devolución' ? (
         <RegisterDevolutionForm from={setRemisionFrom} to={setRemisionTo} />
