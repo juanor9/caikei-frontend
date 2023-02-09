@@ -314,10 +314,16 @@ const MovementRegisterForm = () => {
             </label>
             {formBookData.length > 0
               ? formBookData.map((e) => (e.id === book.value && e.total ? (
-                <p key={`${e.id}-subtotal`}>
-                  <b>Subtotal: </b>
-                  {e.total}
-                </p>
+                <div key={`${e.id}-totals`}>
+                  <p key={`${e.id}-grossSubtotal`}>
+                    <b>Subtotal bruto: </b>
+                    {e.total}
+                  </p>
+                  <p key={`${e.id}-netSubtotal`}>
+                    <b>Subtotal neto: </b>
+                    {e.total - (e.total * (remisionDiscount / 100))}
+                  </p>
+                </div>
               ) : null))
               : null}
           </div>
