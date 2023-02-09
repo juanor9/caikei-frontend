@@ -62,15 +62,15 @@ const PublisherProfile = () => {
   };
 
   // deactivate publisher
-  const handleClickDeactivate = () => {
-    try {
-      const deactivate = { isActive: false };
-      const data = { deactivate, publisherId: publisher };
-      dispatch(updatePublisher(data));
-    } catch (error) {
-      throw new Error(error);
-    }
-  };
+  // const handleClickDeactivate = () => {
+  //   try {
+  //     const deactivate = { isActive: false };
+  //     const data = { deactivate, publisherId: publisher };
+  //     dispatch(updatePublisher(data));
+  //   } catch (error) {
+  //     throw new Error(error);
+  //   }
+  // };
   // if data is lost, ask for data to server
   useEffect(() => {
     if (!email) {
@@ -148,13 +148,13 @@ const PublisherProfile = () => {
               >
                 Editar información
               </button>
-              <button
+              {/* <button
                 type="button"
                 className="publisher-profile__deactivate"
                 onClick={handleClickDeactivate}
               >
                 Desactivar editorial
-              </button>
+              </button> */}
             </article>
           </>
         ) : (
