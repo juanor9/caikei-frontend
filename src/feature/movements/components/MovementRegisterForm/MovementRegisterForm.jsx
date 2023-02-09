@@ -11,6 +11,7 @@ import { createMovement } from '../../services/movements';
 import useForm from '../../../../hooks/useForm';
 import RegisterRemisionForm from '../RegisterRemisionForm/RegisterRemisionForm';
 import RegisterDevolutionForm from '../RegisterDevolutionForm/RegisterDevolutionForm';
+import RegisterSaleForm from '../RegisterSaleForm/RegisterSaleForm';
 
 const MovementRegisterForm = () => {
   const [kind, setKind] = useState('');
@@ -237,6 +238,9 @@ const MovementRegisterForm = () => {
       ) : null}
       {kind === 'devolución' ? (
         <RegisterDevolutionForm from={setRemisionFrom} to={setRemisionTo} />
+      ) : null}
+      {kind === 'liquidación' ? (
+        <RegisterSaleForm from={setRemisionFrom} />
       ) : null}
       <p> Libros</p>
       <Select
