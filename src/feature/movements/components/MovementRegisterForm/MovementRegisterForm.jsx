@@ -97,18 +97,6 @@ const MovementRegisterForm = () => {
     }
   };
 
-  // send data to backend
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-
-    try {
-      dispatch(createMovement(formfulldata));
-      navigate('/movements');
-    } catch (error) {
-      throw new Error(error);
-    }
-  };
-
   useEffect(() => {
     if (userToken) {
       try {
@@ -233,6 +221,20 @@ const MovementRegisterForm = () => {
         to: remisionTo,
       });
     }
+    if (kind === 'liquidación') {
+      setFormfulldata({
+        ...formfulldata,
+        internalId,
+        date,
+        kind,
+        books: formBookData,
+        grossTotal,
+        netTotal,
+        publisher,
+        from: remisionFrom,
+        discount: salesDiscount,
+      });
+    }
   }, [
     form,
     kind,
@@ -242,7 +244,20 @@ const MovementRegisterForm = () => {
     remisionFrom,
     remisionTo,
     remisionDiscount,
+    salesDiscount,
   ]);
+
+  // send data to backend
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    try {
+      dispatch(createMovement(formfulldata));
+      navigate('/movements');
+    } catch (error) {
+      throw new Error(error);
+    }
+  };
 
   return (
     <form action="" className="movement-form" onSubmit={handleSubmit}>
