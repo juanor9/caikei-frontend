@@ -1,0 +1,22 @@
+@import "../../../../colors.scss";
+@import "../../../../mixin.scss";
+.book-inventory-card{
+  display:flex;
+  flex-direction: column;
+  border: solid 1px $black;
+  &__fig{
+    width: 10em;
+    margin:0;
+  }
+  &__img{
+    max-width: 100%;
+  }
+  &__copies{
+    background-color: $main;
+    margin: 0;
+    padding: 0.5em;
+  }
+  &__title{
+    font-weight: bold;
+  }
+}
