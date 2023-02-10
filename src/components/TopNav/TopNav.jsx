@@ -41,7 +41,7 @@ const TopNav = () => {
           </button>
 
         </nav>
-        <nav>
+        <nav className="topnav__user">
           {token
             ? <Link to="/profile"><FontAwesomeIcon icon={faUser} /></Link>
             : <Link to="/login"><FontAwesomeIcon icon={faUser} /></Link>}

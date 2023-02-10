@@ -17,6 +17,10 @@
     }
     &-button{
       @include main-button;
+      &--image{
+        @include main-button;
+        margin-top: 1em;
+      }
     }
   }
   &__cover-form{
@@ -43,5 +47,16 @@
     &__cover-form{
       max-width: 40%;
     }
+    &__form{
+      display: grid;
+      gap: 2em;
+      grid-template-columns: 1fr 1fr 1fr;
+      padding: 2em;
+      &-button{
+        grid-column-start: 1;
+        grid-column-end: 4;
+      }
+    }
+
   }
 }

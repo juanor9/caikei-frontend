@@ -11,6 +11,13 @@
     width: fit-content;
     justify-self: flex-start;
   }
+  &__user{
+    display: flex;
+    flex-direction: column;
+    gap: 0.2em;
+    text-align: center;
+    margin-right: 1em;
+  }
   &__logout-button {
     color: $accent;
     border: none;
@@ -85,6 +92,14 @@
     }
     &__mobile {
       display: none;
+    }
+    &__user{
+      flex-direction: row;
+      font-size: 1.2em;
+      gap: 1em;
+    }
+    &__logout-button{
+      font-size: 1.1em;
     }
   }
 }

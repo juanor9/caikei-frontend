@@ -41,6 +41,11 @@
     @include ternary-button;
     margin:auto;
   }
+  &__inventory-container{
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+  }
 }
 @media (min-width: 768px) {
   .book-page {
@@ -51,6 +56,18 @@
     &__cover-fig {
       width: 30%;
       margin: 0;
+    }
+    &__inventory-container{
+      display: flex;
+      flex-wrap: wrap;
+      flex-direction: row;
+      gap: 1em;
+    }
+    &__form{
+      display: grid;
+      gap: 2em;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
     }
   }
 }
