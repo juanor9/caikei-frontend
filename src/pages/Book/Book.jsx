@@ -1,5 +1,5 @@
-/* eslint-disable no-unused-vars */
 /* eslint-disable camelcase */
+/* eslint-disable no-unused-vars */
 import './Book.scss';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -12,7 +12,6 @@ import {
 } from '../../feature/books/services/books';
 import useForm from '../../hooks/useForm';
 import TopNav from '../../components/TopNav/TopNav';
-import LibraryCard from '../../feature/libraries/components/LibraryCard/LibraryCard';
 import getLibrariesByPublisher from '../../feature/libraries/services/allLibraries';
 import { getUser } from '../../feature/users/services/users';
 import { getPublisherById } from '../../feature/publishers/services/publishers';
