@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import './Library.scss';
 import { faPenToSquare } from '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -6,7 +5,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { getUser } from '../../feature/users/services/users';
-import { getLibrariesById, updateLibrary } from '../../feature/libraries/services/libraries';
+import {
+  getLibrariesById,
+  updateLibrary,
+} from '../../feature/libraries/services/libraries';
 import { getBooksByFilter } from '../../feature/books/services/books';
 import TopNav from '../../components/TopNav/TopNav';
 import useForm from '../../hooks/useForm';
@@ -64,7 +66,9 @@ const LibraryPage = () => {
   }, []);
   useEffect(() => {
     if (publishers) {
-      const filteredPublisher = publishers.find((pub) => pub.publisherId === publisher);
+      const filteredPublisher = publishers.find(
+        (pub) => pub.publisherId === publisher,
+      );
       const discountPublisher = filteredPublisher.discount;
       setDiscount(Number(discountPublisher));
     }
@@ -91,9 +95,21 @@ const LibraryPage = () => {
     if (catalogue && Array.isArray(catalogue) && catalogue.length > 0) {
       const filteredCatalogue = catalogue.map((book) => {
         if (book.inventory && Array.isArray(book.inventory)) {
-          const b = book.inventory.find((place) => place.placeId === id);
+          const b = book.inventory.find((place) => String(place.placeId) === String(id));
+          if (!b) {
+            return {
+              id: book._id,
+              cover: book.cover,
+              title: book.title,
+              copies: 0,
+            };
+          }
+
           return {
-            id: book._id, cover: book.cover, title: book.title, copies: b.copies,
+            id: book._id,
+            cover: book.cover,
+            title: book.title,
+            copies: b.copies,
           };
         }
         return book;
@@ -142,7 +158,7 @@ const LibraryPage = () => {
                 type="number"
                 name="discount"
                 id="discount"
-                key={`${Math.floor((Math.random() * 1000))}-min`}
+                key={`${Math.floor(Math.random() * 1000)}-min`}
                 defaultValue={discount}
                 disabled={disabled}
                 onChange={handleChange}
@@ -242,8 +258,8 @@ const LibraryPage = () => {
         </form>
         <section>
           <h3>Inventario</h3>
-          {booksInventory && Array.isArray(booksInventory)
-            ? booksInventory.map((book) => (
+          {booksInventory && Array.isArray(booksInventory) ? (
+            booksInventory.map((book) => (
               <BookInventoryCard
                 key={book.id}
                 cover={book.cover}
@@ -251,7 +267,9 @@ const LibraryPage = () => {
                 copies={book.copies}
               />
             ))
-            : <p>No hay libros en esta librería</p>}
+          ) : (
+            <p>No hay libros en esta librería</p>
+          )}
         </section>
       </main>
     </div>
