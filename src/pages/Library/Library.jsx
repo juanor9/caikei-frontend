@@ -7,8 +7,10 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { getUser } from '../../feature/users/services/users';
 import { getLibrariesById, updateLibrary } from '../../feature/libraries/services/libraries';
+import { getBooksByFilter } from '../../feature/books/services/books';
 import TopNav from '../../components/TopNav/TopNav';
 import useForm from '../../hooks/useForm';
+import BookInventoryCard from '../../feature/books/components/BookInventoryCard/BookInventoryCard';
 
 const LibraryPage = () => {
   const { id } = useParams();
@@ -18,6 +20,7 @@ const LibraryPage = () => {
   const {
     name, email, city, address, phone, publishers,
   } = library;
+  const { catalogue } = useSelector((state) => state.catalogue);
   const userToken = localStorage.getItem('login-token'); // get user token from local storage
 
   const [discount, setDiscount] = useState(0);
@@ -73,6 +76,32 @@ const LibraryPage = () => {
       throw new Error(error);
     }
   }, []);
+
+  useEffect(() => {
+    if (publisher) {
+      try {
+        dispatch(getBooksByFilter(publisher));
+      } catch (error) {
+        throw new Error(error);
+      }
+    }
+  }, [publisher]);
+  const [booksInventory, setBooksInventory] = useState([]);
+  useEffect(() => {
+    if (catalogue && Array.isArray(catalogue) && catalogue.length > 0) {
+      const filteredCatalogue = catalogue.map((book) => {
+        if (book.inventory && Array.isArray(book.inventory)) {
+          const b = book.inventory.find((place) => place.placeId === id);
+          return {
+            id: book._id, cover: book.cover, title: book.title, copies: b.copies,
+          };
+        }
+        return book;
+      });
+      setBooksInventory(filteredCatalogue);
+    }
+  }, [catalogue]);
+
   return (
     <div className="library-page">
       <TopNav />
@@ -211,6 +240,19 @@ const LibraryPage = () => {
             Desactivar librería
           </button> */}
         </form>
+        <section>
+          <h3>Inventario</h3>
+          {booksInventory && Array.isArray(booksInventory)
+            ? booksInventory.map((book) => (
+              <BookInventoryCard
+                key={book.id}
+                cover={book.cover}
+                title={book.title}
+                copies={book.copies}
+              />
+            ))
+            : <p>No hay libros en esta librería</p>}
+        </section>
       </main>
     </div>
   );

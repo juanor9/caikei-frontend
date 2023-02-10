@@ -1,21 +1,18 @@
 /* eslint-disable camelcase */
 /* eslint-disable no-unused-vars */
 import './Book.scss';
-import { useParams } from 'react-router-dom';
+import { faPenToSquare } from '@fortawesome/free-regular-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPenToSquare } from '@fortawesome/free-regular-svg-icons';
-import {
-  getBookById,
-  updateBookById,
-} from '../../feature/books/services/books';
-import useForm from '../../hooks/useForm';
-import TopNav from '../../components/TopNav/TopNav';
-import getLibrariesByPublisher from '../../feature/libraries/services/allLibraries';
-import { getUser } from '../../feature/users/services/users';
+import { useParams } from 'react-router-dom';
+import { getBookById, updateBookById } from '../../feature/books/services/books';
 import { getPublisherById } from '../../feature/publishers/services/publishers';
+import { getUser } from '../../feature/users/services/users';
+import getLibrariesByPublisher from '../../feature/libraries/services/allLibraries';
 import InventoryItemCard from '../../feature/libraries/components/InventoryItemCard/InventoryItemCard';
+import TopNav from '../../components/TopNav/TopNav';
+import useForm from '../../hooks/useForm';
 
 const BookPage = () => {
   const { book } = useSelector((state) => state.book);
