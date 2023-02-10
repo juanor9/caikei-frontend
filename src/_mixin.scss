@@ -52,4 +52,7 @@
   &:read-only{
     background-color: $darker;
   }
+  &:disabled{
+    background-color: $darker;
+  }
 }

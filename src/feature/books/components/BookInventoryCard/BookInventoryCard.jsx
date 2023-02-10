@@ -8,8 +8,10 @@ const BookInventoryCard = ({
     <figure className="book-inventory-card__fig">
       <img src={cover} alt={`${title}-cover`} className="book-inventory-card__img" />
     </figure>
-    <p className="book-inventory-card__title">{title}</p>
-    <p className="book-inventory-card__copies">{copies}</p>
+    <div className="book-inventory-card__info">
+      <p className="book-inventory-card__title">{title}</p>
+      <p className="book-inventory-card__copies"><b>Ejemplares disponibles: </b>{copies}</p>
+    </div>
   </article>
 );
 BookInventoryCard.propTypes = {

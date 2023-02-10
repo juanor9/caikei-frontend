@@ -56,8 +56,7 @@ const RegisterSaleForm = ({ from }) => {
   //
 
   return (
-    <>
-      <p>Desde</p>
+    <div><p>Desde</p>
       <Select
         id="from"
         options={storagesSelect}
@@ -65,7 +64,8 @@ const RegisterSaleForm = ({ from }) => {
         isClearable
         onChange={handleChangeFrom}
       />
-    </>
+    </div>
+
   );
 };
 

@@ -5,6 +5,7 @@
   &__add-button{
     @include main-button;
     width: 100%;
+    display: block;
   }
   &__libraries-container{
     display: grid;
@@ -12,6 +13,9 @@
     margin-top: 2em;
     justify-items: stretch;
     align-items: stretch;
+  }
+  &__main-container{
+    padding: 1em;
   }
 }
 @media (min-width: 768px) {

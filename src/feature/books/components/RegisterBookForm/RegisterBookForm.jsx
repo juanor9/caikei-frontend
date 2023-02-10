@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -38,9 +39,7 @@ const RegisterBookForm = () => {
     event.preventDefault();
 
     try {
-      dispatch(
-        createBook({ ...form, publisher, cover: uploads }),
-      );
+      dispatch(createBook({ ...form, publisher, cover: uploads }));
       navigate('/catalogue');
     } catch (error) {
       throw new Error(error);
@@ -68,7 +67,7 @@ const RegisterBookForm = () => {
             id="cover"
             onChange={handleChangeImage}
           />
-          <button type="submit" className="register-book__form-button">
+          <button type="submit" className="register-book__form-button--image">
             Cargar imagen
           </button>
 

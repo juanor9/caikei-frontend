@@ -36,7 +36,7 @@ const MovementsPage = () => {
   return (
     <div className="movements">
       <TopNav />
-      <main>
+      <main className="movements__main-container">
         <h2>Movimientos de ejemplares</h2>
         <Link to="/movement/register" className="movements__add-button">
           Crear nuevo movimiento
@@ -46,9 +46,9 @@ const MovementsPage = () => {
             <th>Id interno</th>
             <th>Fecha</th>
             <th>Tipo de movimiento</th>
-            <th>Desde</th>
-            <th>Hacia</th>
-            <th>Valor</th>
+            <th className="movements__cell--not-mobile">Desde</th>
+            <th className="movements__cell--not-mobile">Hacia</th>
+            <th className="movements__cell--not-mobile">Valor</th>
           </tr>
           {movement && Array.isArray(movement)
             ? movement.map((m) => (

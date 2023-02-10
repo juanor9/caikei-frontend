@@ -5,7 +5,7 @@ import { faPenToSquare } from '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { getBookById, updateBookById } from '../../feature/books/services/books';
 import { getPublisherById } from '../../feature/publishers/services/publishers';
 import { getUser } from '../../feature/users/services/users';
@@ -24,6 +24,7 @@ const BookPage = () => {
   const PublisherData = useSelector((state) => state.publisher.publisher);
   const { allLibraries } = useSelector((state) => state.allLibraries);
   const { form, handleChange } = useForm({});
+  const navigate = useNavigate();
   const {
     title,
     isbn,
@@ -32,7 +33,7 @@ const BookPage = () => {
     pubDate,
     authors,
     thema,
-    book_binding,
+    binding,
     pages,
     height,
     width,
@@ -52,6 +53,7 @@ const BookPage = () => {
     try {
       dispatch(updateBookById({ form, id }));
       setReadOnly(true);
+      navigate('/catalogue');
     } catch (error) {
       throw new Error(error);
     }
@@ -140,7 +142,7 @@ const BookPage = () => {
           <figure className="book-page__cover-fig">
             <img src={cover} alt={title} className="book-page__cover-img" />
           </figure>
-          <form action="" onSubmit={handleSubmit}>
+          <form action="" onSubmit={handleSubmit} className="book-page__form">
             <label
               htmlFor="title"
               className="book-page__form-label"
@@ -270,7 +272,7 @@ const BookPage = () => {
                 />
               </div>
             </label>
-            <label htmlFor="book_binding" className="book-page__form-label">
+            <label htmlFor="binding" className="book-page__form-label">
               Encuadernación
               <div className="book-page__button-input">
                 <button
@@ -282,10 +284,10 @@ const BookPage = () => {
                 </button>
                 <input
                   type="text"
-                  name="book_binding"
-                  id="book_binding"
+                  name="binding"
+                  id="binding"
                   className="book-page__form-input"
-                  defaultValue={book_binding}
+                  defaultValue={binding}
                   readOnly={readOnly}
                   onChange={handleChange}
                 />
@@ -412,8 +414,8 @@ const BookPage = () => {
             </button> */}
           </form>
         </section>
-        <section>
-          <h3>Inventario</h3>
+        <h3>Inventario</h3>
+        <section className="book-page__inventory-container">
           {inventoryList && Array.isArray(inventoryList) && inventoryList.length > 0
             ? inventoryList.map((place) => (
               place.name && place.copies

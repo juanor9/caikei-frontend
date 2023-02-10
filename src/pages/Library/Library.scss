@@ -31,12 +31,30 @@
     @include ternary-button;
     margin:auto;
   }
+  &__inventory-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+  }
 }
 @media (min-width: 768px) {
-  .book-page {
+  .library-page {
     &__section {
       display: flex;
       gap: 1em;
+    }
+    &__form{
+      display: grid;
+      gap: 1em;
+      grid-template-columns: 1fr 1fr;
+      &-button{
+        grid-column: span 2;
+      }
+    }
+    &__inventory-container {
+      display: grid;
+      gap: 1em;
+      grid-template-columns: 1fr 1fr 1fr;
     }
   }
 }
