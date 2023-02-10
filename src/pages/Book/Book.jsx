@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable camelcase */
 import './Book.scss';
 import { useParams } from 'react-router-dom';
@@ -11,6 +12,11 @@ import {
 } from '../../feature/books/services/books';
 import useForm from '../../hooks/useForm';
 import TopNav from '../../components/TopNav/TopNav';
+import LibraryCard from '../../feature/libraries/components/LibraryCard/LibraryCard';
+import getLibrariesByPublisher from '../../feature/libraries/services/allLibraries';
+import { getUser } from '../../feature/users/services/users';
+import { getPublisherById } from '../../feature/publishers/services/publishers';
+import InventoryItemCard from '../../feature/libraries/components/InventoryItemCard/InventoryItemCard';
 
 const BookPage = () => {
   const { book } = useSelector((state) => state.book);
@@ -18,6 +24,9 @@ const BookPage = () => {
   const dispatch = useDispatch();
   const [readOnly, setReadOnly] = useState(true);
   const [date, setDate] = useState('');
+  const { publisher } = useSelector((state) => state.user.userData);
+  const PublisherData = useSelector((state) => state.publisher.publisher);
+  const { allLibraries } = useSelector((state) => state.allLibraries);
   const { form, handleChange } = useForm({});
   const {
     title,
@@ -33,6 +42,7 @@ const BookPage = () => {
     width,
     color,
     costCenter,
+    inventory,
   } = book;
 
   const handleToggleReadOnly = (event) => {
@@ -50,6 +60,29 @@ const BookPage = () => {
       throw new Error(error);
     }
   };
+
+  const userToken = localStorage.getItem('login-token');
+
+  useEffect(() => {
+    if (userToken) {
+      try {
+        dispatch(getUser(userToken));
+      } catch (error) {
+        throw new Error(error);
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    if (publisher) {
+      try {
+        dispatch(getLibrariesByPublisher(publisher));
+        dispatch(getPublisherById(publisher));
+      } catch (error) {
+        throw new Error(error);
+      }
+    }
+  }, [publisher]);
 
   // const handleClickDeactivate = () => {
   //   try {
@@ -82,6 +115,25 @@ const BookPage = () => {
       setDate(new Date(pubDate).toISOString().split('T')[0]);
     }
   }, [pubDate]);
+
+  const [inventoryList, setInventoryList] = useState([]);
+
+  useEffect(() => {
+    if (inventory && Array.isArray(inventory)) {
+      const inventoryPlaces = inventory.map((storage) => {
+      // console.log(storage);
+        if (storage.placeId === publisher) {
+          return { id: storage._id, name: PublisherData.name, copies: storage.copies };
+        }
+        if (allLibraries && Array.isArray(allLibraries)) {
+          const a = allLibraries.findIndex((library) => library._id === storage.placeId);
+          return { id: storage._id, name: allLibraries[a].name, copies: storage.copies };
+        }
+        return storage;
+      });
+      setInventoryList(inventoryPlaces);
+    }
+  }, [inventory, allLibraries]);
 
   return (
     <div className="book-page">
@@ -363,6 +415,23 @@ const BookPage = () => {
               Desactivar libro
             </button> */}
           </form>
+        </section>
+        <section>
+          <h3>Inventario</h3>
+          {inventoryList && Array.isArray(inventoryList) && inventoryList.length > 0
+            ? inventoryList.map((place) => (
+              place.name && place.copies
+                ? (
+                  <InventoryItemCard
+                    key={place.id}
+                    name={place.name}
+                    copies={place.copies}
+                  />
+                )
+                : null
+            ))
+
+            : <p>No hay ejemplares disponibles.</p>}
         </section>
       </main>
     </div>

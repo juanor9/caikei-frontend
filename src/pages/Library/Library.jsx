@@ -40,15 +40,15 @@ const LibraryPage = () => {
     }
   };
 
-  const handleClickDeactivate = () => {
-    try {
-      const deactivate = { isActive: false };
-      const data = { deactivate, id };
-      dispatch(updateLibrary(data));
-    } catch (error) {
-      throw new Error(error);
-    }
-  };
+  // const handleClickDeactivate = () => {
+  //   try {
+  //     const deactivate = { isActive: false };
+  //     const data = { deactivate, id };
+  //     dispatch(updateLibrary(data));
+  //   } catch (error) {
+  //     throw new Error(error);
+  //   }
+  // };
 
   useEffect(() => {
     if (id) {
@@ -113,7 +113,7 @@ const LibraryPage = () => {
                 type="number"
                 name="discount"
                 id="discount"
-                key={name}
+                key={`${Math.floor((Math.random() * 1000))}-min`}
                 defaultValue={discount}
                 disabled={disabled}
                 onChange={handleChange}
