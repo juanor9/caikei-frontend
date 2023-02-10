@@ -72,26 +72,31 @@ const RegisterRemisionForm = ({ from, to }) => {
 
   return (
     <>
-      <p>Desde</p>
-      <Select
-        id="from"
-        options={storagesSelect}
-        isSearchable
-        isClearable
-        defaultValue={{
-          value: '63e0f2f8b7fbc17be761a93a',
-          label: 'Tanuki',
-        }}
-        onChange={handleChangeFrom}
-      />
-      <p>Hacia</p>
-      <Select
-        id="to"
-        options={storagesSelect}
-        isSearchable
-        isClearable
-        onChange={handleChangeTo}
-      />
+      <div>
+        <p>Desde</p>
+        <Select
+          id="from"
+          options={storagesSelect}
+          isSearchable
+          isClearable
+          defaultValue={{
+            value: '63e0f2f8b7fbc17be761a93a',
+            label: 'Tanuki',
+          }}
+          onChange={handleChangeFrom}
+        />
+      </div>
+      <div>
+        <p>Hacia</p>
+        <Select
+          id="to"
+          options={storagesSelect}
+          isSearchable
+          isClearable
+          onChange={handleChangeTo}
+        />
+      </div>
+
     </>
   );
 };

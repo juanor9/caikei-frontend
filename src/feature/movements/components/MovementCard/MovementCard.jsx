@@ -66,11 +66,11 @@ const MovementCard = ({
       <td>{id}</td>
       <td>{dateN}</td>
       <td>{kind}</td>
-      <td>{fromName}</td>
-      <td>{toName}</td>
+      <td className="movements__cell--not-mobile">{fromName}</td>
+      <td className="movements__cell--not-mobile">{toName}</td>
       {netTotal
-        ? <td>{netTotal}</td>
-        : <td>{grossTotal}</td>}
+        ? <td className="movements__cell--not-mobile">{netTotal}</td>
+        : <td className="movements__cell--not-mobile">{grossTotal}</td>}
     </tr>
   );
 };

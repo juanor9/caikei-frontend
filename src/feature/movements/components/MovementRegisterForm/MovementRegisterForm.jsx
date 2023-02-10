@@ -265,21 +265,28 @@ const MovementRegisterForm = () => {
 
   return (
     <form action="" className="movement-form" onSubmit={handleSubmit}>
-      <label htmlFor="internalId">
+      <label htmlFor="internalId" className="movement-form__label">
         Número de referencia
         <input
           type="number"
           name="internalId"
           id="internalId"
           onChange={handleChange}
+          className="movement-form__input"
         />
       </label>
-      <label htmlFor="date">
+      <label htmlFor="date" className="movement-form__label">
         Fecha
-        <input type="date" name="date" id="date" onChange={handleChange} />
+        <input
+          type="date"
+          name="date"
+          id="date"
+          onChange={handleChange}
+          className="movement-form__input"
+        />
       </label>
-      <label htmlFor="kind">
-        Tipo
+      <label htmlFor="kind" className="movement-form__label--double">
+        <p>Tipo</p>
         <label htmlFor="kind">
           <input
             type="radio"
@@ -324,7 +331,7 @@ const MovementRegisterForm = () => {
       {kind === 'remisión' ? (
         <>
           <RegisterRemisionForm from={setRemisionFrom} to={setRemisionTo} />
-          <label htmlFor="discount">
+          <label htmlFor="discount" className="movement-form__label--double">
             Descuento
             <input
               type="discount"
@@ -333,6 +340,7 @@ const MovementRegisterForm = () => {
               key={`${Math.floor((Math.random() * 1000))}-min`}
               defaultValue={remisionDiscount}
               onChange={handleChangeRemisionDiscount}
+              className="movement-form__input"
             />
           </label>
         </>
@@ -343,7 +351,7 @@ const MovementRegisterForm = () => {
       {kind === 'liquidación' ? (
         <>
           <RegisterSaleForm from={setRemisionFrom} />
-          <label htmlFor="discount">
+          <label htmlFor="discount" className="movement-form__label">
             Descuento
             <input
               type="discount"
@@ -352,24 +360,26 @@ const MovementRegisterForm = () => {
               key={`${Math.floor((Math.random() * 1000))}-min`}
               defaultValue={salesDiscount}
               onChange={handleChangeSalesDiscount}
+              className="movement-form__input"
             />
           </label>
         </>
       ) : null}
-
-      <p> Libros</p>
-      <Select
-        id="books"
-        options={catalogueSelect}
-        isSearchable
-        isClearable
-        isMulti
-        onChange={handleChangeBooks}
-      />
+      <div className="movement-form__label--double">
+        <p> Libros</p>
+        <Select
+          id="books"
+          options={catalogueSelect}
+          isSearchable
+          isClearable
+          isMulti
+          onChange={handleChangeBooks}
+        />
+      </div>
       {selectedBooks && selectedBooks.length > 0
         ? selectedBooks.map((book) => (
           <div key={book.value}>
-            <label htmlFor={book.value}>
+            <label htmlFor={book.value} className="movement-form__label">
               Libro
               <input
                 type="text"
@@ -377,24 +387,27 @@ const MovementRegisterForm = () => {
                 id={book.value}
                 value={book.label}
                 readOnly
+                className="movement-form__input"
               />
             </label>
-            <label htmlFor={`${book.value}-copies`}>
+            <label htmlFor={`${book.value}-copies`} className="movement-form__label">
               Ejemplares
               <input
                 type="number"
                 name={`${book.value}-copies`}
                 id={`${book.value}-copies`}
                 onChange={handleChangeBook}
+                className="movement-form__input"
               />
             </label>
-            <label htmlFor={`${book.value}-cost`}>
+            <label htmlFor={`${book.value}-cost`} className="movement-form__label">
               costo unitario
               <input
                 type="number"
                 name={`${book.value}-cost`}
                 id={`${book.value}-cost`}
                 onChange={handleChangeBook}
+                className="movement-form__input"
               />
             </label>
             {formBookData.length > 0 && kind === 'remisión'
@@ -429,13 +442,13 @@ const MovementRegisterForm = () => {
         ))
         : null}
       <div key="totals">
-        <p key={`${grossTotal}grossTotal`}>
+        <p key={`${Math.floor((Math.random() * 1000))}-min`}>
           <b>Total bruto: </b>
           {grossTotal}
         </p>
         {kind === 'remisión' || kind === 'liquidación'
           ? (
-            <p key={`${netTotal}nettotal`}>
+            <p key={`${Math.floor((Math.random() * 1000))}-min`}>
               <b>Total neto: </b>
               {netTotal}
             </p>
@@ -443,7 +456,7 @@ const MovementRegisterForm = () => {
           : null}
       </div>
 
-      <button type="submit">Guardar {kind}</button>
+      <button type="submit" className="movement-form__submit-button">Guardar {kind}</button>
     </form>
   );
 };

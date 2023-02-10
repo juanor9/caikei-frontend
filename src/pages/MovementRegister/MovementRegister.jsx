@@ -4,9 +4,9 @@ import TopNav from '../../components/TopNav/TopNav';
 import MovementRegisterForm from '../../feature/movements/components/MovementRegisterForm/MovementRegisterForm';
 
 const RegisterMovementPage = () => (
-  <div className="user-profile">
+  <div className="register-movement">
     <TopNav />
-    <main>
+    <main className="register-movement__main-container">
       <h2>Registra un nuevo movimiento</h2>
       <MovementRegisterForm />
     </main>

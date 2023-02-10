@@ -1,4 +1,32 @@
+@import "../../../../colors.scss";
+@import "../../../../mixin.scss";
 .movement-form{
   display: flex;
   flex-direction: column;
+  &__label{
+    @include form-lable;
+  }
+  &__input{
+    @include form-input;
+  }
+  &__submit-button{
+    @include main-button
+  }
+}
+
+@media (min-width: 768px){
+  .movement-form{
+    display: grid;
+    gap: 1em;
+    grid-template-columns: 1fr 1fr;
+    &__submit-button {
+      grid-column: span 2;
+    }
+    &__label{
+      &--double{
+        grid-column: span 2;
+      }
+    }
+
+  }
 }
