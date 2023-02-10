@@ -3,7 +3,7 @@ import { faPenToSquare } from '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { getUser } from '../../feature/users/services/users';
 import {
   getLibrariesById,
@@ -18,6 +18,7 @@ const LibraryPage = () => {
   const { id } = useParams();
   const { form, handleChange } = useForm({});
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { library } = useSelector((state) => state.library);
   const {
     name, email, city, address, phone, publishers,
@@ -40,6 +41,7 @@ const LibraryPage = () => {
     try {
       dispatch(updateLibrary({ form, id }));
       setDisabled(true);
+      navigate('/libraries');
     } catch (error) {
       throw new Error(error);
     }
@@ -123,10 +125,10 @@ const LibraryPage = () => {
       <TopNav />
       <main className="library-page__main-container">
         <h2>{name}</h2>
-        <form action="" onSubmit={handleSubmit}>
+        <form action="" onSubmit={handleSubmit} className="library-page__form">
           <label htmlFor="name" className="library-page__form-label">
             Nombre
-            <div>
+            <div className="library-page__button-input">
               <button
                 type="button"
                 className="library-page__edit-button"
@@ -141,12 +143,13 @@ const LibraryPage = () => {
                 defaultValue={name}
                 disabled={disabled}
                 onChange={handleChange}
+                className="library-page__form-input"
               />
             </div>
           </label>
           <label htmlFor="discount" className="library-page__form-label">
             Descuento
-            <div>
+            <div className="library-page__button-input">
               <button
                 type="button"
                 className="library-page__edit-button"
@@ -162,12 +165,13 @@ const LibraryPage = () => {
                 defaultValue={discount}
                 disabled={disabled}
                 onChange={handleChange}
+                className="library-page__form-input"
               />
             </div>
           </label>
           <label htmlFor="email" className="library-page__form-label">
             Correo electrónico
-            <div>
+            <div className="library-page__button-input">
               <button
                 type="button"
                 className="library-page__edit-button"
@@ -182,12 +186,13 @@ const LibraryPage = () => {
                 defaultValue={email}
                 disabled={disabled}
                 onChange={handleChange}
+                className="library-page__form-input"
               />
             </div>
           </label>
           <label htmlFor="city" className="library-page__form-label">
             Ciudad
-            <div>
+            <div className="library-page__button-input">
               <button
                 type="button"
                 className="library-page__edit-button"
@@ -202,12 +207,13 @@ const LibraryPage = () => {
                 defaultValue={city}
                 disabled={disabled}
                 onChange={handleChange}
+                className="library-page__form-input"
               />
             </div>
           </label>
           <label htmlFor="address" className="library-page__form-label">
             Dirección
-            <div>
+            <div className="library-page__button-input">
               <button
                 type="button"
                 className="library-page__edit-button"
@@ -222,12 +228,13 @@ const LibraryPage = () => {
                 defaultValue={address}
                 disabled={disabled}
                 onChange={handleChange}
+                className="library-page__form-input"
               />
             </div>
           </label>
           <label htmlFor="phone" className="library-page__form-label">
             Teléfono
-            <div>
+            <div className="library-page__button-input">
               <button
                 type="button"
                 className="library-page__edit-button"
@@ -242,6 +249,7 @@ const LibraryPage = () => {
                 defaultValue={phone}
                 disabled={disabled}
                 onChange={handleChange}
+                className="library-page__form-input"
               />
             </div>
           </label>
@@ -256,8 +264,8 @@ const LibraryPage = () => {
             Desactivar librería
           </button> */}
         </form>
-        <section>
-          <h3>Inventario</h3>
+        <h3>Inventario</h3>
+        <section className="library-page__inventory-container">
           {booksInventory && Array.isArray(booksInventory) ? (
             booksInventory.map((book) => (
               <BookInventoryCard
