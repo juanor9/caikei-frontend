@@ -23,12 +23,13 @@ const RegisterRemisionForm = ({ from, to }) => {
   }, [publisher]);
   const { allLibraries } = useSelector((state) => state.allLibraries);
   const publisherData = useSelector((state) => state.publisher.publisher);
+  console.log(publisherData);
   const [storages, setStorages] = useState([]);
   const [storagesSelect, setStoragesSelect] = useState([]);
   // FROM
   const [selectedFrom, setSelectedFrom] = useState({
-    value: '63e0f2f8b7fbc17be761a93a',
-    label: 'Tanuki',
+    value: publisherData._id,
+    label: publisherData.name,
   });
   const handleChangeFrom = (selected) => {
     setSelectedFrom(selected);
@@ -80,8 +81,8 @@ const RegisterRemisionForm = ({ from, to }) => {
           isSearchable
           isClearable
           defaultValue={{
-            value: '63e0f2f8b7fbc17be761a93a',
-            label: 'Tanuki',
+            value: publisherData._id,
+            label: publisherData.name,
           }}
           onChange={handleChangeFrom}
         />

@@ -126,7 +126,7 @@ const MovementRegisterForm = () => {
 
   const { library } = useSelector((state) => state.library);
   useEffect(() => {
-    if (kind === 'remisión') {
+    if (kind === 'remisión' && library) {
       const libraryPublisherList = library.publishers;
       if (Array.isArray(libraryPublisherList)) {
         const PublisherInLibrary = libraryPublisherList.find(

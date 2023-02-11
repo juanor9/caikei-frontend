@@ -34,8 +34,8 @@ const RegisterDevolutionForm = ({ from, to }) => {
 
   // TO
   const [selectedTo, setSelectedTo] = useState({
-    value: '63e0f2f8b7fbc17be761a93a',
-    label: 'Tanuki',
+    value: publisherData._id,
+    label: publisherData.name,
   });
   const handleChangeTo = (selected) => {
     setSelectedTo(selected);
@@ -91,8 +91,8 @@ const RegisterDevolutionForm = ({ from, to }) => {
           isClearable
           onChange={handleChangeTo}
           defaultValue={{
-            value: '63e0f2f8b7fbc17be761a93a',
-            label: 'Tanuki',
+            value: publisherData._id,
+            label: publisherData.name,
           }}
         />
       </div>
