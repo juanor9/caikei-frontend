@@ -16,7 +16,6 @@ const usersSlice = createSlice({
     });
 
     builder.addCase(login.fulfilled, (state, action) => {
-      localStorage.setItem('login-token', action.payload.userToken);
       state.userData = action.payload.profile;
     });
 

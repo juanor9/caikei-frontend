@@ -65,7 +65,7 @@ const UserProfile = () => {
 
   // if data is lost, ask for data to server
   useEffect(() => {
-    if (!email) {
+    if (!email && userToken !== null) {
       try {
         dispatch(getUser(userToken));
       } catch (error) {

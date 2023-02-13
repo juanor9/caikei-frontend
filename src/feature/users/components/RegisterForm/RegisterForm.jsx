@@ -1,4 +1,5 @@
 import { useDispatch } from 'react-redux';
+import { Link } from 'react-router-dom';
 import useForm from '../../../../hooks/useForm';
 import { createUser } from '../../services/users';
 import './RegisterForm.scss';
@@ -59,6 +60,7 @@ const RegisterForm = () => {
         >
           Registrarse
         </button>
+        <Link to="/login" className="register-form__login-button">Iniciar sesión</Link>
       </form>
     </section>
   );

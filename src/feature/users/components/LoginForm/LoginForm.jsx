@@ -42,6 +42,7 @@ const LoginForm = () => {
             name="email"
             id="email"
             className="login-form__input"
+            autoComplete="username"
             onChange={handleChange}
           />
         </label>
@@ -52,6 +53,7 @@ const LoginForm = () => {
             name="password"
             id="password"
             className="login-form__input"
+            autoComplete="current-password"
             onChange={handleChange}
           />
         </label>

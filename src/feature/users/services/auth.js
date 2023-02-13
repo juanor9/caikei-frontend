@@ -15,6 +15,8 @@ export const login = createAsyncThunk(
 
     const res = await fetch(`${BASE_URL}/auth/local/login`, options);
     const result = await res.json();
+    const { userToken } = result;
+    localStorage.setItem('login-token', userToken);
     return result;
   },
 );

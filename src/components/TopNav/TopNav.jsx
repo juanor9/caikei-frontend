@@ -8,8 +8,9 @@ import { useState } from 'react';
 import Logo from '../Logo/Logo';
 
 const TopNav = () => {
-  const token = localStorage.getItem('login-token');
   const navigate = useNavigate();
+
+  const token = localStorage.getItem('login-token');
 
   const handleLogout = () => {
     localStorage.clear();
@@ -20,7 +21,7 @@ const TopNav = () => {
 
   return (
     <>
-      <header className="topnav">
+      <header className="topnav" key={`${Math.floor((Math.random() * 1000))}-min`}>
         <Logo className="topnav__logo" />
         <nav className="topnav__desktop">
           <ul className="topnav__ul">
@@ -41,7 +42,7 @@ const TopNav = () => {
           </button>
 
         </nav>
-        <nav className="topnav__user">
+        <nav className="topnav__user" key={`${Math.floor((Math.random() * 1000))}-min`}>
           {token
             ? <Link to="/profile"><FontAwesomeIcon icon={faUser} /></Link>
             : <Link to="/login"><FontAwesomeIcon icon={faUser} /></Link>}
