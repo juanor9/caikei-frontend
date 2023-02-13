@@ -58,9 +58,9 @@ const LibraryPage = () => {
   // };
 
   useEffect(() => {
-    if (id) {
+    if (id && userToken) {
       try {
-        dispatch(getLibrariesById(id));
+        dispatch(getLibrariesById({ id, userToken }));
       } catch (error) {
         throw new Error(error);
       }

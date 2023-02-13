@@ -19,6 +19,7 @@ const MovementCard = ({
   const { publisher } = useSelector((state) => state.user.userData);
   const { allLibraries } = useSelector((state) => state.allLibraries);
   const publisherName = useSelector((state) => state.publisher.publisher.name);
+  const userToken = localStorage.getItem('login-token');
 
   const [toName, setToName] = useState('');
   const [fromName, setFromName] = useState('');
@@ -51,9 +52,9 @@ const MovementCard = ({
   const dateN = setDate.toLocaleDateString('es-ES', dateOptions);
 
   useEffect(() => {
-    if (publisher) {
+    if (publisher && userToken) {
       try {
-        dispatch(getLibrariesByPublisher(publisher));
+        dispatch(getLibrariesByPublisher({ publisher, userToken }));
         dispatch(getPublisherById(publisher));
       } catch (error) {
         throw new Error(error);

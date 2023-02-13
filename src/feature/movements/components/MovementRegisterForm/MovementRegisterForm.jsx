@@ -29,10 +29,15 @@ const MovementRegisterForm = () => {
 
   const [formfulldata, setFormfulldata] = useState({});
   // for React Select
-  const catalogueSelect = catalogue.map((book) => ({
-    value: book._id,
-    label: book.title,
-  }));
+  const [catalogueSelect, setCatalogueSelect] = useState({});
+  useEffect(() => {
+    if (catalogue) {
+      setCatalogueSelect(catalogue.map((book) => ({
+        value: book._id,
+        label: book.title,
+      })));
+    }
+  }, [catalogue]);
   const [selectedBooks, setSelectedBooks] = useState(null);
   const handleChangeBooks = (selected) => {
     setSelectedBooks(selected);
@@ -109,7 +114,7 @@ const MovementRegisterForm = () => {
   useEffect(() => {
     if (publisher) {
       try {
-        dispatch(getBooksByFilter(publisher));
+        dispatch(getBooksByFilter({ publisher, userToken }));
       } catch (error) {
         throw new Error(error);
       }

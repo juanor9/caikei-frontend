@@ -72,9 +72,9 @@ const BookPage = () => {
   }, []);
 
   useEffect(() => {
-    if (publisher) {
+    if (publisher && userToken) {
       try {
-        dispatch(getLibrariesByPublisher(publisher));
+        dispatch(getLibrariesByPublisher({ publisher, userToken }));
         dispatch(getPublisherById(publisher));
       } catch (error) {
         throw new Error(error);
@@ -95,7 +95,7 @@ const BookPage = () => {
   useEffect(() => {
     if (id) {
       try {
-        dispatch(getBookById(id));
+        dispatch(getBookById({ id, userToken }));
       } catch (error) {
         throw new Error(error);
       }

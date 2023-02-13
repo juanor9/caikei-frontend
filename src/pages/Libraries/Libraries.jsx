@@ -25,9 +25,9 @@ const LibrariesPage = () => {
   }, []);
 
   useEffect(() => {
-    if (publisher) {
+    if (publisher && userToken) {
       try {
-        dispatch(getLibrariesByPublisher(publisher));
+        dispatch(getLibrariesByPublisher({ publisher, userToken }));
       } catch (error) {
         throw new Error(error);
       }
