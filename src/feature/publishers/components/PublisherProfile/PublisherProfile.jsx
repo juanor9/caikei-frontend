@@ -84,7 +84,7 @@ const PublisherProfile = () => {
 
   // get publisher data
   useEffect(() => {
-    if (publisher) {
+    if (publisher && userToken) {
       try {
         dispatch(getPublisherById(publisher));
       } catch (error) {

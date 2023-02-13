@@ -1,15 +1,19 @@
+/* eslint-disable no-unused-vars */
 import './TopNav.scss';
 import {
   faUser, faPowerOff, faBars, faXmark,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useNavigate, Link } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import Logo from '../Logo/Logo';
 
 const TopNav = () => {
-  const token = localStorage.getItem('login-token');
   const navigate = useNavigate();
+
+  const token = localStorage.getItem('login-token');
+  const { userData } = useSelector((state) => state.user);
 
   const handleLogout = () => {
     localStorage.clear();
@@ -20,7 +24,7 @@ const TopNav = () => {
 
   return (
     <>
-      <header className="topnav">
+      <header className="topnav" key={`${Math.floor((Math.random() * 1000))}-min`}>
         <Logo className="topnav__logo" />
         <nav className="topnav__desktop">
           <ul className="topnav__ul">
@@ -41,11 +45,11 @@ const TopNav = () => {
           </button>
 
         </nav>
-        <nav className="topnav__user">
-          {token
+        <nav className="topnav__user" key={`${Math.floor((Math.random() * 1000))}-min`}>
+          {token || userData
             ? <Link to="/profile"><FontAwesomeIcon icon={faUser} /></Link>
             : <Link to="/login"><FontAwesomeIcon icon={faUser} /></Link>}
-          {token
+          {token || userData
             ? (
               <button
                 type="button"
