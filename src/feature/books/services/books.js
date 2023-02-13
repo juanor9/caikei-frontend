@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
@@ -14,6 +15,9 @@ export const createBook = createAsyncThunk(
       },
       body: JSON.stringify(book),
     };
+    if (!token) {
+      return { mesage: 'no token available' };
+    }
     const res = await fetch(`${BASE_URL}/api/books`, options);
     const result = await res.json();
     return result;
@@ -23,14 +27,20 @@ export const createBook = createAsyncThunk(
 export const getBooksByFilter = createAsyncThunk(
   'books/getBooksByFilter',
   async (filter) => {
-    const uriParams = new URLSearchParams(filter).toString();
+    console.log('inside books/getBooksByFilter')
+    const {publisher, userToken} = filter
+    const uriParams = new URLSearchParams(publisher).toString();
     const options = {
       method: 'GET',
       headers: {
         'content-type': 'application/json',
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${userToken}`,
       },
     };
+    if (!userToken) {
+      return { mesage: 'no token available' };
+    }
+
     const res = await fetch(`${BASE_URL}/api/books/search?${uriParams}`, options);
     const result = await res.json();
     return result;
@@ -39,12 +49,13 @@ export const getBooksByFilter = createAsyncThunk(
 
 export const getBookById = createAsyncThunk(
   'books/getBookById',
-  async (id) => {
+  async (data) => {
+    const { id, userToken } = data;
     const options = {
       method: 'GET',
       headers: {
         'content-type': 'application/json',
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${userToken}`,
       },
     };
     const res = await fetch(`${BASE_URL}/api/books/${id}`, options);

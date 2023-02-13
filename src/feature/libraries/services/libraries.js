@@ -24,12 +24,13 @@ export const createLibrary = createAsyncThunk(
 
 export const getLibrariesById = createAsyncThunk(
   'libraries/getLibrariesById',
-  async (id) => {
+  async (data) => {
+    const { id, userToken } = data;
     const options = {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${userToken}`,
       },
     };
     const res = await fetch(`${BASE_URL}/api/libraries/${id}`, options);

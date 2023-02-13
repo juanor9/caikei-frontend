@@ -42,28 +42,32 @@ const MovementsPage = () => {
           Crear nuevo movimiento
         </Link>
         <table className="movements__movements-container">
-          <tr>
-            <th>Id interno</th>
-            <th>Fecha</th>
-            <th>Tipo de movimiento</th>
-            <th className="movements__cell--not-mobile">Desde</th>
-            <th className="movements__cell--not-mobile">Hacia</th>
-            <th className="movements__cell--not-mobile">Valor</th>
-          </tr>
-          {movement && Array.isArray(movement)
-            ? movement.map((m) => (
-              <MovementCard
-                key={m._id}
-                id={m.internalId}
-                date={m.date}
-                kind={m.kind}
-                from={m.from}
-                to={m.to}
-                grossTotal={m.grossTotal}
-                netTotal={m.netTotal}
-              />
-            ))
-            : null}
+          <thead>
+            <tr>
+              <th>Id interno</th>
+              <th>Fecha</th>
+              <th>Tipo de movimiento</th>
+              <th className="movements__cell--not-mobile">Desde</th>
+              <th className="movements__cell--not-mobile">Hacia</th>
+              <th className="movements__cell--not-mobile">Valor</th>
+            </tr>
+          </thead>
+          <tbody>
+            {movement && Array.isArray(movement)
+              ? movement.map((m) => (
+                <MovementCard
+                  key={m._id}
+                  id={m.internalId}
+                  date={m.date}
+                  kind={m.kind}
+                  from={m.from}
+                  to={m.to}
+                  grossTotal={m.grossTotal}
+                  netTotal={m.netTotal}
+                />
+              ))
+              : null}
+          </tbody>
         </table>
       </main>
     </div>

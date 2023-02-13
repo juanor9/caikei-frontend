@@ -11,11 +11,15 @@ import TopNav from '../../components/TopNav/TopNav';
 import BookCard from '../../feature/books/components/BookCard/BookCard';
 
 const CataloguePage = () => {
-  const userToken = localStorage.getItem('login-token');
   const dispatch = useDispatch();
+  const [userToken, setUserToken] = useState(localStorage.getItem('login-token'));
 
   const { publisher } = useSelector((state) => state.user.userData);
   const { catalogue } = useSelector((state) => state.catalogue);
+
+  useEffect(() => {
+    setUserToken(localStorage.getItem('login-token'));
+  }, []);
 
   useEffect(() => {
     if (userToken) {
@@ -28,14 +32,15 @@ const CataloguePage = () => {
   }, []);
 
   useEffect(() => {
-    if (publisher) {
+    if (publisher && userToken) {
       try {
-        dispatch(getBooksByFilter(publisher));
+        dispatch(getBooksByFilter({ publisher, userToken }));
       } catch (error) {
         throw new Error(error);
       }
     }
-  }, [publisher]);
+  }, [publisher, userToken]);
+
   return (
     <div className="catalogue">
       <TopNav />
@@ -46,14 +51,18 @@ const CataloguePage = () => {
             <FontAwesomeIcon icon={faPlus} />
             Añadir libro
           </Link>
-          {catalogue.map((book) => (
-            <BookCard
-              key={book._id}
-              title={book.title}
-              cover={book.cover}
-              bookId={book._id}
-            />
-          ))}
+          {catalogue && Array.isArray(catalogue) && publisher
+            ? (
+              catalogue.map((book) => (
+                <BookCard
+                  key={book._id}
+                  title={book.title}
+                  cover={book.cover}
+                  bookId={book._id}
+                />
+              ))
+            )
+            : null}
         </section>
       </main>
     </div>

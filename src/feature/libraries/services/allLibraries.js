@@ -6,12 +6,13 @@ const token = localStorage.getItem('login-token');
 
 const getLibrariesByPublisher = createAsyncThunk(
   'libraries/getLibrariesByPublisher',
-  async (publisher) => {
+  async (data) => {
+    const { publisher, userToken } = data;
     const options = {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${userToken}`,
       },
     };
 
