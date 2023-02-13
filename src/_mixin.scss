@@ -17,6 +17,23 @@
     box-shadow: 0px 0.5em 0px 0px $black;
   }
 }
+@mixin secondary-button {
+  background-color: transparent;
+  border-radius: 5em;
+  border: solid 1px $black;
+  color: $black;
+  font-family: "Merriweather", serif;
+  font-weight: 600;
+  padding: 1em;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  text-align: center;
+  margin-bottom: 1em;
+  cursor: pointer;
+  &:hover {
+    box-shadow: 0px 0.5em 0px 0px $black;
+  }
+}
 
 @mixin ternary-button {
   border: none;

@@ -119,7 +119,6 @@ const BookPage = () => {
   useEffect(() => {
     if (inventory && Array.isArray(inventory)) {
       const inventoryPlaces = inventory.map((storage) => {
-      // console.log(storage);
         if (storage.placeId === publisher) {
           return { id: storage._id, name: PublisherData.name, copies: storage.copies };
         }

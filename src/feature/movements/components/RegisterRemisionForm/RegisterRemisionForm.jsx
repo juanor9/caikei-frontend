@@ -23,7 +23,6 @@ const RegisterRemisionForm = ({ from, to }) => {
   }, [publisher]);
   const { allLibraries } = useSelector((state) => state.allLibraries);
   const publisherData = useSelector((state) => state.publisher.publisher);
-  console.log(publisherData);
   const [storages, setStorages] = useState([]);
   const [storagesSelect, setStoragesSelect] = useState([]);
   // FROM

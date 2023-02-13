@@ -1,19 +1,16 @@
-/* eslint-disable no-unused-vars */
 import './TopNav.scss';
 import {
   faUser, faPowerOff, faBars, faXmark,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useNavigate, Link } from 'react-router-dom';
-import { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useState } from 'react';
 import Logo from '../Logo/Logo';
 
 const TopNav = () => {
   const navigate = useNavigate();
 
   const token = localStorage.getItem('login-token');
-  const { userData } = useSelector((state) => state.user);
 
   const handleLogout = () => {
     localStorage.clear();
@@ -46,10 +43,10 @@ const TopNav = () => {
 
         </nav>
         <nav className="topnav__user" key={`${Math.floor((Math.random() * 1000))}-min`}>
-          {token || userData
+          {token
             ? <Link to="/profile"><FontAwesomeIcon icon={faUser} /></Link>
             : <Link to="/login"><FontAwesomeIcon icon={faUser} /></Link>}
-          {token || userData
+          {token
             ? (
               <button
                 type="button"
