@@ -19,6 +19,10 @@ const usersSlice = createSlice({
       state.userData = action.payload.profile;
     });
 
+    builder.addCase(login.rejected, (state, action) => {
+      state.userData = action.error;
+    });
+
     builder.addCase(getUser.fulfilled, (state, action) => {
       state.userData = action.payload;
     });

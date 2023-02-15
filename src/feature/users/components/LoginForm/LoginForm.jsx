@@ -1,28 +1,31 @@
+/* eslint-disable */
 import './LoginForm.scss';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import useForm from '../../../../hooks/useForm';
 import { login } from '../../services/auth';
+import { useState } from 'react';
 
 const LoginForm = () => {
   const { form, handleChange } = useForm({}); // get form hook
   const dispatch = useDispatch(); // use dispatch hook
   const navigate = useNavigate(); // use navigation hook
 
-  // On click, reset form
-  const handleClick = () => {
-    document.getElementById('login-form__form').reset();
-  };
+  const [loginError, setLoginError]= useState(null)
 
   // On submit, prevent form submission and dispatch service
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     try {
-      dispatch(login(form));
-      navigate('/profile');
+     const response = await dispatch(login(form));
+     console.log(response);
+
     } catch (error) {
-      throw new Error(error);
+      console.log('error', error);
+      setLoginError(true);
+      console.log('loginError', loginError);
+      return;
     }
   };
 
@@ -41,6 +44,7 @@ const LoginForm = () => {
             type="text"
             name="email"
             id="email"
+            required
             className="login-form__input"
             autoComplete="username"
             onChange={handleChange}
@@ -52,6 +56,7 @@ const LoginForm = () => {
             type="password"
             name="password"
             id="password"
+            required
             className="login-form__input"
             autoComplete="current-password"
             onChange={handleChange}
@@ -60,7 +65,6 @@ const LoginForm = () => {
         <button
           type="submit"
           className="login-form__submit-button"
-          onClick={handleClick}
         >
           Iniciar sesión
         </button>
