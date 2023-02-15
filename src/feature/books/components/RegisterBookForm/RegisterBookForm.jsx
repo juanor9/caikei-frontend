@@ -39,7 +39,9 @@ const RegisterBookForm = () => {
     event.preventDefault();
 
     try {
-      dispatch(createBook({ ...form, publisher, cover: uploads }));
+      dispatch(createBook({
+        ...form, publisher, cover: uploads, userToken,
+      }));
       navigate('/catalogue');
     } catch (error) {
       throw new Error(error);
@@ -90,6 +92,7 @@ const RegisterBookForm = () => {
             name="title"
             id="title"
             type="text"
+            required
             className="register-book__form-input"
             onChange={handleChange}
           />
@@ -110,6 +113,7 @@ const RegisterBookForm = () => {
             name="price"
             id="price"
             type="number"
+            required
             className="register-book__form-input"
             onChange={handleChange}
           />
@@ -130,6 +134,7 @@ const RegisterBookForm = () => {
             name="authors"
             id="authors"
             type="text"
+            required
             className="register-book__form-input"
             onChange={handleChange}
           />
@@ -152,6 +157,7 @@ const RegisterBookForm = () => {
               name="binding"
               id="rústica"
               value="rústica"
+              required
               onChange={handleChange}
             />
             rústica
@@ -229,7 +235,13 @@ const RegisterBookForm = () => {
         </label>
         <label htmlFor="color" className="register-book__form-label">
           Color
-          <input name="color" id="color" type="color" onChange={handleChange} />
+          <input
+            name="color"
+            id="color"
+            type="color"
+            required
+            onChange={handleChange}
+          />
         </label>
         <label htmlFor="costCenter" className="register-book__form-label">
           Centro de costo

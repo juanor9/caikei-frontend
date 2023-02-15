@@ -46,6 +46,7 @@ const RegisterLibraryForm = () => {
             type="text"
             name="name"
             id="name"
+            required
             className="register-library__form-input"
             onChange={handleChange}
           />
@@ -56,6 +57,7 @@ const RegisterLibraryForm = () => {
             type="number"
             name="discount"
             id="discount"
+            required
             className="register-library__form-input"
             onChange={handleChange}
           />
@@ -66,6 +68,7 @@ const RegisterLibraryForm = () => {
             type="email"
             name="email"
             id="email"
+            required
             className="register-library__form-input"
             onChange={handleChange}
           />
@@ -74,7 +77,7 @@ const RegisterLibraryForm = () => {
           Documento de identidad
           <label htmlFor="idKind">
             C.C
-            <input type="radio" name="idKind" id="C.C" value="C.C." onChange={handleChange} />
+            <input type="radio" name="idKind" id="C.C" value="C.C." onChange={handleChange} required />
           </label>
           <label htmlFor="idKind">
             N.I.T.
@@ -86,6 +89,7 @@ const RegisterLibraryForm = () => {
               type="text"
               name="idNumber"
               id="idNumber"
+              required
               onChange={handleChange}
               className="register-library__form-input"
             />
@@ -97,6 +101,7 @@ const RegisterLibraryForm = () => {
             type="text"
             name="city"
             id="city"
+            required
             className="register-library__form-input"
             onChange={handleChange}
           />

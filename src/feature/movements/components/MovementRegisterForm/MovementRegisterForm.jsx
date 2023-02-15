@@ -276,6 +276,7 @@ const MovementRegisterForm = () => {
           type="number"
           name="internalId"
           id="internalId"
+          required
           onChange={handleChange}
           className="movement-form__input"
         />
@@ -286,6 +287,7 @@ const MovementRegisterForm = () => {
           type="date"
           name="date"
           id="date"
+          required
           onChange={handleChange}
           className="movement-form__input"
         />
@@ -298,6 +300,7 @@ const MovementRegisterForm = () => {
             name="kind"
             id="ingreso"
             value="ingreso"
+            required
             onChange={handleChangeKindMod}
           />{' '}
           Ingreso
@@ -342,6 +345,7 @@ const MovementRegisterForm = () => {
               type="discount"
               name="discount"
               id="discount"
+              required
               key={`${Math.floor((Math.random() * 1000))}-min`}
               defaultValue={remisionDiscount}
               onChange={handleChangeRemisionDiscount}
@@ -362,6 +366,7 @@ const MovementRegisterForm = () => {
               type="discount"
               name="discount"
               id="discount"
+              required
               key={`${Math.floor((Math.random() * 1000))}-min`}
               defaultValue={salesDiscount}
               onChange={handleChangeSalesDiscount}
@@ -399,6 +404,7 @@ const MovementRegisterForm = () => {
               Ejemplares
               <input
                 type="number"
+                required
                 name={`${book.value}-copies`}
                 id={`${book.value}-copies`}
                 onChange={handleChangeBook}
@@ -409,6 +415,7 @@ const MovementRegisterForm = () => {
               costo unitario
               <input
                 type="number"
+                required
                 name={`${book.value}-cost`}
                 id={`${book.value}-cost`}
                 onChange={handleChangeBook}

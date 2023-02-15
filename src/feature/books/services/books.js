@@ -7,14 +7,16 @@ const token = localStorage.getItem('login-token');
 export const createBook = createAsyncThunk(
   'books/createBook',
   async (book) => {
+    const{userToken, ...bookData} = book
     const options = {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${userToken}`,
       },
-      body: JSON.stringify(book),
+      body: JSON.stringify(bookData),
     };
+
     if (!token) {
       return { mesage: 'no token available' };
     }
@@ -27,7 +29,6 @@ export const createBook = createAsyncThunk(
 export const getBooksByFilter = createAsyncThunk(
   'books/getBooksByFilter',
   async (filter) => {
-    console.log('inside books/getBooksByFilter')
     const {publisher, userToken} = filter
     const uriParams = new URLSearchParams(publisher).toString();
     const options = {
