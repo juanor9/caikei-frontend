@@ -62,6 +62,7 @@ const RegisterSaleForm = ({ from }) => {
         options={storagesSelect}
         isSearchable
         isClearable
+        required
         onChange={handleChangeFrom}
       />
     </div>

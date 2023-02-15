@@ -79,6 +79,7 @@ const RegisterDevolutionForm = ({ from, to }) => {
           options={storagesSelect}
           isSearchable
           isClearable
+          required
           onChange={handleChangeFrom}
         />
       </div>
@@ -89,6 +90,7 @@ const RegisterDevolutionForm = ({ from, to }) => {
           options={storagesSelect}
           isSearchable
           isClearable
+          required
           onChange={handleChangeTo}
           defaultValue={{
             value: publisherData._id,
