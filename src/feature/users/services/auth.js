@@ -13,11 +13,18 @@ export const login = createAsyncThunk(
       body: JSON.stringify(user),
     };
 
-    const res = await fetch(`${BASE_URL}/auth/local/login`, options);
-    const result = await res.json();
-    const { userToken } = result;
-    localStorage.setItem('login-token', userToken);
-    return result;
+    try {
+      const res = await fetch(`${BASE_URL}/auth/local/login`, options);
+      if (res.status === 401) {
+        return new Error('Authentication failed');
+      }
+      const result = await res.json();
+      const { userToken } = result;
+      localStorage.setItem('login-token', userToken);
+      return result;
+    } catch (error) {
+      return error;
+    }
   },
 );
 

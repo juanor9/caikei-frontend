@@ -8,11 +8,6 @@ const RegisterForm = () => {
   const { form, handleChange } = useForm({}); // get form hook
   const dispatch = useDispatch(); // use dispatch
 
-  // On click, reset form
-  const handleClick = () => {
-    document.getElementById('register-form__form').reset();
-  };
-
   // On submit, prevent form submission and dispatch service
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -39,6 +34,7 @@ const RegisterForm = () => {
             id="email"
             name="email"
             type="text"
+            required
             className="register-form__input"
             onChange={handleChange}
           />
@@ -49,13 +45,13 @@ const RegisterForm = () => {
             id="password"
             name="password"
             type="password"
+            required
             className="register-form__input"
             onChange={handleChange}
           />
         </label>
         <button
           type="submit"
-          onClick={handleClick}
           className="register-form__submit-button"
         >
           Registrarse
