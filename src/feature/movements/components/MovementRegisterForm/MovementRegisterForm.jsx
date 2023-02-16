@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable no-param-reassign */
 import './MovementRegisterForm.scss';
 import { useDispatch, useSelector } from 'react-redux';
@@ -47,11 +48,14 @@ const MovementRegisterForm = () => {
 
   useEffect(() => {
     if (selectedBooks && selectedBooks.length > 0) {
-      selectedBooks.map((option) => {
+      const selectedBooksIds = selectedBooks.map((option) => {
         const { value } = option;
-        setFormBookData(formBookData.concat({ id: value }));
-        return formBookData;
+        return value;
       });
+      setFormBookData(selectedBooksIds);
+    }
+    if (selectedBooks && selectedBooks.length === 0) {
+      setFormBookData([]);
     }
   }, [selectedBooks]);
   // gross total
@@ -268,6 +272,21 @@ const MovementRegisterForm = () => {
     }
   };
 
+  useEffect(() => {
+    const formButton = document.getElementById('form-button');
+    const { books } = formfulldata;
+    const formKind = formfulldata.kind;
+
+    if (formKind && books && Array.isArray(books) && books.length > 0) {
+      formButton.classList.remove('movement-form__submit-button--disabled');
+      formButton.classList.add('movement-form__submit-button');
+    }
+    if (Array.isArray(books) && books.length === 0) {
+      formButton.classList.remove('movement-form__submit-button');
+      formButton.classList.add('movement-form__submit-button--disabled');
+    }
+  }, [formfulldata]);
+
   return (
     <form action="" className="movement-form" onSubmit={handleSubmit}>
       <label htmlFor="internalId" className="movement-form__label">
@@ -468,7 +487,7 @@ const MovementRegisterForm = () => {
           : null}
       </div>
 
-      <button type="submit" className="movement-form__submit-button">Guardar {kind}</button>
+      <button id="form-button" type="submit" className="movement-form__submit-button--disabled">Guardar {kind}</button>
     </form>
   );
 };
