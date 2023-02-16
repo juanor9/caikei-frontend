@@ -30,7 +30,7 @@ export const getBooksByFilter = createAsyncThunk(
   'books/getBooksByFilter',
   async (filter) => {
     const {publisher, userToken} = filter
-    const uriParams = new URLSearchParams(publisher).toString();
+    const uriParams = publisher;
     const options = {
       method: 'GET',
       headers: {
@@ -42,7 +42,7 @@ export const getBooksByFilter = createAsyncThunk(
       return { mesage: 'no token available' };
     }
 
-    const res = await fetch(`${BASE_URL}/api/books/search?${uriParams}`, options);
+    const res = await fetch(`${BASE_URL}/api/books/search?publisher=${uriParams}`, options);
     const result = await res.json();
     return result;
   },
