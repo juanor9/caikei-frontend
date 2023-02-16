@@ -10,7 +10,10 @@
     @include form-input;
   }
   &__submit-button{
-    @include main-button
+    @include main-button;
+    &--disabled{
+      @include main-button-disabled
+    }
   }
 }
 
@@ -21,6 +24,9 @@
     grid-template-columns: 1fr 1fr;
     &__submit-button {
       grid-column: span 2;
+      &--disabled{
+        grid-column: span 2;
+      }
     }
     &__label{
       &--double{
