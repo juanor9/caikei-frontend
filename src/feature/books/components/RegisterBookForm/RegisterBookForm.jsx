@@ -58,6 +58,14 @@ const RegisterBookForm = () => {
     }
   }, []);
 
+  useEffect(() => {
+    const formButton = document.getElementById('form-submit');
+    if (uploads) {
+      formButton.classList.remove('register-book__form-button--disabled');
+      formButton.classList.add('register-book__form-button');
+    }
+  }, [uploads]);
+
   return (
     <section className="register-book">
       <form action="" className="register-book__cover-form" onSubmit={handleSubmitimage}>
@@ -253,7 +261,7 @@ const RegisterBookForm = () => {
             onChange={handleChange}
           />
         </label>
-        <button type="submit" className="register-book__form-button">
+        <button id="form-submit" type="submit" className="register-book__form-button--disabled">
           Crear libro
         </button>
       </form>
