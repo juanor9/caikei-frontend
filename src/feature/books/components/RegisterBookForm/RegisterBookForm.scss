@@ -1,40 +1,43 @@
 @import "../../../../colors.scss";
 @import "../../../../mixin.scss";
 
-.register-book{
+.register-book {
   display: flex;
   gap: 1em;
   flex-direction: column;
-  &__form{
+  &__form {
     display: flex;
     flex-direction: column;
     gap: 1em;
-    &-label{
+    &-label {
       @include form-lable;
     }
-    &-input{
+    &-input {
       @include form-input;
     }
-    &-button{
+    &-button {
       @include main-button;
-      &--image{
+      &--image {
         @include main-button;
         margin-top: 1em;
       }
+      &--disabled {
+        @include main-button-disabled;
+      }
     }
   }
-  &__cover-form{
+  &__cover-form {
     max-width: 100%;
   }
-  &__cover{
-    &-preview{
+  &__cover {
+    &-preview {
       width: 100%;
       margin: 0;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      & img{
+      & img {
         max-width: 80%;
         margin: auto;
       }
@@ -42,21 +45,24 @@
   }
 }
 @media (min-width: 768px) {
-  .register-book{
+  .register-book {
     flex-direction: row;
-    &__cover-form{
+    &__cover-form {
       max-width: 40%;
     }
-    &__form{
+    &__form {
       display: grid;
       gap: 2em;
       grid-template-columns: 1fr 1fr 1fr;
       padding: 2em;
-      &-button{
+      &-button {
         grid-column-start: 1;
         grid-column-end: 4;
+        &--disabled {
+          grid-column-start: 1;
+          grid-column-end: 4;
+        }
       }
     }
-
   }
 }
