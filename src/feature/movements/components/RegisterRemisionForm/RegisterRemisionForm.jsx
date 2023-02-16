@@ -79,6 +79,7 @@ const RegisterRemisionForm = ({ from, to }) => {
           options={storagesSelect}
           isSearchable
           isClearable
+          required
           defaultValue={{
             value: publisherData._id,
             label: publisherData.name,
@@ -93,6 +94,7 @@ const RegisterRemisionForm = ({ from, to }) => {
           options={storagesSelect}
           isSearchable
           isClearable
+          required
           onChange={handleChangeTo}
         />
       </div>
