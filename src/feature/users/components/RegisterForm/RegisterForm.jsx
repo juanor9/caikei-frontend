@@ -2,9 +2,9 @@ import './RegisterForm.scss';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { useState } from 'react';
-import useForm from '../../../../hooks/useForm';
-import Modal from '../../../../components/Modal/Modal';
 import { createUser } from '../../services/users';
+import Modal from '../../../../components/Modal/Modal';
+import useForm from '../../../../hooks/useForm';
 
 const RegisterForm = () => {
   const { form, handleChange } = useForm({}); // get form hook
