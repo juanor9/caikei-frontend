@@ -1,7 +1,7 @@
 import './PublisherRegisterForm.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { uploadImage } from '../../../uploads/services/upload';
 import { createPublisher } from '../../services/publishers';
 import useForm from '../../../../hooks/useForm';
@@ -43,6 +43,14 @@ const PublisherRegisterForm = () => {
       throw new Error(error);
     }
   };
+
+  useEffect(() => {
+    const formButton = document.getElementById('form-submit');
+    if (uploads) {
+      formButton.classList.remove('publisher-registration__button--disabled');
+      formButton.classList.add('publisher-registration__button');
+    }
+  }, [uploads]);
 
   return (
     <section className="publisher-registration">
@@ -86,6 +94,7 @@ const PublisherRegisterForm = () => {
             type="text"
             id="name"
             name="name"
+            required
             className="publisher-registration__input"
             onChange={handleChange}
           />
@@ -100,6 +109,7 @@ const PublisherRegisterForm = () => {
                 value="C.C."
                 name="idType"
                 id="idTypeCC"
+                required
                 className="publisher-registration__radio-input"
                 onChange={handleChange}
               />
@@ -122,6 +132,7 @@ const PublisherRegisterForm = () => {
               type="text"
               name="idNumber"
               id="idNumber"
+              required
               className="publisher-registration__input"
               onChange={handleChange}
             />
@@ -133,6 +144,7 @@ const PublisherRegisterForm = () => {
             type="email"
             name="email"
             id="email"
+            required
             className="publisher-registration__input"
             onChange={handleChange}
           />
@@ -157,7 +169,7 @@ const PublisherRegisterForm = () => {
             className="publisher-registration__input"
           />
         </label>
-        <button type="submit" className="publisher-registration__button">Registrar editorial</button>
+        <button id="form-submit" type="submit" className="publisher-registration__button--disabled">Registrar editorial</button>
       </form>
     </section>
   );

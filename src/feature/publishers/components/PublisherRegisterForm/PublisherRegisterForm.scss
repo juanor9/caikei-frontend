@@ -12,7 +12,7 @@
       gap: 1em;
     }
     &-button{
-      @include main-button
+      @include main-button;
     }
     &-caption{
       text-align: center;
@@ -43,6 +43,9 @@
   }
   &__button{
     @include main-button;
+    &--disabled{
+      @include main-button-disabled;
+    }
   }
   &__id-label{
     display: flex;
