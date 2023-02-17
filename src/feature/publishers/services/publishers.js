@@ -62,13 +62,12 @@ export const getPublisherById = createAsyncThunk(
 export const updatePublisher = createAsyncThunk(
   'publishers/updatePublisher',
   async (updateData) => {
-    const token = localStorage.getItem('login-token');
-    const { publisherId, ...form } = updateData;
+    const { userToken, publisherId, ...form } = updateData;
     const options = {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${userToken}`,
       },
       body: JSON.stringify(form),
     };
