@@ -11,34 +11,36 @@ import useForm from '../../../../hooks/useForm';
 import './PublisherProfile.scss';
 
 const PublisherProfile = () => {
-  const dispatch = useDispatch(); // use dispatch hook
-
-  const userToken = localStorage.getItem('login-token'); // get user token from local storage
-
-  const { userData } = useSelector((state) => state.user);
-  const { publisher } = useSelector((state) => state.publisher);// get user data from redux
-  const { email } = userData; // get publisher id from redux
-
+  const [file, setFile] = useState('');
   const [infoModal, setInfoModal] = useState(false);
   const [logoModal, setLogoModal] = useState(false);
-  const [file, setFile] = useState('');
-
+  const [sucessModal, setSucessModal] = useState(false);
   const {
-    address, logo, name, phone, publisherIds,
-  } = useSelector(
-    (state) => state.publisher.publisher,
-  ); // get publisher
-  const publisherEmail = useSelector(
-    (state) => state.publisher.publisher.email,
-  );
+    address,
+    logo,
+    name,
+    phone,
+    publisherIds,
+  } = useSelector((state) => state.publisher.publisher); // get publisher
   const { form, handleChange } = useForm({});
+  const { publisher } = useSelector((state) => state.publisher);// get user data from redux
+  const { userData } = useSelector((state) => state.user);
+  const { email } = userData; // get publisher id from redux
+  const dispatch = useDispatch(); // use dispatch hook
+  const publisherEmail = useSelector((state) => state.publisher.publisher.email);
+  const userToken = localStorage.getItem('login-token'); // get user token from local storage
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     try {
-      dispatch(updatePublisher({ ...form, publisherId: publisher }));
+      const publisherId = userData.publisher;
+      const infoRes = await dispatch(updatePublisher({ ...form, publisherId, userToken }));
       setInfoModal(false);
+      const { requestStatus } = infoRes.meta;
+      if (requestStatus === 'fulfilled') {
+        setSucessModal(true);
+      }
     } catch (error) {
       throw new Error(error);
     }
@@ -84,9 +86,9 @@ const PublisherProfile = () => {
   }, []);
 
   // get publisher data
+  const publisherFromUser = useSelector((state) => state.user.userData.publisher);
   useEffect(() => {
-    if (!publisher && userToken) {
-      const publisherFromUser = useSelector((state) => state.user.userData.publisher);
+    if ((!publisher || Object.keys(publisher).length === 0) && userToken) {
       try {
         dispatch(getPublisherById(publisherFromUser));
       } catch (error) {
@@ -275,6 +277,14 @@ const PublisherProfile = () => {
             </>
           </Modal>
         ) : null}
+        {sucessModal === true
+          ? (
+            <Modal
+              modalFunction={setSucessModal}
+              message="Los cambios han sido guardados con éxito"
+            />
+          )
+          : null}
       </section>
     </>
   );
