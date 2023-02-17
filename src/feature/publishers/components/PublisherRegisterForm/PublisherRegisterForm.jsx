@@ -1,18 +1,19 @@
+/* eslint-disable no-unused-vars */
 import './PublisherRegisterForm.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { uploadImage } from '../../../uploads/services/upload';
-import { createPublisher } from '../../services/publishers';
+import { createPublisher, getPublisherById } from '../../services/publishers';
 import useForm from '../../../../hooks/useForm';
 
 const PublisherRegisterForm = () => {
   const [file, setFile] = useState('');
-  const dispatch = useDispatch();
   const { form, handleChange } = useForm({});
-  const userToken = localStorage.getItem('login-token'); // get user token from local storage
-  const navigate = useNavigate();
   const { uploads } = useSelector((state) => state.upload);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const userToken = localStorage.getItem('login-token'); // get user token from local storage
 
   const handleSubmitimage = async (event) => {
     event.preventDefault();
@@ -35,9 +36,11 @@ const PublisherRegisterForm = () => {
     event.preventDefault();
 
     try {
-      dispatch(
+      const res = await dispatch(
         createPublisher({ ...form, publisherLogo: uploads, user: userToken }),
       );
+      const { _id } = res.payload.publisher;
+      dispatch(getPublisherById(_id));
       navigate('/profile');
     } catch (error) {
       throw new Error(error);

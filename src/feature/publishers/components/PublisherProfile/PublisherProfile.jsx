@@ -15,8 +15,9 @@ const PublisherProfile = () => {
 
   const userToken = localStorage.getItem('login-token'); // get user token from local storage
 
-  const { userData } = useSelector((state) => state.user); // get user data from redux
-  const { email, publisher } = userData; // get publisher id from redux
+  const { userData } = useSelector((state) => state.user);
+  const { publisher } = useSelector((state) => state.publisher);// get user data from redux
+  const { email } = userData; // get publisher id from redux
 
   const [infoModal, setInfoModal] = useState(false);
   const [logoModal, setLogoModal] = useState(false);
@@ -84,9 +85,10 @@ const PublisherProfile = () => {
 
   // get publisher data
   useEffect(() => {
-    if (publisher && userToken) {
+    if (!publisher && userToken) {
+      const publisherFromUser = useSelector((state) => state.user.userData.publisher);
       try {
-        dispatch(getPublisherById(publisher));
+        dispatch(getPublisherById(publisherFromUser));
       } catch (error) {
         throw new Error(error);
       }
@@ -97,78 +99,79 @@ const PublisherProfile = () => {
     <>
       <h2>Editorial</h2>
       <section className="publisher-profile">
-        {publisher ? (
-          <>
-            <article className="publisher-profile__logo">
-              <div>
-                <h3>Logo</h3>
-                <figure className="publisher-profile__logo-figure">
-                  <img
-                    src={logo}
-                    alt={`${name}-logo`}
-                    className="publisher-profile__logo-img"
-                  />
-                </figure>
-                {/* <button
+        {publisher && Object.keys(publisher).length > 0
+          ? (
+            <>
+              <article className="publisher-profile__logo">
+                <div>
+                  <h3>Logo</h3>
+                  <figure className="publisher-profile__logo-figure">
+                    <img
+                      src={logo}
+                      alt={`${name}-logo`}
+                      className="publisher-profile__logo-img"
+                    />
+                  </figure>
+                  {/* <button
                   type="button"
                   className="publisher-profile__button"
                   onClick={() => { setLogoModal(true); }}
                 >Editar logo
                 </button> */}
-              </div>
-            </article>
-            <article>
-              <h3>Información general</h3>
-              <div className="publisher-profile__info">
-                <b>Nombre: </b>
-                {name}
-              </div>
-              {publisherIds ? (
-                <div className="publisher-profile__info">
-                  <b>Documento de identidad: </b>
-                  {publisherIds[publisherIds.length - 1].type}{' '}
-                  {publisherIds[publisherIds.length - 1].number}
                 </div>
-              ) : null}
-              <div className="publisher-profile__info">
-                <b>Correo electrónico: </b> {publisherEmail}
-              </div>
-              <div className="publisher-profile__info">
-                <b>Dirección: </b> {address}
-              </div>
-              <div className="publisher-profile__info">
-                <b>Teléfono: </b> {phone}
-              </div>
-              <button
-                type="button"
-                className="publisher-profile__button"
-                onClick={() => {
-                  setInfoModal(true);
-                }}
-              >
-                Editar información
-              </button>
-              {/* <button
+              </article>
+              <article>
+                <h3>Información general</h3>
+                <div className="publisher-profile__info">
+                  <b>Nombre: </b>
+                  {name}
+                </div>
+                {publisherIds ? (
+                  <div className="publisher-profile__info">
+                    <b>Documento de identidad: </b>
+                    {publisherIds[publisherIds.length - 1].type}{' '}
+                    {publisherIds[publisherIds.length - 1].number}
+                  </div>
+                ) : null}
+                <div className="publisher-profile__info">
+                  <b>Correo electrónico: </b> {publisherEmail}
+                </div>
+                <div className="publisher-profile__info">
+                  <b>Dirección: </b> {address}
+                </div>
+                <div className="publisher-profile__info">
+                  <b>Teléfono: </b> {phone}
+                </div>
+                <button
+                  type="button"
+                  className="publisher-profile__button"
+                  onClick={() => {
+                    setInfoModal(true);
+                  }}
+                >
+                  Editar información
+                </button>
+                {/* <button
                 type="button"
                 className="publisher-profile__deactivate"
                 onClick={handleClickDeactivate}
               >
                 Desactivar editorial
               </button> */}
-            </article>
-          </>
-        ) : (
-          <div className="publisher-profile__info">
-            <p>Aún no tienes una editorial registrada.</p>
-            <Link
-              to="/publisher/register"
-              className="publisher-profile__button"
-            >
-              <FontAwesomeIcon icon={faPlus} />
-              Registra una editorial
-            </Link>
-          </div>
-        )}
+              </article>
+            </>
+          ) : (
+            <div className="publisher-profile__info">
+              <p>Aún no tienes una editorial registrada.</p>
+              <Link
+                to="/publisher/register"
+                className="publisher-profile__button"
+              >
+                <FontAwesomeIcon icon={faPlus} />
+                Registra una editorial
+              </Link>
+            </div>
+          )}
         {infoModal === true ? (
           <Modal
             className="publisher-profile__modal"
