@@ -10,6 +10,7 @@ const InventoryByBook = () => {
   const { publisher } = useSelector((state) => state.user.userData);
   const { catalogue } = useSelector((state) => state.catalogue);
   const { allLibraries } = useSelector((state) => state.allLibraries);
+  const publisherData = useSelector((state) => state.publisher.publisher);
 
   const userToken = localStorage.getItem('login-token');
 
@@ -26,24 +27,26 @@ const InventoryByBook = () => {
   }, [publisher, userToken]);
 
   useEffect(() => {
-    if (catalogue && Array.isArray(catalogue)) {
-      const c = catalogue.map((book) => {
-        const { inventory } = book;
-        if (inventory && Array.isArray(inventory) && allLibraries && Array.isArray(allLibraries)) {
-          const a = inventory.map((place) => {
-            const { placeId, copies } = place;
-            return place;
-          });
-          console.log('inventory.map', a);
+    const finalObject = catalogue.map(({
+      cover, inventory, title, _id,
+    }) => {
+      const bookInventory = inventory.map((place) => { // array de lugares con el libro
+        if (place.placeId === publisherData._id) {
+          const $library = { name: publisherData.name, copies: place.copies };
+          return $library;
         }
-        return ({
-          id: book._id,
-          title: book.title,
-          inventory: book.inventory,
-        });
+        // console.log('all libraries: ', allLibraries);
+        const $allLibraries = allLibraries.map((library) => (
+          { name: library.name, id: library._id }
+        ));
+        console.log(`place: ${place._id}, libraries:`, $allLibraries);
+        return ({ name: place._id, copies: place.copies });
       });
-      console.log('final object', c);
-    }
+      return ({
+        cover, bookInventory, title, _id,
+      });
+    });
+    // console.log(finalObject);
   }, [catalogue, allLibraries]);
   return (
     <section className="by-book">
