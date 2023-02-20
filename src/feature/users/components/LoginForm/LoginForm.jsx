@@ -1,33 +1,39 @@
-/* eslint-disable */
 import './LoginForm.scss';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 import useForm from '../../../../hooks/useForm';
 import { login } from '../../services/auth';
-import { useState } from 'react';
+import Modal from '../../../../components/Modal/Modal';
 
 const LoginForm = () => {
   const { form, handleChange } = useForm({}); // get form hook
   const dispatch = useDispatch(); // use dispatch hook
   const navigate = useNavigate(); // use navigation hook
 
-  const [loginError, setLoginError]= useState(null)
+  const [loginFail, setLoginFail] = useState(false);
+  const [loginState, setLoginState] = useState(null);
 
   // On submit, prevent form submission and dispatch service
   const handleSubmit = async (event) => {
     event.preventDefault();
+    setLoginState(null);
 
     try {
-     const response = await dispatch(login(form));
-     console.log(response);
-
+      const res = await dispatch(login(form));
+      setLoginState(String(res.payload));
     } catch (error) {
-      console.log('error', error);
-      setLoginError(true);
-      console.log('loginError', loginError);
-      return;
+      throw new Error(error);
     }
   };
+  useEffect(() => {
+    if (loginState && loginState.includes('Error')) {
+      setLoginFail(true);
+    }
+    if (loginState && loginState.includes('object')) {
+      navigate('/profile');
+    }
+  }, [loginState]);
 
   return (
     <section className="login-form">
@@ -62,13 +68,18 @@ const LoginForm = () => {
             onChange={handleChange}
           />
         </label>
-        <button
-          type="submit"
-          className="login-form__submit-button"
-        >
+        <button type="submit" className="login-form__submit-button">
           Iniciar sesión
         </button>
       </form>
+      {loginFail === true
+        ? (
+          <Modal
+            modalFunction={setLoginFail}
+            message="Contraseña o email incorrectos. Vuelve a intentarlo."
+          />
+        )
+        : null}
     </section>
   );
 };

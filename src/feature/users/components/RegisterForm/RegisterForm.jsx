@@ -1,12 +1,17 @@
-import { useDispatch } from 'react-redux';
-import { Link } from 'react-router-dom';
-import useForm from '../../../../hooks/useForm';
-import { createUser } from '../../services/users';
 import './RegisterForm.scss';
+import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { useState } from 'react';
+import { createUser } from '../../services/users';
+import Modal from '../../../../components/Modal/Modal';
+import useForm from '../../../../hooks/useForm';
 
 const RegisterForm = () => {
   const { form, handleChange } = useForm({}); // get form hook
   const dispatch = useDispatch(); // use dispatch
+  const { email } = useSelector((state) => state.user.userData);
+
+  const [newUser, setNewUser] = useState(false);
 
   // On submit, prevent form submission and dispatch service
   const handleSubmit = async (event) => {
@@ -14,10 +19,12 @@ const RegisterForm = () => {
 
     try {
       dispatch(createUser(form));
+      setNewUser(true);
     } catch (error) {
       throw new Error(error);
     }
   };
+  const message = `El usuario con correo ${email} ha sido exitosamente creado.`;
 
   return (
     <section className="register-form">
@@ -58,6 +65,14 @@ const RegisterForm = () => {
         </button>
         <Link to="/login" className="register-form__login-button">Iniciar sesión</Link>
       </form>
+      {newUser === true
+        ? (
+          <Modal
+            modalFunction={setNewUser}
+            message={message}
+          />
+        )
+        : null}
     </section>
   );
 };

@@ -17,6 +17,22 @@
     box-shadow: 0px 0.5em 0px 0px $black;
   }
 }
+
+@mixin main-button-disabled {
+  background-color: $black-light;
+  pointer-events: none;
+  border-radius: 5em;
+  border: solid 1px $black;
+  color: white;
+  font-family: "Merriweather", serif;
+  font-weight: 600;
+  padding: 1em;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  text-align: center;
+  margin-bottom: 1em;
+  cursor: pointer;
+}
 @mixin secondary-button {
   background-color: transparent;
   border-radius: 5em;
@@ -66,10 +82,10 @@
   padding: 0.5em;
   width: 100%;
   padding-left: 0;
-  &:read-only{
+  &:read-only {
     background-color: $darker;
   }
-  &:disabled{
+  &:disabled {
     background-color: $darker;
   }
 }

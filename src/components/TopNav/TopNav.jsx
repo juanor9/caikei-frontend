@@ -5,16 +5,20 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useNavigate, Link } from 'react-router-dom';
 import { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import Logo from '../Logo/Logo';
+import { reset } from '../../feature/users/userReducer/userSlice';
 
 const TopNav = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch(); // use dispatch hook
 
   const token = localStorage.getItem('login-token');
 
   const handleLogout = () => {
     localStorage.clear();
     navigate('/');
+    dispatch(reset());
   };
 
   const [mobileMenu, setMobileMenu] = useState(false);

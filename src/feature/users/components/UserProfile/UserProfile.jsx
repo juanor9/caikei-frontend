@@ -1,21 +1,19 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-// import { useNavigate } from 'react-router-dom';
 import { updateUser, getUser } from '../../services/users';
 import Modal from '../../../../components/Modal/Modal';
 import useForm from '../../../../hooks/useForm';
 import './UserProfile.scss';
 
 const UserProfile = () => {
-  const dispatch = useDispatch(); // use dispatch hook
-  // const navigate = useNavigate(); // use navigation hook
   const [emailModal, setEmailModal] = useState(false); // set email modal
   const [passwordModal, setPasswordModal] = useState(false); // set password modal
+  const [sucessModal, setSucessModal] = useState(false);
   const { form, handleChange } = useForm({}); // get form hook
-
-  const userToken = localStorage.getItem('login-token'); // get user token from local storage
   const { userData } = useSelector((state) => state.user); // get user data from redux
   const { email, _id } = userData; // get user data from redux
+  const dispatch = useDispatch(); // use dispatch hook
+  const userToken = localStorage.getItem('login-token'); // get user token from local storage
 
   // On click for deactivate, deactivate account
   // const handleClickDeactivate = () => {
@@ -34,8 +32,12 @@ const UserProfile = () => {
     event.preventDefault();
     try {
       const formdata = { form, userId: _id };
-      dispatch(updateUser(formdata));
+      const emailRes = await dispatch(updateUser(formdata));
       setEmailModal(false);
+      const { requestStatus } = emailRes.meta;
+      if (requestStatus === 'fulfilled') {
+        setSucessModal(true);
+      }
     } catch (error) {
       throw new Error(error);
     }
@@ -56,8 +58,12 @@ const UserProfile = () => {
     event.preventDefault();
     try {
       const formdata = { form, userId: _id };
-      dispatch(updateUser(formdata));
+      const passwordRes = await dispatch(updateUser(formdata));
       setPasswordModal(false);
+      const { requestStatus } = passwordRes.meta;
+      if (requestStatus === 'fulfilled') {
+        setSucessModal(true);
+      }
     } catch (error) {
       throw new Error(error);
     }
@@ -179,6 +185,14 @@ const UserProfile = () => {
           </>
         </Modal>
       ) : null}
+      {sucessModal === true
+        ? (
+          <Modal
+            modalFunction={setSucessModal}
+            message="Los cambios han sido guardados con éxito"
+          />
+        )
+        : null}
     </section>
   );
 };

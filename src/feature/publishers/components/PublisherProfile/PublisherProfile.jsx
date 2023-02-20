@@ -11,33 +11,36 @@ import useForm from '../../../../hooks/useForm';
 import './PublisherProfile.scss';
 
 const PublisherProfile = () => {
-  const dispatch = useDispatch(); // use dispatch hook
-
-  const userToken = localStorage.getItem('login-token'); // get user token from local storage
-
-  const { userData } = useSelector((state) => state.user); // get user data from redux
-  const { email, publisher } = userData; // get publisher id from redux
-
+  const [file, setFile] = useState('');
   const [infoModal, setInfoModal] = useState(false);
   const [logoModal, setLogoModal] = useState(false);
-  const [file, setFile] = useState('');
-
+  const [sucessModal, setSucessModal] = useState(false);
   const {
-    address, logo, name, phone, publisherIds,
-  } = useSelector(
-    (state) => state.publisher.publisher,
-  ); // get publisher
-  const publisherEmail = useSelector(
-    (state) => state.publisher.publisher.email,
-  );
+    address,
+    logo,
+    name,
+    phone,
+    publisherIds,
+  } = useSelector((state) => state.publisher.publisher); // get publisher
   const { form, handleChange } = useForm({});
+  const { publisher } = useSelector((state) => state.publisher);// get user data from redux
+  const { userData } = useSelector((state) => state.user);
+  const { email } = userData; // get publisher id from redux
+  const dispatch = useDispatch(); // use dispatch hook
+  const publisherEmail = useSelector((state) => state.publisher.publisher.email);
+  const userToken = localStorage.getItem('login-token'); // get user token from local storage
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     try {
-      dispatch(updatePublisher({ ...form, publisherId: publisher }));
+      const publisherId = userData.publisher;
+      const infoRes = await dispatch(updatePublisher({ ...form, publisherId, userToken }));
       setInfoModal(false);
+      const { requestStatus } = infoRes.meta;
+      if (requestStatus === 'fulfilled') {
+        setSucessModal(true);
+      }
     } catch (error) {
       throw new Error(error);
     }
@@ -83,10 +86,11 @@ const PublisherProfile = () => {
   }, []);
 
   // get publisher data
+  const publisherFromUser = useSelector((state) => state.user.userData.publisher);
   useEffect(() => {
-    if (publisher && userToken) {
+    if ((!publisher || Object.keys(publisher).length === 0) && userToken) {
       try {
-        dispatch(getPublisherById(publisher));
+        dispatch(getPublisherById(publisherFromUser));
       } catch (error) {
         throw new Error(error);
       }
@@ -97,78 +101,79 @@ const PublisherProfile = () => {
     <>
       <h2>Editorial</h2>
       <section className="publisher-profile">
-        {publisher ? (
-          <>
-            <article className="publisher-profile__logo">
-              <div>
-                <h3>Logo</h3>
-                <figure className="publisher-profile__logo-figure">
-                  <img
-                    src={logo}
-                    alt={`${name}-logo`}
-                    className="publisher-profile__logo-img"
-                  />
-                </figure>
-                {/* <button
+        {publisher && Object.keys(publisher).length > 0
+          ? (
+            <>
+              <article className="publisher-profile__logo">
+                <div>
+                  <h3>Logo</h3>
+                  <figure className="publisher-profile__logo-figure">
+                    <img
+                      src={logo}
+                      alt={`${name}-logo`}
+                      className="publisher-profile__logo-img"
+                    />
+                  </figure>
+                  {/* <button
                   type="button"
                   className="publisher-profile__button"
                   onClick={() => { setLogoModal(true); }}
                 >Editar logo
                 </button> */}
-              </div>
-            </article>
-            <article>
-              <h3>Información general</h3>
-              <div className="publisher-profile__info">
-                <b>Nombre: </b>
-                {name}
-              </div>
-              {publisherIds ? (
-                <div className="publisher-profile__info">
-                  <b>Documento de identidad: </b>
-                  {publisherIds[publisherIds.length - 1].type}{' '}
-                  {publisherIds[publisherIds.length - 1].number}
                 </div>
-              ) : null}
-              <div className="publisher-profile__info">
-                <b>Correo electrónico: </b> {publisherEmail}
-              </div>
-              <div className="publisher-profile__info">
-                <b>Dirección: </b> {address}
-              </div>
-              <div className="publisher-profile__info">
-                <b>Teléfono: </b> {phone}
-              </div>
-              <button
-                type="button"
-                className="publisher-profile__button"
-                onClick={() => {
-                  setInfoModal(true);
-                }}
-              >
-                Editar información
-              </button>
-              {/* <button
+              </article>
+              <article>
+                <h3>Información general</h3>
+                <div className="publisher-profile__info">
+                  <b>Nombre: </b>
+                  {name}
+                </div>
+                {publisherIds ? (
+                  <div className="publisher-profile__info">
+                    <b>Documento de identidad: </b>
+                    {publisherIds[publisherIds.length - 1].type}{' '}
+                    {publisherIds[publisherIds.length - 1].number}
+                  </div>
+                ) : null}
+                <div className="publisher-profile__info">
+                  <b>Correo electrónico: </b> {publisherEmail}
+                </div>
+                <div className="publisher-profile__info">
+                  <b>Dirección: </b> {address}
+                </div>
+                <div className="publisher-profile__info">
+                  <b>Teléfono: </b> {phone}
+                </div>
+                <button
+                  type="button"
+                  className="publisher-profile__button"
+                  onClick={() => {
+                    setInfoModal(true);
+                  }}
+                >
+                  Editar información
+                </button>
+                {/* <button
                 type="button"
                 className="publisher-profile__deactivate"
                 onClick={handleClickDeactivate}
               >
                 Desactivar editorial
               </button> */}
-            </article>
-          </>
-        ) : (
-          <div className="publisher-profile__info">
-            <p>Aún no tienes una editorial registrada.</p>
-            <Link
-              to="/publisher/register"
-              className="publisher-profile__button"
-            >
-              <FontAwesomeIcon icon={faPlus} />
-              Registra una editorial
-            </Link>
-          </div>
-        )}
+              </article>
+            </>
+          ) : (
+            <div className="publisher-profile__info">
+              <p>Aún no tienes una editorial registrada.</p>
+              <Link
+                to="/publisher/register"
+                className="publisher-profile__button"
+              >
+                <FontAwesomeIcon icon={faPlus} />
+                Registra una editorial
+              </Link>
+            </div>
+          )}
         {infoModal === true ? (
           <Modal
             className="publisher-profile__modal"
@@ -272,6 +277,14 @@ const PublisherProfile = () => {
             </>
           </Modal>
         ) : null}
+        {sucessModal === true
+          ? (
+            <Modal
+              modalFunction={setSucessModal}
+              message="Los cambios han sido guardados con éxito"
+            />
+          )
+          : null}
       </section>
     </>
   );
