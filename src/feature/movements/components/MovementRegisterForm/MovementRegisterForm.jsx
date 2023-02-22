@@ -1,5 +1,3 @@
-/* eslint-disable no-debugger */
-/* eslint-disable no-unused-vars */
 /* eslint-disable no-param-reassign */
 import './MovementRegisterForm.scss';
 import { useDispatch, useSelector } from 'react-redux';
@@ -33,7 +31,7 @@ const MovementRegisterForm = () => {
   // for React Select
   const [catalogueSelect, setCatalogueSelect] = useState({});
   useEffect(() => {
-    if (catalogue) {
+    if (catalogue && Array.isArray(catalogue)) {
       setCatalogueSelect(catalogue.map((book) => ({
         value: book._id,
         label: book.title,
@@ -46,7 +44,6 @@ const MovementRegisterForm = () => {
   };
   // Add selected books to the book data
 
-  const [bookList, setBookList] = useState([]);
   const [formBookData, setFormBookData] = useState([]);
   useEffect(() => {
     if (selectedBooks && selectedBooks.length > 0) {
@@ -124,7 +121,7 @@ const MovementRegisterForm = () => {
   const [remisionDiscount, setremisionDiscount] = useState(0);
   useEffect(() => {
     if (remisionTo) {
-      dispatch(getLibrariesById(remisionTo));
+      dispatch(getLibrariesById({ id: remisionTo, userToken }));
     }
   }, [remisionTo]);
 
@@ -156,7 +153,7 @@ const MovementRegisterForm = () => {
   const [salesDiscount, setSalesDiscount] = useState(0);
   useEffect(() => {
     if (remisionFrom && remisionFrom !== publisher) {
-      dispatch(getLibrariesById(remisionFrom));
+      dispatch(getLibrariesById({ id: remisionFrom, userToken }));
     }
   }, [remisionFrom]);
 

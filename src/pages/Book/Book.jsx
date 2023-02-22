@@ -75,7 +75,7 @@ const BookPage = () => {
     if (publisher && userToken) {
       try {
         dispatch(getLibrariesByPublisher({ publisher, userToken }));
-        dispatch(getPublisherById(publisher));
+        dispatch(getPublisherById({ publisher, userToken }));
       } catch (error) {
         throw new Error(error);
       }

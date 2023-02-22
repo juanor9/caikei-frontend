@@ -53,7 +53,7 @@ const MovementPage = () => {
   useEffect(() => {
     if (id) {
       try {
-        dispatch(getLibrariesById(id));
+        dispatch(getLibrariesById({ id, userToken }));
       } catch (error) {
         throw new Error(error);
       }

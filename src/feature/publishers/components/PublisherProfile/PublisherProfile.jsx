@@ -90,7 +90,7 @@ const PublisherProfile = () => {
   useEffect(() => {
     if ((!publisher || Object.keys(publisher).length === 0) && userToken) {
       try {
-        dispatch(getPublisherById(publisherFromUser));
+        dispatch(getPublisherById({ publisher: publisherFromUser, userToken }));
       } catch (error) {
         throw new Error(error);
       }

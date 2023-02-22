@@ -27,49 +27,55 @@ const InventoryByBook = () => {
   }, [publisher, userToken]);
 
   useEffect(() => {
-    const finalObject = catalogue.map(({
-      cover, inventory, title, _id,
-    }) => {
-      const bookInventory = inventory.map((place) => { // array de lugares con el libro
-        if (place.placeId === publisherData._id) {
-          const $library = { name: publisherData.name, copies: place.copies };
-          return $library;
+    if (Array.isArray(allLibraries)) {
+      const finalObject = catalogue.map(({
+        cover, inventory, title, _id,
+      }) => {
+        if (!Array.isArray(inventory)) {
+          return null;
         }
-        // console.log('all libraries: ', allLibraries);
-        const $allLibraries = allLibraries.map((library) => (
-          { name: library.name, id: library._id }
-        ));
-        console.log(`place: ${place._id}, libraries:`, $allLibraries);
-        return ({ name: place._id, copies: place.copies });
+        const $inventory = inventory.map((place) => {
+          let name = '';
+          if (String(place.placeId) === String(publisherData._id)) {
+            name = publisherData.name;
+          }
+          const findLibraryIndex = allLibraries.findIndex(
+            (library) => String(library._id) === String(place.placeId),
+          );
+          if (findLibraryIndex >= 0) {
+            name = allLibraries[findLibraryIndex].name;
+          }
+          return ({ id: place.placeId, name, copies: place.copies });
+        });
+        return ({
+          _id, title, cover, $inventory,
+        });
       });
-      return ({
-        cover, bookInventory, title, _id,
-      });
-    });
-    // console.log(finalObject);
+      setFullInventory(finalObject);
+    }
   }, [catalogue, allLibraries]);
   return (
     <section className="by-book">
       <h3>Por libros</h3>
-
-      {catalogue && Array.isArray(catalogue)
-        ? catalogue.map((book) => (
+      {/* {console.log(fullInventory)} */}
+      {fullInventory && Array.isArray(fullInventory)
+        ? fullInventory.map((book) => (
           <article key={book._id}>
             <figure className="by-book__book-fig">
               <img src={book.cover} alt={book.title} className="by-book__book-img" />
               <figcaption>{book.title}</figcaption>
             </figure>
-            <div>
-              {book.inventory && Array.isArray(book.inventory)
-                ? book.inventory.map((library) => (
-                  <>
-                    <p><b>Librería 1</b></p>
-                    <p>Ejemplares: {library.copies}</p>
-                  </>
-                ))
-                : null}
-
-            </div>
+            <div />
+            {book.$inventory && Array.isArray(book.$inventory) && (
+              <div>
+                {book.$inventory.map((storage) => (
+                  <div key={storage.id}>
+                    <p><b>{storage.name}</b></p>
+                    <p>Cantidad de ejemplares: {storage.copies}</p>
+                  </div>
+                ))}
+              </div>
+            )}
             <hr />
           </article>
         ))
