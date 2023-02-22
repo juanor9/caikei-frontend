@@ -7,13 +7,14 @@ const token = localStorage.getItem('login-token');
 export const createMovement = createAsyncThunk(
   'movements/createMovement',
   async (data) => {
+    const {userToken, formfulldata} = data;
     const options = {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${userToken}`,
       },
-      body: JSON.stringify(data),
+      body: JSON.stringify(formfulldata),
     };
 
     const res = await fetch(`${BASE_URL}/api/movements`, options);
