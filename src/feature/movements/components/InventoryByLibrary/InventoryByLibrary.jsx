@@ -84,17 +84,17 @@ const InventoryByLibrary = () => {
           <article key={library.id}>
             <h4>{library.name}</h4>
             {library.books && Array.isArray(library.books) && (
-              <div>
+              <div className="by-library__book-container">
                 {library.books.map((book) => (
-                  <>
+                  <div>
                     <figure className="by-library__book-fig">
                       <img className="by-library__book-img" src={book.cover} alt={book.title} />
+                      <h4>{book.title}</h4>
                     </figure>
                     <div key={book.id}>
-                      <p><b>{book.title}</b></p>
-                      <p>Cantidad de ejemplares: {book.copies}</p>
+                      <p>Ejemplares: {book.copies}</p>
                     </div>
-                  </>
+                  </div>
                 ))}
               </div>
             )}

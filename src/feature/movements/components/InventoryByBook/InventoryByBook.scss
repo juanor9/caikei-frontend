@@ -10,3 +10,27 @@
     }
   }
 }
+@media (min-width: 768px) {
+  .by-book {
+    &__book {
+      display: inline-flex;
+      flex-direction: row;
+      gap: .5em;
+      &-container{
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 1em;
+      }
+      &-fig {
+        width: 10em;
+        margin: 0;
+        padding: 0;
+      }
+      &-img {
+        width: 100%;
+      }
+    }
+  }
+
+}

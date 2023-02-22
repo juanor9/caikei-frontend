@@ -54,29 +54,28 @@ const InventoryByBook = () => {
   return (
     <section className="by-book">
       <h3>Por libros</h3>
-      {fullInventory && Array.isArray(fullInventory)
-        ? fullInventory.map((book) => (
-          <article key={book._id}>
-            <figure className="by-book__book-fig">
-              <img src={book.cover} alt={book.title} className="by-book__book-img" />
-              <figcaption><h4>{book.title}</h4></figcaption>
-            </figure>
-            <div />
-            {book.$inventory && Array.isArray(book.$inventory) && (
+      <div className="by-book__book-container">
+        {fullInventory && Array.isArray(fullInventory)
+          ? fullInventory.map((book) => (
+            <article key={book._id} className="by-book__book">
+              <figure className="by-book__book-fig">
+                <img src={book.cover} alt={book.title} className="by-book__book-img" />
+                <h4>{book.title}</h4>
+              </figure>
+              {book.$inventory && Array.isArray(book.$inventory) && (
               <div>
                 {book.$inventory.map((storage) => (
                   <div key={storage.id}>
                     <p><b>{storage.name}</b></p>
-                    <p>Cantidad de ejemplares: {storage.copies}</p>
+                    <p>Ejemplares: {storage.copies}</p>
                   </div>
                 ))}
               </div>
-            )}
-            <hr />
-          </article>
-        ))
-        : null}
-
+              )}
+            </article>
+          ))
+          : null}
+      </div>
     </section>
   );
 };
