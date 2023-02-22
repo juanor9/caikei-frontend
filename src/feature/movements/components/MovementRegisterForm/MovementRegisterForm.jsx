@@ -1,3 +1,4 @@
+/* eslint-disable no-debugger */
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-param-reassign */
 import './MovementRegisterForm.scss';
@@ -44,41 +45,34 @@ const MovementRegisterForm = () => {
     setSelectedBooks(selected);
   };
   // Add selected books to the book data
-  const [formBookData, setFormBookData] = useState([]);
 
+  const [bookList, setBookList] = useState([]);
+  const [formBookData, setFormBookData] = useState([]);
   useEffect(() => {
     if (selectedBooks && selectedBooks.length > 0) {
-      const selectedBooksIds = selectedBooks.map((option) => {
+      selectedBooks.map((option) => {
         const { value } = option;
-        return value;
+        setFormBookData(formBookData.concat({ id: value }));
+        return formBookData;
       });
-      setFormBookData(selectedBooksIds);
-    }
-    if (selectedBooks && selectedBooks.length === 0) {
-      setFormBookData([]);
     }
   }, [selectedBooks]);
   // gross total
   const [grossTotal, setGrossTotal] = useState(0);
 
   // add info from form to book data
+
   const handleChangeBook = (event) => {
     const { name, value } = event.target;
     const nameSplit = name.split('-');
-
     const bookId = nameSplit[0];
-
     const key = nameSplit[1];
-
     const NewFormData = formBookData.map((bookData) => {
       if (bookData.id === bookId) {
         let total = 0;
-
         bookData = { ...bookData, [key]: value };
-
         if (bookData.copies && bookData.cost) {
           total = bookData.copies * bookData.cost;
-
           bookData = { ...bookData, total };
         }
         return bookData;
@@ -87,6 +81,7 @@ const MovementRegisterForm = () => {
     });
     setFormBookData(NewFormData);
   };
+
   useEffect(() => {
     const totals = formBookData.map((i) => i.total);
     if (totals.length > 0) {
@@ -265,7 +260,7 @@ const MovementRegisterForm = () => {
     event.preventDefault();
 
     try {
-      dispatch(createMovement(formfulldata));
+      dispatch(createMovement({ formfulldata, userToken }));
       navigate('/movements');
     } catch (error) {
       throw new Error(error);
@@ -290,7 +285,7 @@ const MovementRegisterForm = () => {
   return (
     <form action="" className="movement-form" onSubmit={handleSubmit}>
       <label htmlFor="internalId" className="movement-form__label">
-        Número de referencia
+        Número de referencias
         <input
           type="number"
           name="internalId"
@@ -400,7 +395,7 @@ const MovementRegisterForm = () => {
           id="books"
           options={catalogueSelect}
           isSearchable
-          isClearable
+          // isClearable
           isMulti
           onChange={handleChangeBooks}
         />
