@@ -9,13 +9,14 @@ import { getPublisherById } from '../../../publishers/services/publishers';
 const RegisterRemisionForm = ({ from, to }) => {
   const dispatch = useDispatch();
   const { publisher } = useSelector((state) => state.user.userData);
+  const userToken = localStorage.getItem('login-token');
 
   // get all storages
   useEffect(() => {
     if (publisher) {
       try {
-        dispatch(getLibrariesByPublisher(publisher));
-        dispatch(getPublisherById(publisher));
+        dispatch(getLibrariesByPublisher({ publisher, userToken }));
+        dispatch(getPublisherById({ publisher, userToken }));
       } catch (error) {
         throw new Error(error);
       }
@@ -79,6 +80,7 @@ const RegisterRemisionForm = ({ from, to }) => {
           options={storagesSelect}
           isSearchable
           isClearable
+          required
           defaultValue={{
             value: publisherData._id,
             label: publisherData.name,
@@ -93,6 +95,7 @@ const RegisterRemisionForm = ({ from, to }) => {
           options={storagesSelect}
           isSearchable
           isClearable
+          required
           onChange={handleChangeTo}
         />
       </div>

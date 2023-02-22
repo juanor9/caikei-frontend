@@ -44,16 +44,16 @@ export const createPublisher = createAsyncThunk(
 
 export const getPublisherById = createAsyncThunk(
   'publishers/getPublisherById',
-  async (id) => {
-    const token = localStorage.getItem('login-token');
+  async (data) => {
+    const { publisher, userToken } = data;
     const options = {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${userToken}`,
       },
     };
-    const res = await fetch(`${BASE_URL}/api/publishers/${id}`, options);
+    const res = await fetch(`${BASE_URL}/api/publishers/${publisher}`, options);
     const result = await res.json();
     return result;
   },

@@ -1,0 +1,36 @@
+@import "../../../../colors.scss";
+@import "../../../../mixin.scss";
+.inventory__toggle-button {
+  &-left {
+    @include secondary-button;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    &:hover {
+      @include main-button;
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+    &--active{
+      @include main-button;
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+      pointer-events: none;
+    }
+  }
+  &-right {
+    @include secondary-button;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    &:hover {
+      @include main-button;
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+    }
+    &--active{
+      @include main-button;
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+      pointer-events: none;
+    }
+  }
+}

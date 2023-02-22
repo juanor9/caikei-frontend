@@ -58,6 +58,10 @@
     gap: 5em;
     &__logo{
       margin-bottom: 2em;
+      &-figure{
+        margin: auto;
+        width: 15em;
+      }
     }
   }
 }

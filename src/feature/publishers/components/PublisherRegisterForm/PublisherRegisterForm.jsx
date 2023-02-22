@@ -40,7 +40,7 @@ const PublisherRegisterForm = () => {
         createPublisher({ ...form, publisherLogo: uploads, user: userToken }),
       );
       const { _id } = res.payload.publisher;
-      dispatch(getPublisherById(_id));
+      dispatch(getPublisherById({ publisher: _id, userToken }));
       navigate('/profile');
     } catch (error) {
       throw new Error(error);
