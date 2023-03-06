@@ -26,8 +26,8 @@ export const createBook = createAsyncThunk(
   },
 );
 
-export const getBooksByFilter = createAsyncThunk(
-  'books/getBooksByFilter',
+export const getBooksByPublisher = createAsyncThunk(
+  'books/getBooksByPublisher',
   async (filter) => {
     const {publisher, userToken} = filter
     const uriParams = publisher;
@@ -43,6 +43,36 @@ export const getBooksByFilter = createAsyncThunk(
     }
 
     const res = await fetch(`${BASE_URL}/api/books/search?publisher=${uriParams}`, options);
+    const result = await res.json();
+    return result;
+  },
+);
+
+export const getBooksByFilter = createAsyncThunk(
+  'books/getBooksByPublisher',
+  async (data) => {
+    const {bookFilter, userToken} = data;
+    // console.log(bookFilter);
+    const uriParams = new URLSearchParams();
+    Object.keys(bookFilter).forEach(key => {
+      const value = bookFilter[key];
+      uriParams.append(key, value);
+    })
+    const uri = `?${uriParams.toString()}`;
+
+    // console.log('uri', uri);
+    const options = {
+      method: 'GET',
+      headers: {
+        'content-type': 'application/json',
+        Authorization: `Bearer ${userToken}`,
+      },
+    };
+    if (!userToken) {
+      return { mesage: 'no token available' };
+    }
+
+    const res = await fetch(`${BASE_URL}/api/books/search${uri}`, options);
     const result = await res.json();
     return result;
   },

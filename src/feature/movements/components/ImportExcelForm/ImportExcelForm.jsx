@@ -4,12 +4,15 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { uploadExcel } from '../../../uploads/services/upload';
 import Modal from '../../../../components/Modal/Modal';
+import { getBooksByFilter } from '../../../books/services/books';
+import { getPublisherByFilter } from '../../../publishers/services/publishers';
 
 const ImportExcelForm = () => {
   const [file, setFile] = useState('');
   const [success, setSuccess] = useState(false);
   const dispatch = useDispatch();
   const { uploads } = useSelector((state) => state.upload);
+  const userToken = localStorage.getItem('login-token');
 
   const handleChangeFile = ({ target }) => {
     const { files } = target;
@@ -29,10 +32,42 @@ const ImportExcelForm = () => {
     }
   };
 
+  useEffect(() => {
+    if (uploads && Array.isArray(uploads)) {
+      uploads.map(async (item) => {
+        const {
+          titulo,
+          isbn,
+          documentoDeIdentidadDeBodega,
+          numeroDeEjemplares,
+          pvp,
+          descuento,
+        } = item;
+        const bookFilter = { isbn };
+        const book = await dispatch(getBooksByFilter({ bookFilter, userToken }));
+        // console.log(book.payload);
+
+        // check if id is publisher
+        const storageFilterPublisher = { 'publisherIds.number': documentoDeIdentidadDeBodega };
+        const getPublisherStore = await dispatch(
+          getPublisherByFilter({ filter: storageFilterPublisher, userToken }),
+        );
+        const publisherStore = getPublisherStore.payload[0];
+        console.log(publisherStore);
+
+        // if (publisherStore === undefined) {
+        //   return;
+        // }
+
+        return item;
+      });
+    }
+  }, [uploads]);
+
   return (
     <section>
       <h3>Importar desde formato de Excel</h3>
-      <Link to="https://res.cloudinary.com/dvi7rfug1/raw/upload/v1677504587/excelFiles/caikei-import-format_ybr017.xlsx">
+      <Link to="https://res.cloudinary.com/dvi7rfug1/raw/upload/v1677510795/excelFiles/caikei-import-format_pc2yuw.xlsx">
         Descarga el formato de Excel
       </Link>
       <form action="" onSubmit={handleSubmitFile}>
@@ -57,9 +92,9 @@ const ImportExcelForm = () => {
       {uploads && Array.isArray(uploads)
         ? (
           <>
-            {uploads.map(({ título, isbn }) => (
+            {uploads.map(({ titulo, isbn }) => (
               <article>
-                <p>{título}</p>
+                <p>{titulo}</p>
                 <p>{isbn}</p>
               </article>
             ))}

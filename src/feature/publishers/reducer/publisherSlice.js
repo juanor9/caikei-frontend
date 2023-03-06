@@ -1,6 +1,11 @@
 /* eslint-disable no-param-reassign */
 import { createSlice } from '@reduxjs/toolkit';
-import { createPublisher, getPublisherById, updatePublisher } from '../services/publishers';
+import {
+  createPublisher,
+  getPublisherById,
+  updatePublisher,
+  getPublisherByFilter,
+} from '../services/publishers';
 
 const initialState = {
   publisher: {},
@@ -15,6 +20,9 @@ const publisherSlice = createSlice(
         state.publisher = action.payload;
       });
       builder.addCase(getPublisherById.fulfilled, (state, action) => {
+        state.publisher = action.payload;
+      });
+      builder.addCase(getPublisherByFilter.fulfilled, (state, action) => {
         state.publisher = action.payload;
       });
       builder.addCase(updatePublisher.fulfilled, (state, action) => {

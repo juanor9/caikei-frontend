@@ -34,6 +34,7 @@ export const uploadExcel = createAsyncThunk(
 
     const response = await fetch(`${BASE_URL}/api/upload/import-inventory`, options);
     const data = await response.json();
+
     return data;
   }
 );
