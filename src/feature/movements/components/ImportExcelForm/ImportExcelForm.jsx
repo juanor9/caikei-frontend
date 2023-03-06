@@ -6,6 +6,7 @@ import { uploadExcel } from '../../../uploads/services/upload';
 import Modal from '../../../../components/Modal/Modal';
 import { getBooksByFilter } from '../../../books/services/books';
 import { getPublisherByFilter } from '../../../publishers/services/publishers';
+import { getLibrariesByFilter } from '../../../libraries/services/libraries';
 
 const ImportExcelForm = () => {
   const [file, setFile] = useState('');
@@ -45,7 +46,6 @@ const ImportExcelForm = () => {
         } = item;
         const bookFilter = { isbn };
         const book = await dispatch(getBooksByFilter({ bookFilter, userToken }));
-        // console.log(book.payload);
 
         // check if id is publisher
         const storageFilterPublisher = { 'publisherIds.number': documentoDeIdentidadDeBodega };
@@ -55,9 +55,15 @@ const ImportExcelForm = () => {
         const publisherStore = getPublisherStore.payload[0];
         console.log(publisherStore);
 
-        // if (publisherStore === undefined) {
-        //   return;
-        // }
+        // check if id is a library
+        if (publisherStore === undefined) {
+          const storageFilterLibrary = { 'libraryIds.number': documentoDeIdentidadDeBodega };
+          const getLibraryStore = await dispatch(
+            getLibrariesByFilter({ filter: storageFilterLibrary, userToken }),
+          );
+          const libraryStore = getLibraryStore.payload[0];
+          console.log(libraryStore);
+        }
 
         return item;
       });
