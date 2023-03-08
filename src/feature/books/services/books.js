@@ -98,12 +98,12 @@ export const getBookById = createAsyncThunk(
 export const updateBookById = createAsyncThunk(
   'books/updateBook',
   async (data) => {
-    const { form, id } = data;
+    const { form, id, userToken } = data;
     const options = {
       method: 'PATCH',
       headers: {
         'content-type': 'application/json',
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${userToken}`,
       },
       body: JSON.stringify(form),
     };
