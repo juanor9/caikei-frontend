@@ -20,21 +20,3 @@ export const uploadImage = createAsyncThunk(
     return url;
   }
 );
-
-export const uploadExcel = createAsyncThunk(
-  'uploads/uploadExcel', async (file) => {
-    const formData = new FormData();
-    const options = {
-      method: 'POST',
-      body: formData,
-    };
-
-    formData.append('file', file);
-    formData.append('fileName', file.name);
-
-    const response = await fetch(`${BASE_URL}/api/upload/import-inventory`, options);
-    const data = await response.json();
-
-    return data;
-  }
-);
