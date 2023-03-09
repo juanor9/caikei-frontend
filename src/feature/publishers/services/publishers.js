@@ -59,6 +59,30 @@ export const getPublisherById = createAsyncThunk(
   },
 );
 
+export const getPublisherByFilter = createAsyncThunk(
+  'publishers/getPublisherByFilter',
+  async (data) => {
+    const { filter, userToken } = data;
+    const uriParams = new URLSearchParams();
+    Object.keys(filter).forEach((key) => {
+      const value = filter[key];
+      uriParams.append(key, value);
+    });
+    const uri = `?${uriParams.toString()}`;
+
+    const options = {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${userToken}`,
+      },
+    };
+    const res = await fetch(`${BASE_URL}/api/publishers/search${uri}`, options);
+    const result = await res.json();
+    return result;
+  },
+);
+
 export const updatePublisher = createAsyncThunk(
   'publishers/updatePublisher',
   async (updateData) => {
