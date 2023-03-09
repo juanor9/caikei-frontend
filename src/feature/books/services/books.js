@@ -99,6 +99,7 @@ export const updateBookById = createAsyncThunk(
   'books/updateBook',
   async (data) => {
     const { form, id, userToken } = data;
+    console.log(form);
     const options = {
       method: 'PATCH',
       headers: {

@@ -1,3 +1,4 @@
+/* eslint-disable no-debugger */
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-unused-vars */
 /* eslint-disable prefer-destructuring */
@@ -98,33 +99,21 @@ const ImportExcelForm = () => {
     if (!importItems || !Array.isArray(importItems)) {
       return null;
     }
-    importItems.map(async (item) => {
-      console.log('item', item);
-      const fetchbook = await dispatch(getBookById({ id: item.bookId, userToken }));
-      const { inventory } = fetchbook.payload;
-      if (!inventory || !Array.isArray(inventory)) {
-        return null;
+    const inventoryMod = importItems.reduce((acc, book) => {
+      const {
+        bookId, storageId, copies,
+      } = book;
+      if (acc[bookId]) {
+        acc[bookId].inventory.push({ storageId, copies });
+      } else {
+        acc[bookId] = { bookId, inventory: [{ storageId, copies }] };
       }
-      inventory.map((storage) => {
-        console.log('storage', storage);
-        // console.log('condition', String(storage.placeId) === String(item.storageId));
+      return acc;
+    }, {});
+    const inventoryByBookId = Object.values(inventoryMod);
 
-        // Traer el inventario total y generar el form.
-        // Asignar las copias solo a aquellos elementos en los que el id coincida
-        if (String(storage.placeId) === String(item.storageId)) {
-          console.log('inside condition');
-          // const form = {
-          //   inventory:
-          // }
-          // dispatch (updateBookById({ id: item.bookId, userToken}))
-          console.log('storage after', storage);
-        }
-        return storage;
-      });
-      // console.log(inventory);
-      return item;
-    });
-    return importItems;
+    // TODO: Recorrer inventoryByBookId, y por cada libro llamar el libro y actualizar el inventario
+    return inventoryByBookId;
   };
 
   return (

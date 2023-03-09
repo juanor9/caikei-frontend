@@ -26,12 +26,12 @@ const ImportInventory = () => {
           >
             Importar desde formato de Excel
           </button>
-          <button
+          {/* <button
             type="button"
             onClick={() => { setImportKind('alejandria'); }}
           >
             Importar desde formato exportado de Alejandría
-          </button>
+          </button> */}
           {importKind === 'excel'
             ? <ImportExcelForm />
             : null}
