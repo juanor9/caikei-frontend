@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getBooksByPublisher } from '../../../books/services/books';
+import { getBooksByFilter } from '../../../books/services/books';
 import getLibrariesByPublisher from '../../../libraries/services/allLibraries';
 import './InventoryByLibrary.scss';
 
@@ -14,7 +14,7 @@ const InventoryByLibrary = () => {
   const userToken = localStorage.getItem('login-token');
 
   useEffect(() => {
-    dispatch(getBooksByPublisher({ publisher, userToken }));
+    dispatch(getBooksByFilter({ publisher, userToken }));
   }, [publisher, userToken]);
 
   useEffect(() => {

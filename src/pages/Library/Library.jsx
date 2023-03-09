@@ -9,7 +9,7 @@ import {
   getLibrariesById,
   updateLibrary,
 } from '../../feature/libraries/services/libraries';
-import { getBooksByPublisher } from '../../feature/books/services/books';
+import { getBooksByFilter } from '../../feature/books/services/books';
 import TopNav from '../../components/TopNav/TopNav';
 import useForm from '../../hooks/useForm';
 import BookInventoryCard from '../../feature/books/components/BookInventoryCard/BookInventoryCard';
@@ -86,7 +86,7 @@ const LibraryPage = () => {
   useEffect(() => {
     if (publisher) {
       try {
-        dispatch(getBooksByPublisher(publisher));
+        dispatch(getBooksByFilter(publisher));
       } catch (error) {
         throw new Error(error);
       }

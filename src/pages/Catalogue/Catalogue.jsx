@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { getUser } from '../../feature/users/services/users';
-import { getBooksByPublisher } from '../../feature/books/services/books';
+import { getBooksByFilter } from '../../feature/books/services/books';
 import TopNav from '../../components/TopNav/TopNav';
 import BookCard from '../../feature/books/components/BookCard/BookCard';
 
@@ -34,7 +34,7 @@ const CataloguePage = () => {
   useEffect(() => {
     if (publisher && userToken) {
       try {
-        dispatch(getBooksByPublisher({ publisher, userToken }));
+        dispatch(getBooksByFilter({ publisher, userToken }));
       } catch (error) {
         throw new Error(error);
       }

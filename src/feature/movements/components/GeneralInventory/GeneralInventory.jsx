@@ -1,6 +1,5 @@
 /* eslint-disable no-unused-vars */
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
 import InventoryByBook from '../InventoryByBook/InventoryByBook';
 import InventoryByLibrary from '../InventoryByLibrary/InventoryByLibrary';
 import './GeneralInventory.scss';
@@ -37,29 +36,25 @@ const GeneralInventory = () => {
     <>
       <h2>Inventario</h2>
       <div>
-        <div>
-          <button
-            id="byLibrary"
-            type="button"
-            name="library"
-            onClick={handleClick}
-            className="inventory__toggle-button-left"
-          >
-            Por librería
-          </button>
-          <button
-            id="byBook"
-            type="button"
-            name="book"
-            onClick={handleClick}
-            className="inventory__toggle-button-right"
-          >
-            Por libro
-          </button>
-        </div>
-        <Link to="/movement/import"> Importar inventario</Link>
+        <button
+          id="byLibrary"
+          type="button"
+          name="library"
+          onClick={handleClick}
+          className="inventory__toggle-button-left"
+        >
+          Por librería
+        </button>
+        <button
+          id="byBook"
+          type="button"
+          name="book"
+          onClick={handleClick}
+          className="inventory__toggle-button-right"
+        >
+          Por libro
+        </button>
       </div>
-
       {by === 'book'
         ? <InventoryByBook />
         : null}

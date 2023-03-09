@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Select from 'react-select';
 import { createMovement } from '../../services/movements';
-import { getBooksByPublisher } from '../../../books/services/books';
+import { getBooksByFilter } from '../../../books/services/books';
 import { getLibrariesById } from '../../../libraries/services/libraries';
 import { getUser } from '../../../users/services/users';
 import RegisterDevolutionForm from '../RegisterDevolutionForm/RegisterDevolutionForm';
@@ -110,7 +110,7 @@ const MovementRegisterForm = () => {
   useEffect(() => {
     if (publisher) {
       try {
-        dispatch(getBooksByPublisher({ publisher, userToken }));
+        dispatch(getBooksByFilter({ publisher, userToken }));
       } catch (error) {
         throw new Error(error);
       }
