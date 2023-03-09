@@ -16,6 +16,7 @@ import MovementsPage from './pages/Movements/Movements';
 import MovementPage from './pages/Movement/Movement';
 import RegisterMovementPage from './pages/MovementRegister/MovementRegister';
 import TermsAndConditions from './pages/TermsAndConditions/TermsAndConditions';
+import ImportInventory from './pages/ImportInventory/ImportInventory';
 
 const App = () => {
   useEffect(() => {
@@ -37,6 +38,7 @@ const App = () => {
         <Route path="/movements" element={<MovementsPage />} />
         <Route path="/movement/:id" element={<MovementPage />} />
         <Route path="/movement/register" element={<RegisterMovementPage />} />
+        <Route path="/movement/import" element={<ImportInventory />} />
 
         <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
 

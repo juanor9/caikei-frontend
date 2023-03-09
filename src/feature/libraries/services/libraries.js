@@ -39,6 +39,31 @@ export const getLibrariesById = createAsyncThunk(
   },
 );
 
+export const getLibrariesByFilter = createAsyncThunk(
+  'libraries/getLibrariesByFilter',
+  async (data) => {
+    const { filter, userToken } = data;
+
+    const uriParams = new URLSearchParams();
+    Object.keys(filter).forEach((key) => {
+      const value = filter[key];
+      uriParams.append(key, value);
+    });
+    const uri = `?${uriParams.toString()}`;
+
+    const options = {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${userToken}`,
+      },
+    };
+    const res = await fetch(`${BASE_URL}/api/libraries/search${uri}`, options);
+    const result = await res.json();
+    return result;
+  },
+);
+
 export const updateLibrary = createAsyncThunk(
   'libraries/updateLibrary',
   async (updateData) => {
