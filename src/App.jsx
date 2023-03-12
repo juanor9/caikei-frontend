@@ -17,6 +17,7 @@ import MovementPage from './pages/Movement/Movement';
 import RegisterMovementPage from './pages/MovementRegister/MovementRegister';
 import TermsAndConditions from './pages/TermsAndConditions/TermsAndConditions';
 import ImportInventory from './pages/ImportInventory/ImportInventory';
+import MyDocument from './feature/movements/components/MovementPdf/MovementPdf';
 
 const App = () => {
   useEffect(() => {
@@ -39,6 +40,7 @@ const App = () => {
         <Route path="/movement/:id" element={<MovementPage />} />
         <Route path="/movement/register" element={<RegisterMovementPage />} />
         <Route path="/movement/import" element={<ImportInventory />} />
+        <Route path="/movement/pdf" element={<MyDocument />} />
 
         <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
 

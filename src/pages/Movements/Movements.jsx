@@ -41,6 +41,10 @@ const MovementsPage = () => {
         <Link to="/movement/register" className="movements__add-button">
           Crear nuevo movimiento
         </Link>
+
+        <Link to="/movement/pdf" className="movements__add-button">
+          ver test pdf
+        </Link>
         <table className="movements__movements-container">
           <thead>
             <tr>
@@ -57,6 +61,7 @@ const MovementsPage = () => {
               ? movement.map((m) => (
                 <MovementCard
                   key={m._id}
+                  dbid={m._id}
                   id={m.internalId}
                   date={m.date}
                   kind={m.kind}

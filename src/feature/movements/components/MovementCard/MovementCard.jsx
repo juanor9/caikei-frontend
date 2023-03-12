@@ -3,8 +3,10 @@
 import './MovementCard.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
+import { PDFDownloadLink } from '@react-pdf/renderer';
 import getLibrariesByPublisher from '../../../libraries/services/allLibraries';
 import { getPublisherById } from '../../../publishers/services/publishers';
+import MyDocument from '../MovementPdf/MovementPdf';
 
 const MovementCard = ({
   id,
@@ -14,6 +16,7 @@ const MovementCard = ({
   to,
   grossTotal,
   netTotal,
+  dbid,
 }) => {
   const dispatch = useDispatch();
   const { publisher } = useSelector((state) => state.user.userData);
@@ -72,6 +75,13 @@ const MovementCard = ({
       {netTotal
         ? <td className="movements__cell--not-mobile">{netTotal}</td>
         : <td className="movements__cell--not-mobile">{grossTotal}</td>}
+      <td>
+        <PDFDownloadLink document={<MyDocument data={dbid} />} filename="FORM">
+          {({ loading }) => (loading
+            ? <button type="button">Loading Document...</button>
+            : <button type="button">Download</button>)}
+        </PDFDownloadLink>
+      </td>
     </tr>
   );
 };
