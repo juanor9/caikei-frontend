@@ -41,10 +41,6 @@ const MovementsPage = () => {
         <Link to="/movement/register" className="movements__add-button">
           Crear nuevo movimiento
         </Link>
-
-        <Link to="/movement/pdf" className="movements__add-button">
-          ver test pdf
-        </Link>
         <table className="movements__movements-container">
           <thead>
             <tr>
@@ -58,6 +54,22 @@ const MovementsPage = () => {
           </thead>
           <tbody>
             {movement && Array.isArray(movement)
+              ? (movement.map((m) => (
+                <MovementCard
+                  key={m._id}
+                  dbid={m._id}
+                  id={m.internalId}
+                  date={m.date}
+                  kind={m.kind}
+                  from={m.from}
+                  to={m.to}
+                  grossTotal={m.grossTotal}
+                  netTotal={m.netTotal}
+                  books={m.books}
+                />
+              )))
+              : null}
+            {/* {movement && Array.isArray(movement)
               ? movement.map((m) => (
                 <MovementCard
                   key={m._id}
@@ -71,7 +83,7 @@ const MovementsPage = () => {
                   netTotal={m.netTotal}
                 />
               ))
-              : null}
+              : null} */}
           </tbody>
         </table>
       </main>
