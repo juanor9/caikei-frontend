@@ -18,6 +18,21 @@
       display: none;
     }
   }
+  &__loading{
+    border: none;
+    background-color: transparent;
+    font-size: 1.3em;
+    color: $black-light;
+  }
+  &__download{
+    border: none;
+    background-color: transparent;
+    font-size: 1.3em;
+    cursor: pointer;
+    &:hover{
+      color: $accent;
+    }
+  }
 }
 th, td {
   border-bottom: 1px solid #ddd;

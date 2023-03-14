@@ -1,3 +1,5 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable no-unused-vars */
 import PropTypes from 'prop-types';
 import {
   Page,
@@ -15,7 +17,7 @@ import MerriweatherBold from '../../../../../assets/fonts/Merriweather/Merriweat
 Font.register({
   family: 'Merriweather',
   fonts: [
-    { src: Merriweather }, // font-style: normal, font-weight: normal
+    { src: Merriweather },
     { src: MerriweatherItalic, fontStyle: 'italic' },
     { src: MerriweatherBold, fontWeight: 'bold' },
   ],
@@ -33,9 +35,13 @@ const styles = StyleSheet.create({
   date: {
     marginBottom: 20,
   },
+  generalData: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
   publisherData: {
     flexDirection: 'row',
-    gap: 20,
+    gap: 10,
   },
   publisherLogo: {
     width: '100%',
@@ -88,26 +94,49 @@ const styles = StyleSheet.create({
 });
 
 // Create Document Component
-const EntryPdf = ({
-  publisher, logo, pubId, internalId, date, books, total,
+const RemisionPdf = ({
+  publisher,
+  logo,
+  pubId,
+  destination,
+  internalId,
+  date,
+  books,
+  discount,
+  copiesTotal,
+  fullTotal,
 }) => (
   <Document>
     <Page size="LETTER" style={styles.page}>
       <Text style={styles.date}>{date}</Text>
-      <View style={styles.publisherData}>
-        <View style={{ width: '10%' }}>
-          <Image src={logo} style={styles.publisherLogo} />
+      <View style={styles.generalData}>
+        <View style={styles.publisherData}>
+          <View style={{ width: '20%' }}>
+            <Image src={logo} style={styles.publisherLogo} />
+          </View>
+          <View>
+            <Text>{publisher.name}</Text>
+            <Text>
+              {pubId.type}: {pubId.number}
+            </Text>
+            <Text>Dirección: {publisher.address}</Text>
+            <Text>Teléfono: {publisher.phone}</Text>
+            <Text>Correo electrónico: {publisher.email}</Text>
+          </View>
         </View>
         <View>
-          <Text>{publisher.name}</Text>
-          <Text>{pubId.type}: {pubId.number}</Text>
-          <Text>Dirección: {publisher.address}</Text>
-          <Text>Teléfono: {publisher.phone}</Text>
-          <Text>Correo electrónico: {publisher.email}</Text>
+          <Text style={{ fontWeight: 'bold' }}>Destino:</Text>
+          <Text>{destination.name}</Text>
+          <Text>
+            Direccion: {destination.address}, {destination.city}
+          </Text>
+          <Text>Teléfono: {destination.phone}</Text>
+          <Text>Correo electrónico: {destination.email}</Text>
         </View>
       </View>
-      <Text style={styles.header}>Ingreso de ejemplares</Text>
-      <Text>Ingreso No. {internalId}</Text>
+      <Text style={styles.header}>Remisión de ejemplares</Text>
+      <Text>Remisión No. {internalId}</Text>
+      <Text>Descuento: {discount}%</Text>
       {/* <Text>Descuento:</Text> */}
       <View style={styles.bookListHeader}>
         <Text style={styles.bookTitle}>Título</Text>
@@ -124,51 +153,64 @@ const EntryPdf = ({
             <Text style={styles.bookTitle}>{book.title}</Text>
             <Text style={styles.bookIsbn}>{book.isbn}</Text>
             <Text style={styles.bookItems}>{book.copies}</Text>
+            <Text style={styles.bookItems}>${book.pvp.toLocaleString()}</Text>
+            <Text style={styles.bookItems}>
+              ${book.subTotal.toLocaleString()}
+            </Text>
+            <Text style={styles.bookItems}>
+              ${book.dicAmount.toLocaleString()}
+            </Text>
+            <Text style={styles.bookItems}>${book.total.toLocaleString()} </Text>
           </View>
         ))
         : null}
       <View style={styles.bookListTotal}>
-        <Text style={styles.bookTitle}>TOTAL: ${total.toLocaleString()}</Text>
+        <Text style={styles.bookTitle}>TOTAL</Text>
         <Text style={styles.bookIsbn} />
+        <Text style={styles.bookItems}>{copiesTotal}</Text>
         <Text style={styles.bookItems} />
         <Text style={styles.bookItems} />
         <Text style={styles.bookItems} />
-        <Text style={styles.bookItems} />
-        <Text style={styles.bookItems} />
+        <Text style={styles.bookItems}>${fullTotal.toLocaleString()}</Text>
       </View>
       <Text style={styles.credits}>Documento generado por Caikei</Text>
     </Page>
   </Document>
 );
 
-EntryPdf.propTypes = {
-  publisher: PropTypes.shape(
-    {
-      name: PropTypes.string,
-      address: PropTypes.string,
-      phone: PropTypes.string,
-      email: PropTypes.string,
-    },
-  ).isRequired,
+RemisionPdf.propTypes = {
+  publisher: PropTypes.shape({
+    name: PropTypes.string,
+    address: PropTypes.string,
+    phone: PropTypes.string,
+    email: PropTypes.string,
+  }).isRequired,
   logo: PropTypes.string.isRequired,
-  pubId: PropTypes.shape(
-    {
-      type: PropTypes.string,
-      number: PropTypes.string,
-      isbn: PropTypes.number,
-      copies: PropTypes.number,
-    },
-  ).isRequired,
+  pubId: PropTypes.shape({
+    type: PropTypes.string,
+    number: PropTypes.string,
+    isbn: PropTypes.number,
+    copies: PropTypes.number,
+  }).isRequired,
+  destination: PropTypes.shape({
+    name: PropTypes.string,
+    address: PropTypes.string,
+    city: PropTypes.string,
+    email: PropTypes.string,
+    phone: PropTypes.string,
+  }).isRequired,
   internalId: PropTypes.number.isRequired,
   date: PropTypes.string.isRequired,
   books: PropTypes.arrayOf(
-    PropTypes.shape(
-      {
-        id: PropTypes.string,
-        title: PropTypes.string,
-      },
-    ),
+    PropTypes.shape({
+      id: PropTypes.string,
+      title: PropTypes.string,
+      pvp: PropTypes.number,
+    }),
   ).isRequired,
-  total: PropTypes.number.isRequired,
+  discount: PropTypes.number,
 };
-export default EntryPdf;
+RemisionPdf.defaultProps = {
+  discount: 0,
+};
+export default RemisionPdf;
