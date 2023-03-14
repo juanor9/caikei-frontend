@@ -54,9 +54,10 @@ const MovementsPage = () => {
           </thead>
           <tbody>
             {movement && Array.isArray(movement)
-              ? movement.map((m) => (
+              ? (movement.map((m) => (
                 <MovementCard
                   key={m._id}
+                  dbid={m._id}
                   id={m.internalId}
                   date={m.date}
                   kind={m.kind}
@@ -64,8 +65,9 @@ const MovementsPage = () => {
                   to={m.to}
                   grossTotal={m.grossTotal}
                   netTotal={m.netTotal}
+                  books={m.books}
                 />
-              ))
+              )))
               : null}
           </tbody>
         </table>

@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import { createMovement, getMovementsByPublisher } from '../services/movements';
 
 const initialState = {
-  movement: {},
+  movement: [],
 };
 
 const movementSlice = createSlice(
