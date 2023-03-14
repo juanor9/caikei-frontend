@@ -11,6 +11,8 @@ import getLibrariesByPublisher from '../../../libraries/services/allLibraries';
 import EntryPdf from '../pdf/EntryPdf/EntryPdf';
 import { getBookById } from '../../../books/services/books';
 import RemisionPdf from '../pdf/RemissionPdf/RemisionPdf';
+import DevolutionPdf from '../pdf/DevolutionPdf/DevolutionPdf';
+import SalePdf from '../pdf/SalePdf/SalePdf';
 
 const MovementCard = ({
   id,
@@ -44,21 +46,19 @@ const MovementCard = ({
     if (String(from) === String(publisher)) {
       setFromName(publisherName);
     }
-    // TODO: guardar el id más reciente de la librería en una variable
-    // TODO: guardar el porcentaje de descuento en una variable
     if (allLibraries && Array.isArray(allLibraries)) {
       allLibraries.map((library) => {
         if (String(to) === String(library._id)) {
           setToName(library.name);
           setToData(library);
-          // console.log(library.publishers);
           const pubInLibrary = library.publishers.find((pub) => pub.publisherId === publisher);
-          // console.log(pubInLibrary);
           setDiscount(pubInLibrary.discount);
         }
         if (String(from) === String(library._id)) {
           setFromName(library.name);
           setFromData(library);
+          const pubInLibrary = library.publishers.find((pub) => pub.publisherId === publisher);
+          setDiscount(pubInLibrary.discount);
         }
         return library;
       });
@@ -132,7 +132,6 @@ const MovementCard = ({
           });
         }),
       );
-      // console.log(booksData);
       setMovementBookData(booksData);
     };
     fetchData();
@@ -159,7 +158,6 @@ const MovementCard = ({
         <td className="movements__cell--not-mobile">{grossTotal}</td>
       )}
       <td>
-        {/* {console.log(movementBookData)} */}
         {greyLogo && publisherId && kind === 'ingreso' ? (
           <PDFDownloadLink
             document={(
@@ -187,7 +185,6 @@ const MovementCard = ({
             ))}
           </PDFDownloadLink>
         ) : null}
-        {/* {console.log(copiesTotal)} */}
 
         {greyLogo && publisherId && kind === 'remisión' ? (
           <PDFDownloadLink
@@ -195,6 +192,68 @@ const MovementCard = ({
               <RemisionPdf
                 publisher={publisherData}
                 destination={toData}
+                logo={greyLogo}
+                kind={kind}
+                pubId={publisherId}
+                internalId={id}
+                date={dateN}
+                books={movementBookData}
+                discount={discount}
+                copiesTotal={copiesTotal}
+                fullTotal={fullTotal}
+              />
+            )}
+            filename="FORM"
+          >
+            {({ loading }) => (loading ? (
+              <button type="button" aria-label="loading" className="movements__loading">
+                <FontAwesomeIcon icon={faSpinner} spin />
+              </button>
+            ) : (
+              <button type="button" aria-label="download" className="movements__download">
+                <FontAwesomeIcon icon={faFileArrowDown} />
+              </button>
+            ))}
+          </PDFDownloadLink>
+        ) : null}
+
+        {greyLogo && publisherId && kind === 'devolución' ? (
+          <PDFDownloadLink
+            document={(
+              <DevolutionPdf
+                publisher={publisherData}
+                destination={fromData}
+                logo={greyLogo}
+                kind={kind}
+                pubId={publisherId}
+                internalId={id}
+                date={dateN}
+                books={movementBookData}
+                discount={discount}
+                copiesTotal={copiesTotal}
+                fullTotal={fullTotal}
+              />
+            )}
+            filename="FORM"
+          >
+            {({ loading }) => (loading ? (
+              <button type="button" aria-label="loading" className="movements__loading">
+                <FontAwesomeIcon icon={faSpinner} spin />
+              </button>
+            ) : (
+              <button type="button" aria-label="download" className="movements__download">
+                <FontAwesomeIcon icon={faFileArrowDown} />
+              </button>
+            ))}
+          </PDFDownloadLink>
+        ) : null}
+
+        {greyLogo && publisherId && kind === 'liquidación' ? (
+          <PDFDownloadLink
+            document={(
+              <DevolutionPdf
+                publisher={publisherData}
+                destination={fromData}
                 logo={greyLogo}
                 kind={kind}
                 pubId={publisherId}

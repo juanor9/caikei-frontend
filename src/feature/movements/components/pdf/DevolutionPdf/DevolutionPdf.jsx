@@ -92,7 +92,7 @@ const styles = StyleSheet.create({
 });
 
 // Create Document Component
-const RemisionPdf = ({
+const DevolutionPdf = ({
   publisher,
   logo,
   pubId,
@@ -123,7 +123,7 @@ const RemisionPdf = ({
           </View>
         </View>
         <View>
-          <Text style={{ fontWeight: 'bold' }}>Destino:</Text>
+          <Text style={{ fontWeight: 'bold' }}>Remitente:</Text>
           <Text>{destination.name}</Text>
           <Text>
             Direccion: {destination.address}, {destination.city}
@@ -132,8 +132,8 @@ const RemisionPdf = ({
           <Text>Correo electrónico: {destination.email}</Text>
         </View>
       </View>
-      <Text style={styles.header}>Remisión de ejemplares</Text>
-      <Text>Remisión No. {internalId}</Text>
+      <Text style={styles.header}>Devolución de ejemplares</Text>
+      <Text>Devolución No. {internalId}</Text>
       <Text>Descuento: {discount}%</Text>
       {/* <Text>Descuento:</Text> */}
       <View style={styles.bookListHeader}>
@@ -176,7 +176,7 @@ const RemisionPdf = ({
   </Document>
 );
 
-RemisionPdf.propTypes = {
+DevolutionPdf.propTypes = {
   publisher: PropTypes.shape({
     name: PropTypes.string,
     address: PropTypes.string,
@@ -210,7 +210,7 @@ RemisionPdf.propTypes = {
   copiesTotal: PropTypes.number.isRequired,
   fullTotal: PropTypes.number.isRequired,
 };
-RemisionPdf.defaultProps = {
+DevolutionPdf.defaultProps = {
   discount: 0,
 };
-export default RemisionPdf;
+export default DevolutionPdf;
