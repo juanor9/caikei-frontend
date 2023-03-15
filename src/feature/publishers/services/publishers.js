@@ -46,6 +46,15 @@ export const getPublisherById = createAsyncThunk(
   'publishers/getPublisherById',
   async (data) => {
     const { publisher, userToken } = data;
+    if (publisher === undefined) {
+      return {
+        address: '',
+        logo: '',
+        name: '',
+        phone: '',
+        publisherIds: [],
+      };
+    }
     const options = {
       method: 'GET',
       headers: {

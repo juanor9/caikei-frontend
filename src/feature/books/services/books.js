@@ -52,7 +52,6 @@ export const getBooksByFilter = createAsyncThunk(
   'books/getBooksByPublisher',
   async (data) => {
     const {bookFilter, userToken} = data;
-    // console.log(bookFilter);
     const uriParams = new URLSearchParams();
     Object.keys(bookFilter).forEach(key => {
       const value = bookFilter[key];
@@ -60,7 +59,6 @@ export const getBooksByFilter = createAsyncThunk(
     })
     const uri = `?${uriParams.toString()}`;
 
-    // console.log('uri', uri);
     const options = {
       method: 'GET',
       headers: {
@@ -99,7 +97,6 @@ export const updateBookById = createAsyncThunk(
   'books/updateBook',
   async (data) => {
     const { form, id, userToken } = data;
-    console.log(form);
     const options = {
       method: 'PATCH',
       headers: {

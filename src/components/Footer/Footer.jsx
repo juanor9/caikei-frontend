@@ -15,6 +15,11 @@ const Footer = () => (
             Términos y condiciones
           </Link>
         </li>
+        <li>
+          <Link to="/privacy" className="footer__link">
+            Política de privacidad
+          </Link>
+        </li>
       </ul>
     </div>
     <div>Col 2</div>

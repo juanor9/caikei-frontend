@@ -1,41 +1,44 @@
 import './RegisterForm.scss';
 import { Link } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import {
+  // useDispatch,
+  useSelector,
+} from 'react-redux';
 import { useState } from 'react';
-import { createUser } from '../../services/users';
+// import { createUser } from '../../services/users';
 import Modal from '../../../../components/Modal/Modal';
-import useForm from '../../../../hooks/useForm';
+// import useForm from '../../../../hooks/useForm';
 
 const RegisterForm = () => {
-  const { form, handleChange } = useForm({}); // get form hook
-  const dispatch = useDispatch(); // use dispatch
+  // const { form, handleChange } = useForm({}); // get form hook
+  // const dispatch = useDispatch(); // use dispatch
   const { email } = useSelector((state) => state.user.userData);
 
   const [newUser, setNewUser] = useState(false);
 
   // On submit, prevent form submission and dispatch service
-  const handleSubmit = async (event) => {
-    event.preventDefault();
+  // const handleSubmit = async (event) => {
+  //   event.preventDefault();
 
-    try {
-      dispatch(createUser(form));
-      setNewUser(true);
-    } catch (error) {
-      throw new Error(error);
-    }
-  };
+  //   try {
+  //     dispatch(createUser(form));
+  //     setNewUser(true);
+  //   } catch (error) {
+  //     throw new Error(error);
+  //   }
+  // };
   const message = `El usuario con correo ${email} ha sido exitosamente creado.`;
 
   return (
     <section className="register-form">
-      <h2 className="register-form__header">Crea tu cuenta</h2>
+      {/* <h2 className="register-form__header">Crea tu cuenta</h2> */}
       <form
         action=""
-        onSubmit={handleSubmit}
+        // onSubmit={handleSubmit}
         id="register-form__form"
         className="register-form__form"
       >
-        <label htmlFor="email" className="register-form__label">
+        {/* <label htmlFor="email" className="register-form__label">
           Email
           <input
             id="email"
@@ -62,7 +65,7 @@ const RegisterForm = () => {
           className="register-form__submit-button"
         >
           Registrarse
-        </button>
+        </button> */}
         <Link to="/login" className="register-form__login-button">Iniciar sesión</Link>
       </form>
       {newUser === true
@@ -73,6 +76,12 @@ const RegisterForm = () => {
           />
         )
         : null}
+      {/* <div className="register-form__disclaimer">
+        <p>Al hacer click en &quot;Registrarse&quot; confirmo que he leído y acepto los
+        <Link to="/terms-and-conditions">Términos y condiciones de la aplicación</Link>
+        así como nuestra <Link to="/privacy">
+        Política de privacidad</Link></p>
+      </div> */}
     </section>
   );
 };

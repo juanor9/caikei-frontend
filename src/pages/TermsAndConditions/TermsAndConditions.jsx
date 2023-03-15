@@ -10,7 +10,7 @@ const TermsAndConditions = () => (
       <p>
         Estos términos y condiciones (en adelante, los &quot;Términos y Condiciones&quot;)
         establecen los términos y condiciones de uso de la
-        aplicación web (en adelante, la &quot;Aplicación&quot;), propiedad de
+        aplicación web &quot;Caikei&quot; (en adelante, la &quot;Aplicación&quot;), propiedad de
         Tanuki S.A.S (en adelante,
         la &quot;Empresa&quot;). Al utilizar la Aplicación, usted
         (en adelante, el &quot;Usuario&quot;)
@@ -23,14 +23,30 @@ const TermsAndConditions = () => (
         que la Empresa recopile, utilice y almacene sus datos
         personales con el fin de obtener estadísticas generales.
         El Usuario tiene derecho a retirar su consentimiento en cualquier
-        momento, lo que implicará la eliminación de sus datos personales.
+        momento, lo que implicará la eliminación de sus datos personales
+        incluida su cuenta de usuario según los términos aquí pactados.
+        La solicitud de retiro de consentimiento
+        debe hacerse por un medio en el que quede constancia, como un correo
+        electrónico.
       </p>
       <h3>Recopilación de Datos</h3>
       <p>
-        La Empresa recopila los siguientes datos personales del Usuario:
-        [especificar los datos personales recopilados]. Estos datos se
-        recopilan de acuerdo con la Política de Privacidad de la Empresa
-        y se utilizan exclusivamente con fines estadísticos.
+        La Empresa recopila el correo electrónico del Usuario. De igual manera,
+        se recopilan datos de la editorial registrada como: nombre, correo electrónico,
+        logo, dirección y teléfono. Se registran también datos del catálogo de la editorial;
+        de cada libro se recopilan los siguientes datos: Título, ISBN, fecha de publicación,
+        precio de venta al público, autores, clasificadores temáticos, tipo de encuadernación,
+        número de páginas, medida, y datos de inventario como cantidad de ejemplares en la bodega
+        de la editorial y en cada librería que el Usuario registre. De igual manera, se registran
+        los movimientos de ejemplares de la editorial clasificados en cuatro grupos: ingreso de
+        ejemplares (compra), remisión de ejemplares a librerías, devolución de ejemplares
+        y liquidación de ejemplares (venta). El Usuario podrá registrar datos de distintos puntos
+        de venta dentro de los que se incluyen:
+        nombre, porcentaje de descuento acordado entre la editorial y la librería,
+        correo electrónico, ciudad, dirección y teléfono.
+        Estos datos se recopilan de acuerdo con la Política de Privacidad de la Empresa
+        y se utilizan exclusivamente para el funcionamiento mismo de la aplicación y los servicios
+        que presta, así como con fines estadísticos.
       </p>
       <h3>Protección de Datos Personales</h3>
       <p>
@@ -42,7 +58,11 @@ const TermsAndConditions = () => (
       <h3>Uso de Datos</h3>
       <p>
         La Empresa utilizará los datos personales del Usuario exclusivamente
-        con el fin de obtener estadísticas generales. La Empresa no utilizará
+        con el fin del funcionamiento y la prestación de los servicios de la Aplicación,
+        así como para obtener estadísticas generales. Para la generación de estas
+        estadísticas se anonimizará toda la información. La Empresa nunca mostrará
+        estadísticas individuales de cada Usuario, editorial, libro o punto de venta.
+        La Empresa no utilizará
         los datos personales del Usuario para ningún otro fin, como publicidad
         o venta de datos a terceros.
       </p>
@@ -60,8 +80,16 @@ const TermsAndConditions = () => (
       <h3>Almacenamiento de Datos</h3>
       <p>
         La Empresa almacenará los datos personales del Usuario durante
-        [especificar el período de almacenamiento] y se compromete a
-        eliminarlos una vez finalizado este período.
+        un período de cinco años. Este periodo se renovará automáticamente
+        por periodos consecutivos de dos años, a menos que el Usuario determine
+        lo contrario por un medio por el que quede constancia de su decisión de
+        retirar su autorización para el uso de los datos. Una vez el usuario
+        retire su autorización, su cuenta será eliminada y no podrá hacer uso de
+        la Aplicación. La Empresa podrá mantener sus datos registrados y usarlos
+        con el objetivo de generar estadísticas generales durante un periodo adicional
+        de un año. Una vez finalizado este periodo adicional, la Empresa se encuentra
+        obligada a eliminar todos los datos relacionados con el Usuario de manera
+        permanente de todos sus métodos de almacenamiento.
       </p>
       <h3>Responsabilidad</h3>
       <p>
@@ -95,7 +123,7 @@ const TermsAndConditions = () => (
         reconoce haber leído y entendido la Política de Privacidad de la Empresa.
       </p>
       <p>Tanuki S.A.S</p>
-      <p>14 de febrero de 2023</p>
+      <p>14 de marzo de 2023</p>
       <section />
     </main>
   </div>
