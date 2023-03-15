@@ -1,0 +1,46 @@
+@import "../../colors.scss";
+@import "../../mixin.scss";
+
+.report{
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  background-color: $base;
+  padding: 1em;
+  border-radius: 1.5rem;
+  border: 1px solid $black;
+  font-size: .8em;
+  transition: all 1s ease-in-out;
+  margin: 1em;
+  &__button{
+    border: none;
+    background-color: transparent;
+    font-family: 'Merriweather', serif;
+    cursor: pointer;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    &:hover{
+      color:$accent;
+    }
+    &-icon{
+      font-size: 1.3em;
+      margin-right: 0.5em;
+    }
+  }
+  &__form{
+    display: flex;
+    flex-direction: column;
+    margin-top: 2em;
+    &-label{
+      @include form-lable;
+    }
+    &-input{
+      @include form-input;
+      &--textarea{
+        @include form-input;
+        border-left: 1px solid $black;
+      }
+    }
+  }
+}

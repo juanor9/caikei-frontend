@@ -1,0 +1,92 @@
+@import "./colors.scss";
+
+@mixin main-button {
+  background-color: $main;
+  border-radius: 5em;
+  border: solid 1px $black;
+  color: $black;
+  font-family: "Merriweather", serif;
+  font-weight: 600;
+  padding: 1em;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  text-align: center;
+  margin-bottom: 1em;
+  cursor: pointer;
+  &:hover {
+    box-shadow: 0px 0.5em 0px 0px $black;
+  }
+}
+
+@mixin main-button-disabled {
+  background-color: $black-light;
+  pointer-events: none;
+  border-radius: 5em;
+  border: solid 1px $black;
+  color: white;
+  font-family: "Merriweather", serif;
+  font-weight: 600;
+  padding: 1em;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  text-align: center;
+  margin-bottom: 1em;
+  cursor: pointer;
+}
+@mixin secondary-button {
+  background-color: transparent;
+  border-radius: 5em;
+  border: solid 1px $black;
+  color: $black;
+  font-family: "Merriweather", serif;
+  font-weight: 600;
+  padding: 1em;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  text-align: center;
+  margin-bottom: 1em;
+  cursor: pointer;
+  &:hover {
+    box-shadow: 0px 0.5em 0px 0px $black;
+  }
+}
+
+@mixin ternary-button {
+  border: none;
+  font-family: "Merriweather", serif;
+  padding: 0;
+  background-color: transparent;
+  font-weight: 100;
+  color: $accent;
+  text-decoration: none;
+  text-align: center;
+  cursor: pointer;
+  &:hover {
+    text-decoration: underline;
+    color: $dark-accent;
+  }
+}
+
+@mixin form-lable {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  margin-bottom: 1em;
+}
+
+@mixin form-input {
+  background-color: transparent;
+  border: none;
+  border-bottom: solid 1px $black;
+  font-family: "Merriweather", serif;
+  padding: 0.5em;
+  width: 100%;
+  padding-left: 0;
+  border-radius: 0;
+  &:read-only {
+    background-color: $darker;
+  }
+  &:disabled {
+    background-color: $darker;
+  }
+}

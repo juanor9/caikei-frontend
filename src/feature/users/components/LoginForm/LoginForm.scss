@@ -1,0 +1,20 @@
+@import "../../../../colors.scss";
+@import "../../../../mixin.scss";
+
+.login-form {
+  padding: 1em;
+  &__form {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+  }
+  &__label {
+    @include form-lable;
+  }
+  &__input {
+    @include form-input;
+  }
+  &__submit-button {
+    @include main-button;
+  }
+}

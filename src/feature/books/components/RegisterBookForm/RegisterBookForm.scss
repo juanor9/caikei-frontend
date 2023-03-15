@@ -1,0 +1,68 @@
+@import "../../../../colors.scss";
+@import "../../../../mixin.scss";
+
+.register-book {
+  display: flex;
+  gap: 1em;
+  flex-direction: column;
+  &__form {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+    &-label {
+      @include form-lable;
+    }
+    &-input {
+      @include form-input;
+    }
+    &-button {
+      @include main-button;
+      &--image {
+        @include main-button;
+        margin-top: 1em;
+      }
+      &--disabled {
+        @include main-button-disabled;
+      }
+    }
+  }
+  &__cover-form {
+    max-width: 100%;
+  }
+  &__cover {
+    &-preview {
+      width: 100%;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      & img {
+        max-width: 80%;
+        margin: auto;
+      }
+    }
+  }
+}
+@media (min-width: 768px) {
+  .register-book {
+    flex-direction: row;
+    &__cover-form {
+      max-width: 40%;
+    }
+    &__form {
+      display: grid;
+      gap: 2em;
+      grid-template-columns: 1fr 1fr 1fr;
+      padding: 2em;
+      &-button {
+        grid-column-start: 1;
+        grid-column-end: 4;
+        &--disabled {
+          grid-column-start: 1;
+          grid-column-end: 4;
+        }
+      }
+    }
+  }
+}

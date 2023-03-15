@@ -1,0 +1,35 @@
+@import "../../../../colors.scss";
+@import "../../../../mixin.scss";
+
+.register-form {
+  padding: 1em;
+  &__form {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+  }
+  &__label {
+    @include form-lable;
+  }
+  &__input {
+    @include form-input;
+  }
+  &__submit-button {
+    @include main-button;
+  }
+  &__submit-button:hover {
+    box-shadow: 0px 0.5em 0px 0px $black;
+  }
+  &__login-button{
+    @include secondary-button;
+    display: block;
+    font-size: .8em;
+  }
+  &__disclaimer{
+    width: 30em;
+    text-align: left;
+    font-size: 0.6em;
+    margin-bottom: 5em;
+    line-height: 1.5;
+  }
+}

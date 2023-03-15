@@ -1,0 +1,50 @@
+@import "../../colors.scss";
+@import "../../mixin.scss";
+
+.movements {
+  &__main-container{
+    padding: 1em;
+  }
+  &__add-button {
+    @include main-button;
+    width: 100%;
+    display: block;
+  }
+  &__movements-container {
+    margin-top: 2em;
+  }
+  &__cell{
+    &--not-mobile{
+      display: none;
+    }
+  }
+  &__loading{
+    border: none;
+    background-color: transparent;
+    font-size: 1.3em;
+    color: $black-light;
+  }
+  &__download{
+    border: none;
+    background-color: transparent;
+    font-size: 1.3em;
+    cursor: pointer;
+    &:hover{
+      color: $accent;
+    }
+  }
+}
+th, td {
+  border-bottom: 1px solid #ddd;
+  padding: 0.5em;
+}
+
+@media (min-width: 768px) {
+  .movements {
+    &__cell{
+      &--not-mobile{
+        display: table-cell;
+      }
+    }
+  }
+}
