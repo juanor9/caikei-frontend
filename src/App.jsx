@@ -17,6 +17,8 @@ import MovementPage from './pages/Movement/Movement';
 import RegisterMovementPage from './pages/MovementRegister/MovementRegister';
 import TermsAndConditions from './pages/TermsAndConditions/TermsAndConditions';
 import ImportInventory from './pages/ImportInventory/ImportInventory';
+import PrivacyPolicy from './pages/PrivacyPolicy/PrivacyPolicy';
+import BugReportForm from './components/BugReportForm/BugReportForm';
 
 const App = () => {
   useEffect(() => {
@@ -41,8 +43,10 @@ const App = () => {
         <Route path="/movement/import" element={<ImportInventory />} />
 
         <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
+        <Route path="/privacy" element={<PrivacyPolicy />} />
 
       </Routes>
+      <BugReportForm />
       <Footer />
     </div>
   );

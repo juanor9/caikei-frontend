@@ -95,13 +95,13 @@ const PublisherProfile = () => {
         throw new Error(error);
       }
     }
-  }, [publisher]);
+  }, [publisher, publisherFromUser]);
 
   return (
     <>
       <h2>Editorial</h2>
       <section className="publisher-profile">
-        {publisher && Object.keys(publisher).length > 0
+        {publisher && Object.keys(publisher).length > 0 && publisher.name !== ''
           ? (
             <>
               <article className="publisher-profile__logo">
@@ -128,7 +128,7 @@ const PublisherProfile = () => {
                   <b>Nombre: </b>
                   {name}
                 </div>
-                {publisherIds ? (
+                {publisherIds && publisherIds.length > 0 ? (
                   <div className="publisher-profile__info">
                     <b>Documento de identidad: </b>
                     {publisherIds[publisherIds.length - 1].type}{' '}

@@ -23,7 +23,13 @@
   &__login-button{
     @include secondary-button;
     display: block;
-    margin-bottom: 5em;
     font-size: .8em;
+  }
+  &__disclaimer{
+    width: 30em;
+    text-align: left;
+    font-size: 0.6em;
+    margin-bottom: 5em;
+    line-height: 1.5;
   }
 }
