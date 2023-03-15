@@ -5,6 +5,7 @@ const BASE_URL = process.env.REACT_APP_BASE_URL;
 export const login = createAsyncThunk(
   'auth/login',
   async (user) => {
+    console.log(BASE_URL);
     const options = {
       method: 'POST',
       headers: {
