@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { useDispatch, useSelector } from 'react-redux';
+import toast, { Toaster } from 'react-hot-toast';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { uploadImage } from '../../../uploads/services/upload';
@@ -22,7 +23,14 @@ const RegisterBookForm = () => {
     event.preventDefault();
     if (file) {
       try {
-        dispatch(uploadImage(file));
+        const uploadFileResult = await dispatch(uploadImage(file));
+
+        if (uploadFileResult.payload === undefined) {
+          const errorNotification = () => toast.error(
+            'Hubo un error al cargar la cubierta. Considera usar otro archivo o reducir su tamaño e inténtalo de nuevo.',
+          );
+          errorNotification();
+        }
       } catch (error) {
         throw new Error(error);
       }
@@ -68,6 +76,7 @@ const RegisterBookForm = () => {
 
   return (
     <section className="register-book">
+      <Toaster />
       <form action="" className="register-book__cover-form" onSubmit={handleSubmitimage}>
         <label htmlFor="cover" className="register-book__form-label">
           Cubierta
@@ -133,6 +142,7 @@ const RegisterBookForm = () => {
             id="pubDate"
             type="date"
             className="register-book__form-input"
+            required
             onChange={handleChange}
           />
         </label>
