@@ -25,6 +25,7 @@ const BookPage = () => {
   const { allLibraries } = useSelector((state) => state.allLibraries);
   const { form, handleChange } = useForm({});
   const navigate = useNavigate();
+  const userToken = localStorage.getItem('login-token');
   const {
     title,
     isbn,
@@ -51,15 +52,13 @@ const BookPage = () => {
     event.preventDefault();
 
     try {
-      dispatch(updateBookById({ form, id }));
+      dispatch(updateBookById({ form, id, userToken }));
       setReadOnly(true);
       navigate('/catalogue');
     } catch (error) {
       throw new Error(error);
     }
   };
-
-  const userToken = localStorage.getItem('login-token');
 
   useEffect(() => {
     if (userToken) {
