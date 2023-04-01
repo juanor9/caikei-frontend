@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
   },
   credits: {
     fontSize: 6,
-    color: '#E6E6E6',
+    color: '#B8B8B8',
     marginTop: 20,
   },
 });
