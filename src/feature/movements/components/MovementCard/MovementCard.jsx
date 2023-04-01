@@ -251,7 +251,7 @@ const MovementCard = ({
         {greyLogo && publisherId && kind === 'liquidación' ? (
           <PDFDownloadLink
             document={(
-              <DevolutionPdf
+              <SalePdf
                 publisher={publisherData}
                 destination={fromData}
                 logo={greyLogo}

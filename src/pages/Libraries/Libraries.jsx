@@ -2,6 +2,8 @@ import './Libraries.scss';
 import { Link } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { getUser } from '../../feature/users/services/users';
 import TopNav from '../../components/TopNav/TopNav';
 import getLibrariesByPublisher from '../../feature/libraries/services/allLibraries';
@@ -38,7 +40,10 @@ const LibrariesPage = () => {
       <TopNav />
       <main className="libraries__main-container">
         <h2>Librerías</h2>
-        <Link to="/library/register" className="libraries__add-button"> Añadir una librería</Link>
+        <Link to="/library/register" className="libraries__add-button">
+          <FontAwesomeIcon icon={faPlus} />
+          Añadir librería
+        </Link>
         <section className="libraries__libraries-container" key={`${Math.floor((Math.random() * 1000))}-min`}>
           {allLibraries && Array.isArray(allLibraries)
             ? allLibraries.map((lib) => (
