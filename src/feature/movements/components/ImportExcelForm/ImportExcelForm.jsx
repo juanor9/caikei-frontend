@@ -35,9 +35,6 @@ const ImportExcelForm = () => {
   };
 
   const [importItems, setImportItems] = useState([]);
-  const successNotification = () => toast.success(
-    'El archivo fue cargado con éxito',
-  );
   useEffect(() => {
     const fetchDataFromExcel = async () => {
       if (uploads && Array.isArray(uploads)) {
@@ -81,6 +78,9 @@ const ImportExcelForm = () => {
             }),
           );
           setImportItems(uploadedItems);
+          const successNotification = () => toast.success(
+            'El archivo fue cargado con éxito',
+          );
           successNotification();
         } catch (error) {
           const errorNotification = () => toast.error(
@@ -104,22 +104,47 @@ const ImportExcelForm = () => {
         bookId, storageId, copies,
       } = book;
       if (acc[bookId]) {
-        acc[bookId].inventory.push({ storageId, copies });
+        acc[bookId].inventory.push({ placeId: storageId, copies });
       } else {
-        acc[bookId] = { bookId, inventory: [{ storageId, copies }] };
+        acc[bookId] = { bookId, inventory: [{ placeId: storageId, copies }] };
       }
       return acc;
     }, {});
     const inventoryByBookId = Object.values(inventoryMod);
+    // console.log(`🚀 ~ file: ImportExcelForm.jsx:114 ~ importInventory ~
+    // inventoryByBookId:`, inventoryByBookId);
 
-    // TODO: Recorrer inventoryByBookId, y por cada libro llamar el libro y actualizar el inventario
+    if (!inventoryByBookId || !Array.isArray(inventoryByBookId)) {
+      return null;
+    }
+    inventoryByBookId.map((book) => {
+      try {
+        dispatch(updateBookById(
+          { form: { inventory: book.inventory }, id: book.bookId, userToken },
+        ));
+        const successNotification = () => toast.success(
+          'El libro fue actualizado con éxito',
+        );
+        successNotification();
+      } catch (error) {
+        const errorNotification = () => toast.error(
+          `Hubo un error al actualizar el libro.
+          Por favor verifica que todos los libros y
+          librerías que incluiste en el archivo
+          se encuentran registrados.`,
+        );
+        errorNotification();
+      }
+      return book;
+    });
+
     return inventoryByBookId;
   };
 
   return (
     <section>
       <h3>Importar desde formato de Excel</h3>
-      <Link to="https://res.cloudinary.com/dvi7rfug1/raw/upload/v1677510795/excelFiles/caikei-import-format_pc2yuw.xlsx">
+      <Link to="https://res.cloudinary.com/dvi7rfug1/raw/upload/v1680312758/excelFiles/caikei-import-format_ntf1ki.xlsx">
         Descarga el formato de Excel
       </Link>
       <form action="" onSubmit={handleSubmitFile}>
@@ -137,7 +162,7 @@ const ImportExcelForm = () => {
         ? (
           <>
             {importItems.map(({ bookTitle, storageName, copies }) => (
-              <article key={Math.floor(Math.random() * 100)}>
+              <article key={Math.floor(Math.random() * 1000)}>
                 <p>{bookTitle}</p>
                 <p>{storageName}</p>
                 <p>{copies} ejemplares</p>
