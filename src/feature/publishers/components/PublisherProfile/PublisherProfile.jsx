@@ -64,16 +64,6 @@ const PublisherProfile = () => {
     }
   };
 
-  // deactivate publisher
-  // const handleClickDeactivate = () => {
-  //   try {
-  //     const deactivate = { isActive: false };
-  //     const data = { deactivate, publisherId: publisher };
-  //     dispatch(updatePublisher(data));
-  //   } catch (error) {
-  //     throw new Error(error);
-  //   }
-  // };
   // if data is lost, ask for data to server
   useEffect(() => {
     if (!email && userToken !== null) {
@@ -86,16 +76,18 @@ const PublisherProfile = () => {
   }, []);
 
   // get publisher data
-  const publisherFromUser = useSelector((state) => state.user.userData.publisher);
+  const [publisherFromUser, setPublisherFromUser] = useState('');
+  const $publisherFromUser = useSelector((state) => state.user.userData.publisher);
   useEffect(() => {
-    if ((!publisher || Object.keys(publisher).length === 0) && userToken) {
+    setPublisherFromUser($publisherFromUser);
+    if ((!publisher || Object.keys(publisher).length === 0) && userToken && publisherFromUser) {
       try {
         dispatch(getPublisherById({ publisher: publisherFromUser, userToken }));
       } catch (error) {
         throw new Error(error);
       }
     }
-  }, [publisher, publisherFromUser]);
+  }, [publisher, publisherFromUser, $publisherFromUser]);
 
   return (
     <>
