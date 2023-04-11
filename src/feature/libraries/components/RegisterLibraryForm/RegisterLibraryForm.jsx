@@ -73,13 +73,11 @@ const RegisterLibraryForm = () => {
       && Array.isArray(librariesByNameFetch.payload)
       && librariesByNameFetch.payload.length === 0
     ) {
-      console.log('id number existe');
       const reqLibraryId = librariesByIdDocFetch.payload[0];
-      console.log('🚀 ~ file: RegisterLibraryForm.jsx:78 ~ handleSubmit ~ reqLibraryId:', reqLibraryId);
       const errorNotification = () => toast.error(
-        `La librería que estás intentando crear tiene como nombre
-        registrado "${reqLibraryId.name}". Para poder incluirla
-        en tu lista de librerías usa este nombre en el formulario.`,
+        `El número de documento ${reqLibraryId.libraryIds[0].number} está
+        registrado como "${reqLibraryId.name}". Verifica el nombre
+        en el formulario.`,
       );
       errorNotification();
     }
@@ -92,7 +90,14 @@ const RegisterLibraryForm = () => {
       && Array.isArray(librariesByNameFetch.payload)
       && librariesByNameFetch.payload.length > 0
     ) {
-      console.log('name existe');
+      // console.log('name existe');
+      const reqLibraryName = librariesByNameFetch.payload[0];
+      const errorNotification = () => toast.error(
+        `La librería ${reqLibraryName.name} tiene como
+        documento registrado ${reqLibraryName.libraryIds[0].number}.
+        Verifica el número de documento en el formulario`,
+      );
+      errorNotification();
     }
     // si ambos existen pero no son la misma librería
     if (
