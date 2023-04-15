@@ -44,7 +44,6 @@ export const getLibrariesByFilter = createAsyncThunk(
   'libraries/getLibrariesByFilter',
   async (data) => {
     const { filter, userToken } = data;
-    console.log('🚀 ~ file: libraries.js:46 ~ filter:', filter);
 
     const uriParams = new URLSearchParams();
     Object.keys(filter).forEach((key) => {

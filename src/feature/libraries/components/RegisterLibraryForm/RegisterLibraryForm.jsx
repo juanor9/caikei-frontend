@@ -5,7 +5,7 @@ import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import toast, { Toaster } from 'react-hot-toast';
 import { getUser } from '../../../users/services/users';
-import { createLibrary, getLibrariesByFilter } from '../../services/libraries';
+import { createLibrary, getLibrariesByFilter, updateLibrary } from '../../services/libraries';
 import useForm from '../../../../hooks/useForm';
 
 const RegisterLibraryForm = () => {
@@ -17,25 +17,17 @@ const RegisterLibraryForm = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const { idNumber, name } = form;
+    const { idNumber, name, discount } = form;
     // search new library by document
     const librariesByIdDoc = { 'libraryIds.number': idNumber };
     const librariesByIdDocFetch = await dispatch(
       getLibrariesByFilter({ filter: librariesByIdDoc, userToken }),
     );
-    // console.log(
-    //   '🚀 ~ file: RegisterLibraryForm.jsx:26 ~ handleSubmit ~ librariesByIdDocFetch:',
-    //   librariesByIdDocFetch.payload[0]._id,
-    // );
     // search libraries by name
     const librariesByName = { name };
     const librariesByNameFetch = await dispatch(
       getLibrariesByFilter({ filter: librariesByName, userToken }),
     );
-    // console.log(
-    //   '🚀 ~ file: RegisterLibraryForm.jsx:32 ~ handleSubmit ~ librariesByNameFetch:',
-    //   librariesByNameFetch.payload[0]._id,
-    // );
 
     // si ni el nombre ni el documento existen
     if (
@@ -46,9 +38,8 @@ const RegisterLibraryForm = () => {
       && Array.isArray(librariesByNameFetch.payload)
       && librariesByNameFetch.payload.length === 0
     ) {
-      // console.log('create library');
       try {
-        dispatch(createLibrary({ form, userToken }));
+        dispatch(createLibrary({ form: { publisher, ...form }, userToken }));
         const successNotification = () => toast.success(
           'La librería fue creada con éxito',
         );
@@ -90,7 +81,6 @@ const RegisterLibraryForm = () => {
       && Array.isArray(librariesByNameFetch.payload)
       && librariesByNameFetch.payload.length > 0
     ) {
-      // console.log('name existe');
       const reqLibraryName = librariesByNameFetch.payload[0];
       const errorNotification = () => toast.error(
         `La librería ${reqLibraryName.name} tiene como
@@ -110,7 +100,13 @@ const RegisterLibraryForm = () => {
       && String(librariesByIdDocFetch.payload[0]._id)
       !== String(librariesByNameFetch.payload[0]._id)
     ) {
-      console.log('son dos librerias distintas');
+      const reqLibraryId = librariesByIdDocFetch.payload[0];
+      const errorNotification = () => toast.error(
+        `El número de documento ${reqLibraryId.libraryIds[0].number} está
+        registrado como "${reqLibraryId.name}". Verifica el nombre
+        en el formulario.`,
+      );
+      errorNotification();
     }
     // si ambos existen y son la misma librería
     if (
@@ -123,7 +119,28 @@ const RegisterLibraryForm = () => {
       && String(librariesByIdDocFetch.payload[0]._id)
       === String(librariesByNameFetch.payload[0]._id)
     ) {
-      console.log('Todo en orden');
+      try {
+        const lib = librariesByIdDocFetch.payload[0];
+        const libPublishers = lib.publishers;
+        const libId = lib._id;
+        const newPublishers = libPublishers.concat(
+          { publisherId: publisher, discount: Number(discount) },
+        );
+        dispatch(updateLibrary({ form: { publishers: newPublishers }, id: libId }));
+        const successNotification = () => toast.success(
+          'La librería fue agregada con éxito',
+        );
+        successNotification();
+        navigate('/libraries');
+      } catch (error) {
+        const errorNotification = () => toast.error(
+          `Error: ${error}.
+          Hubo un error en la creación de la librería.
+          Por favor vuelve a intentarlo.`,
+        );
+        errorNotification();
+        throw new Error(error);
+      }
     }
   };
 
