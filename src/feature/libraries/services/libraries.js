@@ -6,14 +6,15 @@ const token = localStorage.getItem('login-token');
 
 export const createLibrary = createAsyncThunk(
   'libraries/createLibrary',
-  async (library) => {
+  async (data) => {
+    const { form, userToken } = data;
     const options = {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${userToken}`,
       },
-      body: JSON.stringify(library),
+      body: JSON.stringify(form),
     };
 
     const res = await fetch(`${BASE_URL}/api/libraries`, options);
