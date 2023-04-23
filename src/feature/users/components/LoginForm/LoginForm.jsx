@@ -28,6 +28,7 @@ const LoginForm = () => {
   };
   useEffect(() => {
     if (loginState && loginState.includes('Error')) {
+      console.log('🚀 ~ file: LoginForm.jsx:31 ~ useEffect ~ loginState:', loginState);
       setLoginFail(true);
     }
     if (loginState && loginState.includes('object')) {
@@ -76,7 +77,7 @@ const LoginForm = () => {
         ? (
           <Modal
             modalFunction={setLoginFail}
-            message="Contraseña o email incorrectos. Vuelve a intentarlo."
+            message="Hubo un error al iniciar sesión. Vuelve a intentarlo. Si el error persiste, contacta con tu línea de soporte."
           />
         )
         : null}
