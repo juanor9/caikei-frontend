@@ -228,6 +228,7 @@ const RegisterBookForm = () => {
             id="pages"
             type="number"
             className="register-book__form-input"
+            required
             onChange={handleChange}
           />
         </label>
