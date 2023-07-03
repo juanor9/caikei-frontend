@@ -70,11 +70,7 @@ const ImportExcelForm = () => {
                 );
                 storage = getLibraryStore.payload[0];
                 if (storage === undefined) {
-<<<<<<< HEAD
                   console.error(`La librería ${documentoDeIdentidadDeBodega} no existe en la base de datos`, item);
-=======
-                  console.error('La librería no existe en la base de datos', item);
->>>>>>> 91f5783fd12b5eeb28cf69bfe8a33a9c84be8251
                 }
               }
 
@@ -95,11 +91,7 @@ const ImportExcelForm = () => {
           );
           successNotification();
         } catch (error) {
-<<<<<<< HEAD
           console.log('🚀 ~ file: ImportExcelForm.jsx:88 ~ fetchDataFromExcel ~ error:', error);
-=======
-          // console.log('🚀 ~ file: ImportExcelForm.jsx:88 ~ fetchDataFromExcel ~ error:', error);
->>>>>>> 91f5783fd12b5eeb28cf69bfe8a33a9c84be8251
           const errorNotification = () => toast.error(
             `Hay un error en tu archivo.
             Verifica que los libros y librerías de tu archivo
