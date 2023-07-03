@@ -1,7 +1,5 @@
-/* eslint-disable no-debugger */
-/* eslint-disable no-param-reassign */
-/* eslint-disable no-unused-vars */
 /* eslint-disable prefer-destructuring */
+/* eslint-disable no-undef */
 import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -46,9 +44,13 @@ const ImportExcelForm = () => {
                 documentoDeIdentidadDeBodega,
                 numeroDeEjemplares,
               } = item;
+
               const bookFilter = { isbn };
               const bookData = await dispatch(getBooksByFilter({ bookFilter, userToken }));
               const book = bookData.payload[0];
+              if (book === undefined) {
+                console.error('El libro no existe en la base de datos', item);
+              }
               let storage;
 
               // check if id is publisher
@@ -57,7 +59,9 @@ const ImportExcelForm = () => {
                 getPublisherByFilter({ filter: storageFilterPublisher, userToken }),
               );
               storage = getPublisherStore.payload[0];
-
+              if (storage === undefined) {
+                console.error('La librería no existe en la base de datos', item);
+              }
               // check if id is a library
               if (storage === undefined) {
                 const storageFilterLibrary = { 'libraryIds.number': documentoDeIdentidadDeBodega };
@@ -66,9 +70,14 @@ const ImportExcelForm = () => {
                 );
                 storage = getLibraryStore.payload[0];
                 if (storage === undefined) {
+<<<<<<< HEAD
                   console.error(`La librería ${documentoDeIdentidadDeBodega} no existe en la base de datos`, item);
+=======
+                  console.error('La librería no existe en la base de datos', item);
+>>>>>>> 91f5783fd12b5eeb28cf69bfe8a33a9c84be8251
                 }
               }
+
               const inventoryItem = {
                 bookId: book._id,
                 bookTitle: book.title,
@@ -86,7 +95,11 @@ const ImportExcelForm = () => {
           );
           successNotification();
         } catch (error) {
+<<<<<<< HEAD
           console.log('🚀 ~ file: ImportExcelForm.jsx:88 ~ fetchDataFromExcel ~ error:', error);
+=======
+          // console.log('🚀 ~ file: ImportExcelForm.jsx:88 ~ fetchDataFromExcel ~ error:', error);
+>>>>>>> 91f5783fd12b5eeb28cf69bfe8a33a9c84be8251
           const errorNotification = () => toast.error(
             `Hay un error en tu archivo.
             Verifica que los libros y librerías de tu archivo
@@ -115,8 +128,6 @@ const ImportExcelForm = () => {
       return acc;
     }, {});
     const inventoryByBookId = Object.values(inventoryMod);
-    // console.log(`🚀 ~ file: ImportExcelForm.jsx:114 ~ importInventory ~
-    // inventoryByBookId:`, inventoryByBookId);
 
     if (!inventoryByBookId || !Array.isArray(inventoryByBookId)) {
       return null;
