@@ -1,0 +1,13 @@
+@import "../../../../colors.scss";
+@import "../../../../mixin.scss";
+
+.profile-tabs{
+  & ul{
+    margin: 0;
+    padding: 0;
+    display: flex;
+    list-style: none;
+    gap: 1em;
+    justify-content: space-around;
+  }
+}
