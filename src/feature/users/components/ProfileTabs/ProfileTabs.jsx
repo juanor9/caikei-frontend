@@ -17,13 +17,31 @@ const ProfileTabs = ({ tabChange, selectedTab }) => {
       <nav>
         <ul>
           <li>
-            <button type="button" onClick={handleClickProfile}>Perfil</button>
+            <button
+              type="button"
+              onClick={handleClickProfile}
+              className="profile-tabs__button"
+            >
+              Perfil
+            </button>
           </li>
           <li>
-            <button type="button" onClick={handleClickPublisher}>Mi editorial</button>
+            <button
+              type="button"
+              onClick={handleClickPublisher}
+              className="profile-tabs__button"
+            >
+              Mi editorial
+            </button>
           </li>
           <li>
-            <button type="button" onClick={handleClickInventory}>Inventario</button>
+            <button
+              type="button"
+              onClick={handleClickInventory}
+              className="profile-tabs__button"
+            >
+              Inventario
+            </button>
           </li>
         </ul>
       </nav>
