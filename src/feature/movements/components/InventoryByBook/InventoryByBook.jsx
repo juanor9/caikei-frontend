@@ -63,14 +63,21 @@ const InventoryByBook = () => {
                 <h4>{book.title}</h4>
               </figure>
               {book.$inventory && Array.isArray(book.$inventory) && (
-              <div>
-                {book.$inventory.map((storage) => (
-                  <div key={storage.id}>
-                    <p><b>{storage.name}</b></p>
-                    <p>Ejemplares: {storage.copies}</p>
-                  </div>
-                ))}
-              </div>
+                <table className="by-book__table-inventory">
+                  <thead>
+                    <tr>
+                      <th>Bodega</th>
+                      <th>Ejemplares</th>
+                    </tr>
+                  </thead>
+
+                  {book.$inventory.map((storage) => (
+                    <tr key={storage.id}>
+                      <td>{storage.name}</td>
+                      <td>{storage.copies}</td>
+                    </tr>
+                  ))}
+                </table>
               )}
             </article>
           ))
