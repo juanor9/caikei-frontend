@@ -90,3 +90,12 @@
     background-color: $darker;
   }
 }
+
+@mixin table {
+  & thead tr:hover{
+    background-color: transparent;
+  }
+  & tr:hover {
+    background-color: $darker;
+  }
+}
