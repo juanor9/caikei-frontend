@@ -3,7 +3,7 @@ import TopNav from '../../components/TopNav/TopNav';
 import UserProfile from '../../feature/users/components/UserProfile/UserProfile';
 import './UserProfile.scss';
 import PublisherProfile from '../../feature/publishers/components/PublisherProfile/PublisherProfile';
-import GeneralInventory from '../../feature/movements/components/GeneralInventory/GeneralInventory';
+import GeneralInventory from '../../feature/inventory/components/GeneralInventory/GeneralInventory';
 import ProfileTabs from '../../feature/users/components/ProfileTabs/ProfileTabs';
 
 const UserProfilePage = () => {
