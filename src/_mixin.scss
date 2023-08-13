@@ -92,6 +92,7 @@
 }
 
 @mixin table {
+  font-size: 0.8em;
   & thead tr:hover{
     background-color: transparent;
   }

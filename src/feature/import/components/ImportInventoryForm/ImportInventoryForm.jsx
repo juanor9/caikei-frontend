@@ -9,7 +9,7 @@ import { getPublisherByFilter } from '../../../publishers/services/publishers';
 import { getLibrariesByFilter } from '../../../libraries/services/libraries';
 import { getBooksByFilter, updateBookById } from '../../../books/services/books';
 
-const ImportExcelForm = () => {
+const InventoryImportExcelForm = () => {
   const [file, setFile] = useState('');
   const dispatch = useDispatch();
   const { uploads } = useSelector((state) => state.upload);
@@ -185,4 +185,4 @@ const ImportExcelForm = () => {
   );
 };
 
-export default ImportExcelForm;
+export default InventoryImportExcelForm;
