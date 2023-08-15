@@ -7,8 +7,9 @@ import toast, { Toaster } from 'react-hot-toast';
 import { uploadExcel } from '../../../uploads/services/upload';
 import { getPublisherByFilter } from '../../../publishers/services/publishers';
 import { getLibrariesByFilter } from '../../../libraries/services/libraries';
+import { getBooksByFilter, updateBookById } from '../../../books/services/books';
 
-const ImportExcelForm = () => {
+const InventoryImportExcelForm = () => {
   const [file, setFile] = useState('');
   const dispatch = useDispatch();
   const { uploads } = useSelector((state) => state.upload);
@@ -69,7 +70,7 @@ const ImportExcelForm = () => {
                 );
                 storage = getLibraryStore.payload[0];
                 if (storage === undefined) {
-                  console.error('La librería no existe en la base de datos', item);
+                  console.error(`La librería ${documentoDeIdentidadDeBodega} no existe en la base de datos`, item);
                 }
               }
 
@@ -90,7 +91,7 @@ const ImportExcelForm = () => {
           );
           successNotification();
         } catch (error) {
-          // console.log('🚀 ~ file: ImportExcelForm.jsx:88 ~ fetchDataFromExcel ~ error:', error);
+          console.log('🚀 ~ file: ImportExcelForm.jsx:88 ~ fetchDataFromExcel ~ error:', error);
           const errorNotification = () => toast.error(
             `Hay un error en tu archivo.
             Verifica que los libros y librerías de tu archivo
@@ -184,4 +185,4 @@ const ImportExcelForm = () => {
   );
 };
 
-export default ImportExcelForm;
+export default InventoryImportExcelForm;

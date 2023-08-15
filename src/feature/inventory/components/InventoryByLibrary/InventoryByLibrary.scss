@@ -1,0 +1,57 @@
+@import "../../../../colors.scss";
+@import "../../../../mixin.scss";
+
+.by-library {
+  &__book {
+    &-fig {
+      width: 100%;
+      margin: 0;
+      padding: 0;
+    }
+    &-img {
+      width: 100%;
+    }
+  }
+  &__table-inventory {
+    @include table;
+    width: 100%;
+  }
+}
+
+@media (min-width: 768px) {
+  .by-library {
+    &__book {
+      &-container{
+        display: grid;
+        gap: 3em;
+      }
+      &-fig {
+        width: 10em;
+        margin: 0;
+        padding: 0;
+      }
+      &-img {
+        width: 100%;
+      }
+    }
+  }
+
+}
+@media (min-width: 1024px) {
+  .by-library {
+    &__book {
+      &-container {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+  }
+}
+@media (min-width: 2000px) {
+  .by-library {
+    &__book {
+      &-container {
+        grid-template-columns: 1fr 1fr 1fr;
+      }
+    }
+  }
+}
