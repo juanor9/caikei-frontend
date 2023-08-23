@@ -44,6 +44,7 @@ const LibrariesPage = () => {
           <FontAwesomeIcon icon={faPlus} />
           Añadir librería
         </Link>
+        <Link to="/library/import">Importar librerías</Link>
         <section className="libraries__libraries-container" key={`${Math.floor((Math.random() * 1000))}-min`}>
           {allLibraries && Array.isArray(allLibraries)
             ? allLibraries.map((lib) => (

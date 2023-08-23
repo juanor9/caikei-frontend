@@ -68,6 +68,7 @@ export const getLibrariesByFilter = createAsyncThunk(
 export const updateLibrary = createAsyncThunk(
   'libraries/updateLibrary',
   async (updateData) => {
+    console.log('inside updateLibrary.', updateData);
     const { form, id } = updateData;
     const options = {
       method: 'PATCH',
