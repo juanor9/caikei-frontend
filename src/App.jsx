@@ -19,6 +19,7 @@ import TermsAndConditions from './pages/TermsAndConditions/TermsAndConditions';
 import ImportInventory from './pages/ImportInventory/ImportInventory';
 import PrivacyPolicy from './pages/PrivacyPolicy/PrivacyPolicy';
 import BugReportForm from './components/BugReportForm/BugReportForm';
+import ImportCatalogue from './pages/ImportCatalogue/ImportCatalogue';
 
 const App = () => {
   useEffect(() => {
@@ -30,6 +31,7 @@ const App = () => {
         <Route path="/" element={<HomePage />} />
         <Route path="/book/:id" element={<BookPage />} />
         <Route path="/book/register" element={<BookRegisterPage />} />
+        <Route path="/book/import" element={<ImportCatalogue />} />
         <Route path="/catalogue" element={<CataloguePage />} />
         <Route path="/libraries" element={<LibrariesPage />} />
         <Route path="/library/:id" element={<LibraryPage />} />

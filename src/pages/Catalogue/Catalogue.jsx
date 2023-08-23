@@ -51,6 +51,7 @@ const CataloguePage = () => {
             <FontAwesomeIcon icon={faPlus} />
             Añadir libro
           </Link>
+          <Link to="/book/import">Importar catálogo</Link>
           {catalogue && Array.isArray(catalogue) && publisher
             ? (
               catalogue.map((book) => (
