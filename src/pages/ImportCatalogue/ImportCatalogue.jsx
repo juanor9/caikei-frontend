@@ -2,13 +2,13 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
 import TopNav from '../../components/TopNav/TopNav';
-import ImportExcelForm from '../../feature/import/components/ImportInventoryForm/ImportInventoryForm';
+import ImportCatalogueForm from '../../feature/import/components/ImportCatalogueForm/ImportCatalogueForm';
 
 const ImportCatalogue = () => (
   <div className="libraries">
     <TopNav />
     <main className="libraries__main-container">
-      <h2>Importa tu inventario</h2>
+      <h2>Importa tu catálogo</h2>
       <div>
         <FontAwesomeIcon icon={faExclamationTriangle} />
         <p>
@@ -17,7 +17,7 @@ const ImportCatalogue = () => (
         </p>
       </div>
       <div>
-        <ImportExcelForm />
+        <ImportCatalogueForm />
       </div>
     </main>
   </div>
