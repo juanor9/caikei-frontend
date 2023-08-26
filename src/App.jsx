@@ -20,6 +20,7 @@ import ImportInventory from './pages/ImportInventory/ImportInventory';
 import PrivacyPolicy from './pages/PrivacyPolicy/PrivacyPolicy';
 import BugReportForm from './components/BugReportForm/BugReportForm';
 import ImportCatalogue from './pages/ImportCatalogue/ImportCatalogue';
+import ImportLibraries from './pages/ImportLibraries/ImportLibraries';
 
 const App = () => {
   useEffect(() => {
@@ -36,6 +37,7 @@ const App = () => {
         <Route path="/libraries" element={<LibrariesPage />} />
         <Route path="/library/:id" element={<LibraryPage />} />
         <Route path="/library/register" element={<RegisterLibraryPage />} />
+        <Route path="/library/import" element={<ImportLibraries />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/profile" element={<UserProfilePage />} />
         <Route path="/publisher/register" element={<PublisherRegister />} />

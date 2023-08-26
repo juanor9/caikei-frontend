@@ -1,21 +1,26 @@
+/* eslint-disable no-unused-vars */
 import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import toast, { Toaster } from 'react-hot-toast';
 import { uploadExcel } from '../../../uploads/services/upload';
-import {
-  excelDateToJSDate,
-  convertCamelCaseToReadable,
-} from '../../services/functions';
+import { convertCamelCaseToReadable } from '../../services/functions';
 import { getUser } from '../../../users/services/users';
-import { createBook } from '../../../books/services/books';
+import {
+  getLibrariesByFilter,
+  createLibrary,
+  updateLibrary,
+} from '../../../libraries/services/libraries';
 
-const ImportCatalogueForm = () => {
+const ImportLibraryForm = () => {
   const [file, setFile] = useState('');
   const dispatch = useDispatch();
   const { uploads } = useSelector((state) => state.upload);
   const userToken = localStorage.getItem('login-token');
   const { userData } = useSelector((state) => state.user);
+
+  const [libraryId, setLibraryId] = useState('');
+  const { library } = useSelector((state) => state.library);
 
   const handleChangeFile = ({ target }) => {
     const { files } = target;
@@ -36,27 +41,19 @@ const ImportCatalogueForm = () => {
 
   const [importItems, setImportItems] = useState([]);
   useEffect(() => {
+    if (Object.keys(library).length > 0) {
+      setLibraryId(library[0]._id);
+    }
+  }, [library, libraryId]);
+
+  useEffect(() => {
     const fetchDataFromExcel = async () => {
       if (uploads && Array.isArray(uploads)) {
         try {
-          const uploadedItems = uploads.map((item) => {
-            const { fechaDePublicacion } = item;
-            const pubDate = excelDateToJSDate(fechaDePublicacion);
-
-            const newItem = {
-              ...item,
-              fechaDePublicacion: pubDate.toLocaleDateString(),
-            };
-            return newItem;
-          });
-          setImportItems(uploadedItems);
+          setImportItems(uploads);
           const successNotification = () => toast.success('El archivo fue cargado con éxito');
           successNotification();
         } catch (error) {
-          console.log(
-            '🚀 ~ file: ImportExcelForm.jsx:88 ~ fetchDataFromExcel ~ error:',
-            error,
-          );
           const errorNotification = () => toast.error(
             `Hay un error en tu archivo.
             Verifica que los libros y librerías de tu archivo
@@ -69,7 +66,69 @@ const ImportCatalogueForm = () => {
     fetchDataFromExcel();
   }, [uploads]);
 
-  const importCatalogue = () => {
+  const handleCreateLibrary = async (item, publisher) => {
+    // console.log('No existe :(');
+    const {
+      nombre,
+      idtipo,
+      id,
+      email,
+      ciudad,
+      direccion,
+      telefono,
+      descuento,
+    } = item;
+    const newLibrary = {
+      name: nombre,
+      idKind: idtipo,
+      idNumber: id,
+      email,
+      city: ciudad,
+      address: direccion,
+      phone: telefono,
+      publisher,
+      discount: descuento,
+    };
+    try {
+      // dispatch(createLibrary({ form: newLibrary, userToken }));
+      const successNotification = () => toast.success(`La librería "${nombre}" fue creada con éxito`);
+      successNotification();
+    } catch (error) {
+      const errorNotification = () => toast.error(`Hubo un error al crear la librería "${nombre}"`);
+      errorNotification();
+    }
+  };
+  const handleUpdateLibrary = async (item) => {
+    console.log('Existe!');
+    const dispatchGetUser = await dispatch(getUser(userToken));
+    const { publisher } = dispatchGetUser.payload;
+    const { id, descuento } = item;
+
+    const updateOldLibrary = {
+      publishers: {
+        publisherId: publisher,
+        discount: descuento,
+      },
+    };
+    try {
+      const LibraryCheck = await dispatch(
+        getLibrariesByFilter({ filter: { 'libraryIds.number': id }, userToken }),
+      );
+      if (LibraryCheck.payload.length > 0) {
+        const libraryIdState = LibraryCheck.payload[0]._id;
+        dispatch(
+          updateLibrary({
+            form: updateOldLibrary,
+            id: libraryIdState,
+          }),
+        );
+      }
+    } catch (error) {
+      throw new Error(error);
+    }
+  };
+
+  const importLibrary = () => {
     if (!importItems || !Array.isArray(importItems)) {
       return null;
     }
@@ -80,54 +139,28 @@ const ImportCatalogueForm = () => {
       errorNotification();
     }
     const { publisher } = userData;
-    const newCatalogue = importItems.map((item) => {
-      const {
-        titulo,
-        isbn,
-        pvp,
-        fechaDePublicacion,
-        paginas,
-        autores,
-        alto,
-        ancho,
-        codigoCentroDeCosto,
-      } = item;
-
-      const newItem = {
-        title: titulo,
-        isbn,
-        price: pvp,
-        pubDate: fechaDePublicacion,
-        authors: autores,
-        pages: paginas,
-        height: alto,
-        width: ancho,
-        costCenter: codigoCentroDeCosto,
-        publisher,
-      };
-
-      try {
-        dispatch(createBook({ ...newItem, userToken }));
-        const successNotification = () => toast.success(`El libro "${titulo}" fue actualizado con éxito`);
-        successNotification();
-      } catch (error) {
-        const errorNotification = () => toast.error(`Hubo un error al crear el libro "${titulo}"`);
-        errorNotification();
+    const newCatalogue = importItems.map(async (item) => {
+      const { id } = item;
+      const libraryCheck = await dispatch(
+        getLibrariesByFilter({ filter: { 'libraryIds.number': id }, userToken }),
+      );
+      if (libraryCheck.payload.length > 0) {
+        handleUpdateLibrary(item);
       }
-      return newItem;
+      handleCreateLibrary(item, publisher);
     });
     return newCatalogue;
   };
 
-  const importCatalogueSampleURL = 'https://res.cloudinary.com/dvi7rfug1/raw/upload/v1693007895/excelFiles/caikei-import-catalogue_ceulns.xlsx';
+  const importLibrariesSampleURL = 'https://res.cloudinary.com/dvi7rfug1/raw/upload/v1693007894/excelFiles/caikei-import-libraries_sazmm1.xlsx';
 
   return (
     <section>
       <h3>Importar desde formato de Excel</h3>
-      <Link to={importCatalogueSampleURL}>Descarga el formato de Excel</Link>
+      <Link to={importLibrariesSampleURL}>Descarga el formato de Excel</Link>
       <form action="" onSubmit={handleSubmitFile}>
         <label htmlFor="excel-file">
-          Carga tu catálogo en Excel
+          Carga tus librerías en Excel
           <input type="file" accept=".xlsx" onChange={handleChangeFile} />
         </label>
         <button type="submit">Cargar archivo</button>
@@ -138,7 +171,7 @@ const ImportCatalogueForm = () => {
             const keys = Object.keys(item);
 
             return (
-              <article key={item.index}>
+              <article key={item.id}>
                 {Array.isArray(keys) && keys.length > 0 ? (
                   <>
                     {keys.map((key) => (
@@ -152,7 +185,7 @@ const ImportCatalogueForm = () => {
               </article>
             );
           })}
-          <button type="submit" onClick={importCatalogue}>
+          <button type="submit" onClick={importLibrary}>
             Verificar
           </button>
         </>
@@ -162,4 +195,4 @@ const ImportCatalogueForm = () => {
   );
 };
 
-export default ImportCatalogueForm;
+export default ImportLibraryForm;

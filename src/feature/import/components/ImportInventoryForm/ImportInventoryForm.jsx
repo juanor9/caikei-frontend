@@ -7,7 +7,10 @@ import toast, { Toaster } from 'react-hot-toast';
 import { uploadExcel } from '../../../uploads/services/upload';
 import { getPublisherByFilter } from '../../../publishers/services/publishers';
 import { getLibrariesByFilter } from '../../../libraries/services/libraries';
-import { getBooksByFilter, updateBookById } from '../../../books/services/books';
+import {
+  getBooksByFilter,
+  updateBookById,
+} from '../../../books/services/books';
 
 const InventoryImportExcelForm = () => {
   const [file, setFile] = useState('');
@@ -39,14 +42,12 @@ const InventoryImportExcelForm = () => {
         try {
           const uploadedItems = await Promise.all(
             uploads.map(async (item) => {
-              const {
-                isbn,
-                documentoDeIdentidadDeBodega,
-                numeroDeEjemplares,
-              } = item;
+              const { isbn, documentoDeIdentidadDeBodega, numeroDeEjemplares } = item;
 
               const bookFilter = { isbn };
-              const bookData = await dispatch(getBooksByFilter({ bookFilter, userToken }));
+              const bookData = await dispatch(
+                getBooksByFilter({ bookFilter, userToken }),
+              );
               const book = bookData.payload[0];
               if (book === undefined) {
                 console.error('El libro no existe en la base de datos', item);
@@ -54,23 +55,39 @@ const InventoryImportExcelForm = () => {
               let storage;
 
               // check if id is publisher
-              const storageFilterPublisher = { 'publisherIds.number': documentoDeIdentidadDeBodega };
+              const storageFilterPublisher = {
+                'publisherIds.number': documentoDeIdentidadDeBodega,
+              };
               const getPublisherStore = await dispatch(
-                getPublisherByFilter({ filter: storageFilterPublisher, userToken }),
+                getPublisherByFilter({
+                  filter: storageFilterPublisher,
+                  userToken,
+                }),
               );
               storage = getPublisherStore.payload[0];
               if (storage === undefined) {
-                console.error('La librería no existe en la base de datos', item);
+                console.error(
+                  'La librería no existe en la base de datos',
+                  item,
+                );
               }
               // check if id is a library
               if (storage === undefined) {
-                const storageFilterLibrary = { 'libraryIds.number': documentoDeIdentidadDeBodega };
+                const storageFilterLibrary = {
+                  'libraryIds.number': documentoDeIdentidadDeBodega,
+                };
                 const getLibraryStore = await dispatch(
-                  getLibrariesByFilter({ filter: storageFilterLibrary, userToken }),
+                  getLibrariesByFilter({
+                    filter: storageFilterLibrary,
+                    userToken,
+                  }),
                 );
                 storage = getLibraryStore.payload[0];
                 if (storage === undefined) {
-                  console.error(`La librería ${documentoDeIdentidadDeBodega} no existe en la base de datos`, item);
+                  console.error(
+                    `La librería ${documentoDeIdentidadDeBodega} no existe en la base de datos`,
+                    item,
+                  );
                 }
               }
 
@@ -86,12 +103,13 @@ const InventoryImportExcelForm = () => {
             }),
           );
           setImportItems(uploadedItems);
-          const successNotification = () => toast.success(
-            'El archivo fue cargado con éxito',
-          );
+          const successNotification = () => toast.success('El archivo fue cargado con éxito');
           successNotification();
         } catch (error) {
-          console.log('🚀 ~ file: ImportExcelForm.jsx:88 ~ fetchDataFromExcel ~ error:', error);
+          console.log(
+            '🚀 ~ file: ImportExcelForm.jsx:88 ~ fetchDataFromExcel ~ error:',
+            error,
+          );
           const errorNotification = () => toast.error(
             `Hay un error en tu archivo.
             Verifica que los libros y librerías de tu archivo
@@ -109,9 +127,7 @@ const InventoryImportExcelForm = () => {
       return null;
     }
     const inventoryMod = importItems.reduce((acc, book) => {
-      const {
-        bookId, storageId, copies,
-      } = book;
+      const { bookId, storageId, copies } = book;
       if (acc[bookId]) {
         acc[bookId].inventory.push({ placeId: storageId, copies });
       } else {
@@ -126,12 +142,14 @@ const InventoryImportExcelForm = () => {
     }
     inventoryByBookId.map((book) => {
       try {
-        dispatch(updateBookById(
-          { form: { inventory: book.inventory }, id: book.bookId, userToken },
-        ));
-        const successNotification = () => toast.success(
-          'El libro fue actualizado con éxito',
+        dispatch(
+          updateBookById({
+            form: { inventory: book.inventory },
+            id: book.bookId,
+            userToken,
+          }),
         );
+        const successNotification = () => toast.success('El libro fue actualizado con éxito');
         successNotification();
       } catch (error) {
         const errorNotification = () => toast.error(
@@ -148,38 +166,34 @@ const InventoryImportExcelForm = () => {
     return inventoryByBookId;
   };
 
+  const importInventorySampleURL = 'https://res.cloudinary.com/dvi7rfug1/raw/upload/v1693007894/excelFiles/caikei-import-inventory_vzclnk.xlsx';
+
   return (
     <section>
       <h3>Importar desde formato de Excel</h3>
-      <Link to="https://res.cloudinary.com/dvi7rfug1/raw/upload/v1680312758/excelFiles/caikei-import-format_ntf1ki.xlsx">
-        Descarga el formato de Excel
-      </Link>
+      <Link to={importInventorySampleURL}>Descarga el formato de Excel</Link>
       <form action="" onSubmit={handleSubmitFile}>
         <label htmlFor="excel-file">
           Carga tu inventario en Excel
-          <input
-            type="file"
-            accept=".xlsx"
-            onChange={handleChangeFile}
-          />
+          <input type="file" accept=".xlsx" onChange={handleChangeFile} />
         </label>
         <button type="submit">Cargar archivo</button>
       </form>
-      {importItems && Array.isArray(importItems) && importItems.length > 0
-        ? (
-          <>
-            {importItems.map(({ bookTitle, storageName, copies }) => (
-              <article key={Math.floor(Math.random() * 1000)}>
-                <p>{bookTitle}</p>
-                <p>{storageName}</p>
-                <p>{copies} ejemplares</p>
-                <hr />
-              </article>
-            ))}
-            <button type="submit" onClick={importInventory}>Verificar inventario</button>
-          </>
-        )
-        : null}
+      {importItems && Array.isArray(importItems) && importItems.length > 0 ? (
+        <>
+          {importItems.map(({ bookTitle, storageName, copies }) => (
+            <article key={Math.floor(Math.random() * 1000)}>
+              <p>{bookTitle}</p>
+              <p>{storageName}</p>
+              <p>{copies} ejemplares</p>
+              <hr />
+            </article>
+          ))}
+          <button type="submit" onClick={importInventory}>
+            Verificar
+          </button>
+        </>
+      ) : null}
       <Toaster />
     </section>
   );
