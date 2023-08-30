@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateUser, getUser } from '../../services/users';
 import Modal from '../../../../components/Modal/Modal';
+import PlanDisplay from '../../../plans/components/PlanDisplay';
 import useForm from '../../../../hooks/useForm';
 import './UserProfile.scss';
 
@@ -81,118 +82,121 @@ const UserProfile = () => {
   }, []);
   return (
     <section className="user-profile">
-      <div className="user-profile__header">
-        <h2>Perfil</h2>
-        {/* <button
+      <article>
+        <div className="user-profile__header">
+          <h2>Perfil</h2>
+          {/* <button
           type="button"
           className="user-profile__deactivate"
           onClick={handleClickDeactivate}
         >
           Desactivar cuenta
         </button> */}
-      </div>
+        </div>
 
-      <div className="user-profile__info">
-        <p>
-          <b>Email: </b>
-          {email}
-        </p>
-        <button
-          type="button"
-          className="user-profile__button"
-          onClick={() => {
-            setEmailModal(true);
-          }}
-        >
-          Editar
-        </button>
-      </div>
-      <div className="user-profile__info">
-        <p><b>Password: </b>
-          ****
-        </p>
+        <div className="user-profile__info">
+          <p>
+            <b>Email: </b>
+            {email}
+          </p>
+          <button
+            type="button"
+            className="user-profile__button"
+            onClick={() => {
+              setEmailModal(true);
+            }}
+          >
+            Editar
+          </button>
+        </div>
+        <div className="user-profile__info">
+          <p><b>Password: </b>
+            ****
+          </p>
 
-        <button
-          type="button"
-          className="user-profile__button"
-          onClick={() => {
-            setPasswordModal(true);
-          }}
-        >
-          Editar
-        </button>
-      </div>
-      {emailModal === true ? (
-        <Modal modalFunction={setEmailModal}>
-          <>
-            <h3>Actualiza tu email</h3>
-            <form
-              action=""
-              className="user-profile__modal-form"
-              id="new-email-form"
-              onSubmit={handleSubmitEmail}
-            >
-              <label htmlFor="email" className="user-profile__modal-label">
-                Email
-                <input
-                  type="text"
-                  name="email"
-                  id="email"
-                  className="user-profile__modal-input"
-                  placeholder="email"
-                  onChange={handleChange}
-                />
-              </label>
-              <button
-                type="submit"
-                className="user-profile__modal-button"
-                onClick={handleClickEmail}
+          <button
+            type="button"
+            className="user-profile__button"
+            onClick={() => {
+              setPasswordModal(true);
+            }}
+          >
+            Editar
+          </button>
+        </div>
+        {emailModal === true ? (
+          <Modal modalFunction={setEmailModal}>
+            <>
+              <h3>Actualiza tu email</h3>
+              <form
+                action=""
+                className="user-profile__modal-form"
+                id="new-email-form"
+                onSubmit={handleSubmitEmail}
               >
-                Actualizar
-              </button>
-            </form>
-          </>
-        </Modal>
-      ) : null}
-      {passwordModal === true ? (
-        <Modal modalFunction={setPasswordModal}>
-          <>
-            <h3>Actualiza tu contraseña</h3>
-            <form
-              action=""
-              className="user-profile__modal-form"
-              id="new-password-form"
-              onSubmit={handleSubmitPassword}
-            >
-              <label htmlFor="password" className="user-profile__modal-label">
-                Nueva contraseña
-                <input
-                  type="text"
-                  name="password"
-                  id="password"
-                  className="user-profile__modal-input"
-                  onChange={handleChange}
-                />
-              </label>
-              <button
-                type="submit"
-                className="user-profile__modal-button"
-                onClick={handleClickPassword}
+                <label htmlFor="email" className="user-profile__modal-label">
+                  Email
+                  <input
+                    type="text"
+                    name="email"
+                    id="email"
+                    className="user-profile__modal-input"
+                    placeholder="email"
+                    onChange={handleChange}
+                  />
+                </label>
+                <button
+                  type="submit"
+                  className="user-profile__modal-button"
+                  onClick={handleClickEmail}
+                >
+                  Actualizar
+                </button>
+              </form>
+            </>
+          </Modal>
+        ) : null}
+        {passwordModal === true ? (
+          <Modal modalFunction={setPasswordModal}>
+            <>
+              <h3>Actualiza tu contraseña</h3>
+              <form
+                action=""
+                className="user-profile__modal-form"
+                id="new-password-form"
+                onSubmit={handleSubmitPassword}
               >
-                Actualizar
-              </button>
-            </form>
-          </>
-        </Modal>
-      ) : null}
-      {sucessModal === true
-        ? (
-          <Modal
-            modalFunction={setSucessModal}
-            message="Los cambios han sido guardados con éxito"
-          />
-        )
-        : null}
+                <label htmlFor="password" className="user-profile__modal-label">
+                  Nueva contraseña
+                  <input
+                    type="text"
+                    name="password"
+                    id="password"
+                    className="user-profile__modal-input"
+                    onChange={handleChange}
+                  />
+                </label>
+                <button
+                  type="submit"
+                  className="user-profile__modal-button"
+                  onClick={handleClickPassword}
+                >
+                  Actualizar
+                </button>
+              </form>
+            </>
+          </Modal>
+        ) : null}
+        {sucessModal === true
+          ? (
+            <Modal
+              modalFunction={setSucessModal}
+              message="Los cambios han sido guardados con éxito"
+            />
+          )
+          : null}
+      </article>
+      <PlanDisplay />
     </section>
   );
 };
