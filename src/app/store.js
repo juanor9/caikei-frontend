@@ -1,25 +1,27 @@
 import { configureStore } from '@reduxjs/toolkit';
-import userReducer from '../feature/users/userReducer/userSlice';
-import uploadReducer from '../feature/uploads/uploadReducer/uploadSlice';
-import publisherReducer from '../feature/publishers/reducer/publisherSlice';
+import allLibrariesReducer from '../feature/libraries/reducer/allLibrariesSlice';
 import bookReducer from '../feature/books/reducer/bookSlice';
 import catalogueReducer from '../feature/books/reducer/catalogueSlice';
 import libraryReducer from '../feature/libraries/reducer/librarySlice';
-import allLibrariesReducer from '../feature/libraries/reducer/allLibrariesSlice';
-import movementsReducer from '../feature/movements/reducer/movementSlice';
 import movementReducer from '../feature/movements/reducer/singleMovementSlice';
+import movementsReducer from '../feature/movements/reducer/movementSlice';
+import planReducer from '../feature/plans/reducer/plansSlice';
+import publisherReducer from '../feature/publishers/reducer/publisherSlice';
+import uploadReducer from '../feature/uploads/uploadReducer/uploadSlice';
+import userReducer from '../feature/users/userReducer/userSlice';
 
 const store = configureStore({
   reducer: {
     user: userReducer,
-    upload: uploadReducer,
     publisher: publisherReducer,
-    book: bookReducer,
+    plan: planReducer,
     catalogue: catalogueReducer,
-    library: libraryReducer,
+    book: bookReducer,
     allLibraries: allLibrariesReducer,
+    library: libraryReducer,
     movements: movementsReducer,
     movement: movementReducer,
+    upload: uploadReducer,
   },
   devTools: process.env.NODE_ENV !== 'production',
 });
