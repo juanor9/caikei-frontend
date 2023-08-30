@@ -21,10 +21,10 @@ const PlanDisplay = () => {
     dispatch(getBooksByPublisher({ publisher, userToken }));
   }, [userData]);
 
-  const costCurrency = cost.toLocaleString('es-ES', {
-    style: 'currency',
-    currency: 'COP',
-  });
+  // const costCurrency = cost.toLocaleString('es-ES', {
+  //   style: 'currency',
+  //   currency: 'COP',
+  // });
 
   return (
     <article>
@@ -34,7 +34,7 @@ const PlanDisplay = () => {
       <p><b>Plan:</b> {plan}</p>
       <p><b>Títulos:</b> {catalogue.length}/{titles} </p>
       {cost
-        ? <p><b>Costo mensual:</b> {costCurrency} </p>
+        ? <p><b>Costo mensual:</b> {cost} </p>
         : null}
       <button type="button" className="user-profile__button">Actualizar plan</button>
     </article>
