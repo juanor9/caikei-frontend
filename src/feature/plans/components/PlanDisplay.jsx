@@ -33,7 +33,9 @@ const PlanDisplay = () => {
       </div>
       <p><b>Plan:</b> {plan}</p>
       <p><b>Títulos:</b> {catalogue.length}/{titles} </p>
-      <p><b>Costo mensual:</b> {costCurrency} {}</p>
+      {cost
+        ? <p><b>Costo mensual:</b> {costCurrency} </p>
+        : null}
       <button type="button" className="user-profile__button">Actualizar plan</button>
     </article>
   );
