@@ -21,6 +21,7 @@ import PrivacyPolicy from './pages/PrivacyPolicy/PrivacyPolicy';
 import BugReportForm from './components/BugReportForm/BugReportForm';
 import ImportCatalogue from './pages/ImportCatalogue/ImportCatalogue';
 import ImportLibraries from './pages/ImportLibraries/ImportLibraries';
+import PlansPage from './pages/Plans/Plans';
 
 const App = () => {
   useEffect(() => {
@@ -45,6 +46,7 @@ const App = () => {
         <Route path="/movement/:id" element={<MovementPage />} />
         <Route path="/movement/register" element={<RegisterMovementPage />} />
         <Route path="/movement/import" element={<ImportInventory />} />
+        <Route path="/plans" element={<PlansPage />} />
 
         <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
         <Route path="/privacy" element={<PrivacyPolicy />} />

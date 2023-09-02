@@ -1,0 +1,21 @@
+.allPlans{
+  &__container{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    margin: auto;
+  }
+}
+@media (min-width: 768px) {
+  .allPlans{
+    &__container{
+      grid-template-columns: 1fr 1fr 1fr;
+    }
+  }
+}
+@media (min-width: 1024px) {
+  .allPlans{
+    &__container{
+      grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    }
+  }
+}
