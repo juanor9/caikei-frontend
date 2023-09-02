@@ -1,9 +1,9 @@
 /* eslint-disable no-param-reassign */
 import { createSlice } from '@reduxjs/toolkit';
-import getPlan from '../services/plans';
+import { getAllPlans } from '../services/plans';
 
 const initialState = {
-  plan: {},
+  plans: [],
 };
 
 const planSlice = createSlice(
@@ -11,8 +11,8 @@ const planSlice = createSlice(
     name: 'plan',
     initialState,
     extraReducers: (builder) => {
-      builder.addCase(getPlan.fulfilled, (state, action) => {
-        state.plan = action.payload;
+      builder.addCase(getAllPlans.fulfilled, (state, action) => {
+        state.plans = action.payload;
       });
     },
   },

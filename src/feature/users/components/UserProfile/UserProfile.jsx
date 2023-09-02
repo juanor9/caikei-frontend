@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateUser, getUser } from '../../services/users';
 import Modal from '../../../../components/Modal/Modal';
-import PlanDisplay from '../../../plans/components/PlanDisplay';
+import PlanDisplay from '../../../plans/components/PlanDisplay/PlanDisplay';
 import useForm from '../../../../hooks/useForm';
 import './UserProfile.scss';
 

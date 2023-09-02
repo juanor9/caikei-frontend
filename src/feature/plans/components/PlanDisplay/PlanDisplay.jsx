@@ -1,7 +1,8 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { useEffect } from 'react';
-import getPlan from '../services/plans';
-import { getBooksByPublisher } from '../../books/services/books';
+import { Link } from 'react-router-dom';
+import { getPlan } from '../../services/plans';
+import { getBooksByPublisher } from '../../../books/services/books';
 
 const PlanDisplay = () => {
   const dispatch = useDispatch();
@@ -36,7 +37,7 @@ const PlanDisplay = () => {
       {cost
         ? <p><b>Costo mensual:</b> {cost} </p>
         : null}
-      <button type="button" className="user-profile__button">Actualizar plan</button>
+      <Link to="/plans" className="user-profile__button">Actualizar plan</Link>
     </article>
   );
 };
