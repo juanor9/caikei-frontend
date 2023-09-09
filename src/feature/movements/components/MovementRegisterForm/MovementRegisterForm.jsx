@@ -145,7 +145,10 @@ const MovementRegisterForm = () => {
   const [netTotal, setNetTotal] = useState(0);
   useEffect(() => {
     if (remisionDiscount) {
-      setNetTotal(grossTotal - (grossTotal * (remisionDiscount / 100)));
+      const decimalDiscount = remisionDiscount / 100;
+      const totalDiscount = grossTotal * decimalDiscount;
+      const $netTotal = grossTotal - totalDiscount;
+      setNetTotal($netTotal);
     }
   }, [remisionDiscount, grossTotal]);
 
@@ -177,7 +180,10 @@ const MovementRegisterForm = () => {
   // for sales net total
   useEffect(() => {
     if (salesDiscount) {
-      setNetTotal(grossTotal - (grossTotal * (salesDiscount / 100)));
+      const decimalDiscount = salesDiscount / 100;
+      const totalDiscount = grossTotal * decimalDiscount;
+      const $netTotal = grossTotal - totalDiscount;
+      setNetTotal($netTotal);
     }
   }, [salesDiscount, grossTotal]);
 
@@ -250,6 +256,7 @@ const MovementRegisterForm = () => {
     remisionDiscount,
     salesDiscount,
     publisher,
+    netTotal,
   ]);
 
   // send data to backend

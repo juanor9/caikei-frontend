@@ -1,5 +1,4 @@
 /* eslint-disable react/prop-types */
-/* eslint-disable no-unused-vars */
 import './MovementCard.scss';
 import { PDFDownloadLink } from '@react-pdf/renderer';
 import { useDispatch, useSelector } from 'react-redux';
@@ -22,7 +21,6 @@ const MovementCard = ({
   to,
   grossTotal,
   netTotal,
-  dbid,
   books,
 }) => {
   const dispatch = useDispatch();
@@ -38,6 +36,23 @@ const MovementCard = ({
   const [fromData, setFromData] = useState({});
 
   const [discount, setDiscount] = useState();
+
+  const currencyGrossTotal = grossTotal ? grossTotal.toLocaleString('es-CO', {
+    style: 'currency',
+    currency: 'COP',
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+  })
+    : null;
+
+  const currencyNetTotal = netTotal ? netTotal.toLocaleString('es-CO', {
+    style: 'currency',
+    currency: 'COP',
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+  })
+    : null;
+
   useEffect(() => {
     if (String(to) === String(publisher)) {
       setToName(publisher.name);
@@ -138,13 +153,14 @@ const MovementCard = ({
   }, [books, discount]);
 
   const [copiesTotal, setCopiesTotal] = useState(0);
-  const [fullTotal, setFullTotal] = useState(0);
+  const [fullTotal, setFullTotal] = useState('');
   useEffect(() => {
     const $copiesTotal = movementBookData.reduce((acc, book) => acc + book.copies, 0);
     setCopiesTotal($copiesTotal);
     const $fullTotal = movementBookData.reduce((acc, book) => acc + book.total, 0);
     setFullTotal($fullTotal);
   }, [movementBookData]);
+
   return (
     <tr>
       <td>{id}</td>
@@ -153,9 +169,9 @@ const MovementCard = ({
       <td className="movements__cell--not-mobile">{fromName}</td>
       <td className="movements__cell--not-mobile">{toName}</td>
       {netTotal ? (
-        <td className="movements__cell--not-mobile">{netTotal}</td>
+        <td className="movements__cell--not-mobile">{currencyNetTotal}</td>
       ) : (
-        <td className="movements__cell--not-mobile">{grossTotal}</td>
+        <td className="movements__cell--not-mobile">{currencyGrossTotal}</td>
       )}
       <td>
         {greyLogo && publisherId && kind === 'ingreso' ? (
