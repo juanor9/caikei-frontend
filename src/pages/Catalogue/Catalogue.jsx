@@ -46,12 +46,16 @@ const CataloguePage = () => {
       <TopNav />
       <main className="catalogue__main-container">
         <h2>Catálogo</h2>
-        <section className="catalogue__books-container">
+        <div className="catalogue__top-links">
           <Link to="/book/register" className="catalogue__add-button">
             <FontAwesomeIcon icon={faPlus} />
             Añadir libro
           </Link>
           <Link to="/book/import">Importar catálogo</Link>
+        </div>
+
+        <section className="catalogue__books-container">
+
           {catalogue && Array.isArray(catalogue) && publisher
             ? (
               catalogue.map((book) => (
