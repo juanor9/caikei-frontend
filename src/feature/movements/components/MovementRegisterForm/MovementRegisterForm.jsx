@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Select from 'react-select';
-import { createMovement } from '../../services/movements';
+import { createMovement, getMovementsByPublisher } from '../../services/movements';
 import { getBooksByPublisher } from '../../../books/services/books';
 import { getLibrariesById } from '../../../libraries/services/libraries';
 import { getUser } from '../../../users/services/users';
@@ -286,15 +286,36 @@ const MovementRegisterForm = () => {
     }
   }, [formfulldata]);
 
+  const { movement } = useSelector((state) => state.movements);
+  const [movementsNumber, setMovementsNumber] = useState(0);
+  useEffect(() => {
+    if (publisher) {
+      dispatch(getMovementsByPublisher(publisher));
+    }
+  }, [publisher]);
+
+  useEffect(() => {
+    if (Array.isArray(movement)) {
+      setMovementsNumber(movement.length);
+    }
+  }, [movement]);
+
+  const todayFull = new Date();
+  const year = todayFull.getFullYear();
+  const month = String(todayFull.getMonth() + 1).padStart(2, '0');
+  const day = String(todayFull.getDate()).padStart(2, '0');
+  const today = `${year}-${month}-${day}`;
+
   return (
     <form action="" className="movement-form" onSubmit={handleSubmit}>
       <label htmlFor="internalId" className="movement-form__label">
-        Número de referencias
+        Número de referencia
         <input
           type="number"
           name="internalId"
           id="internalId"
           required
+          defaultValue={movementsNumber > 0 ? movementsNumber + 1 : null}
           onChange={handleChange}
           className="movement-form__input"
         />
@@ -307,6 +328,7 @@ const MovementRegisterForm = () => {
           id="date"
           required
           onChange={handleChange}
+          defaultValue={today}
           className="movement-form__input"
         />
       </label>
