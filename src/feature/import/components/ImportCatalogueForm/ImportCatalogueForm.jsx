@@ -53,16 +53,13 @@ const ImportCatalogueForm = () => {
           const successNotification = () => toast.success('El archivo fue cargado con éxito');
           successNotification();
         } catch (error) {
-          console.log(
-            '🚀 ~ file: ImportExcelForm.jsx:88 ~ fetchDataFromExcel ~ error:',
-            error,
-          );
           const errorNotification = () => toast.error(
             `Hay un error en tu archivo.
             Verifica que los libros y librerías de tu archivo
             existan en el sistema y vuelve a intentarlo.`,
           );
           errorNotification();
+          throw new Error(error);
         }
       }
     };

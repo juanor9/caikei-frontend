@@ -1,0 +1,26 @@
+@import "../../../../colors";
+@import "../../../../mixin.scss";
+
+.plan-card{
+  padding: 0 1em;
+  border: solid 1px $black;
+  border-radius: 2em;
+  max-width: 100%;
+  &__name{
+    text-transform: capitalize;
+    color: $accent;
+    font-size: 1.5em;
+    margin: .8em 0;
+  }
+  &__cost{
+    font-size: 1.3em;
+    &--number{
+      font-size: 2em;
+    }
+  }
+  &__link{
+    display: block;
+    @include main-button;
+    margin: 1em 0;
+  }
+}
