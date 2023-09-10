@@ -1,21 +1,23 @@
-import { Link } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 import toast, { Toaster } from 'react-hot-toast';
 import { uploadExcel } from '../../../uploads/services/upload';
-import {
-  excelDateToJSDate,
-  convertCamelCaseToReadable,
-} from '../../services/functions';
+import { excelDateToJSDate, convertCamelCaseToReadable } from '../../services/functions';
 import { getUser } from '../../../users/services/users';
 import { createBook } from '../../../books/services/books';
+import { getPlan } from '../../../plans/services/plans';
 
 const ImportCatalogueForm = () => {
-  const [file, setFile] = useState('');
   const dispatch = useDispatch();
   const { uploads } = useSelector((state) => state.upload);
   const userToken = localStorage.getItem('login-token');
   const { userData } = useSelector((state) => state.user);
+  const planId = useSelector((state) => state.user.userData.plan);
+  const { titles } = useSelector((state) => state.plan.plan);
+
+  const [file, setFile] = useState('');
+  const [importItems, setImportItems] = useState([]);
 
   const handleChangeFile = ({ target }) => {
     const { files } = target;
@@ -34,7 +36,6 @@ const ImportCatalogueForm = () => {
     }
   };
 
-  const [importItems, setImportItems] = useState([]);
   useEffect(() => {
     const fetchDataFromExcel = async () => {
       if (uploads && Array.isArray(uploads)) {
@@ -50,15 +51,11 @@ const ImportCatalogueForm = () => {
             return newItem;
           });
           setImportItems(uploadedItems);
-          const successNotification = () => toast.success('El archivo fue cargado con éxito');
-          successNotification();
+          toast.success('El archivo fue cargado con éxito');
         } catch (error) {
-          const errorNotification = () => toast.error(
-            `Hay un error en tu archivo.
+          toast.error(`Hay un error en tu archivo.
             Verifica que los libros y librerías de tu archivo
-            existan en el sistema y vuelve a intentarlo.`,
-          );
-          errorNotification();
+            existan en el sistema y vuelve a intentarlo.`);
           throw new Error(error);
         }
       }
@@ -66,15 +63,25 @@ const ImportCatalogueForm = () => {
     fetchDataFromExcel();
   }, [uploads]);
 
+  useEffect(() => {
+    if (planId) {
+      dispatch(getPlan({ planId, userToken }));
+    }
+  }, [planId]);
+
   const importCatalogue = () => {
     if (!importItems || !Array.isArray(importItems)) {
+      return null;
+    }
+    const importItemsNumber = importItems.length;
+    if (importItemsNumber > titles) {
+      toast.error('Estás intentando importar más títulos de los que tiene tu plan. Verifica tu archivo o actualiza tu suscripción.');
       return null;
     }
     try {
       dispatch(getUser(userToken));
     } catch (error) {
-      const errorNotification = () => toast.error('Hubo un error al traer la información de la editorial.');
-      errorNotification();
+      toast.error('Hubo un error al traer la información de la editorial.');
     }
     const { publisher } = userData;
     const newCatalogue = importItems.map((item) => {
@@ -105,11 +112,9 @@ const ImportCatalogueForm = () => {
 
       try {
         dispatch(createBook({ ...newItem, userToken }));
-        const successNotification = () => toast.success(`El libro "${titulo}" fue actualizado con éxito`);
-        successNotification();
+        toast.success(`El libro "${titulo}" fue actualizado con éxito`);
       } catch (error) {
-        const errorNotification = () => toast.error(`Hubo un error al crear el libro "${titulo}"`);
-        errorNotification();
+        toast.error(`Hubo un error al crear el libro "${titulo}"`);
       }
       return newItem;
     });
