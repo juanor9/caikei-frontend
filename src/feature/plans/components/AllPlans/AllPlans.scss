@@ -1,18 +1,29 @@
 .allPlans{
   &__container{
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr;
     margin: auto;
+    gap: 1.5em 1em;
+    padding: 0 2em;
+    justify-items: stretch;
+    box-sizing: border-box;
   }
 }
 @media (min-width: 768px) {
   .allPlans{
     &__container{
-      grid-template-columns: 1fr 1fr 1fr;
+      grid-template-columns: 1fr 1fr;
     }
   }
 }
 @media (min-width: 1024px) {
+  .allPlans{
+    &__container{
+      grid-template-columns: 1fr 1fr 1fr 1fr;
+    }
+  }
+}
+@media (min-width: 2000px) {
   .allPlans{
     &__container{
       grid-template-columns: 1fr 1fr 1fr 1fr 1fr;

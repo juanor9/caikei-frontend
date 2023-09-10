@@ -67,7 +67,6 @@ const ImportLibraryForm = () => {
   }, [uploads]);
 
   const handleCreateLibrary = async (item, publisher) => {
-    // console.log('No existe :(');
     const {
       nombre,
       idtipo,
@@ -99,7 +98,6 @@ const ImportLibraryForm = () => {
     }
   };
   const handleUpdateLibrary = async (item) => {
-    console.log('Existe!');
     const dispatchGetUser = await dispatch(getUser(userToken));
     const { publisher } = dispatchGetUser.payload;
     const { id, descuento } = item;

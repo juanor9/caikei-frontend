@@ -50,7 +50,7 @@ const InventoryImportExcelForm = () => {
               );
               const book = bookData.payload[0];
               if (book === undefined) {
-                console.error('El libro no existe en la base de datos', item);
+                throw new Error('El libro no existe en la base de datos', item);
               }
               let storage;
 
@@ -66,7 +66,7 @@ const InventoryImportExcelForm = () => {
               );
               storage = getPublisherStore.payload[0];
               if (storage === undefined) {
-                console.error(
+                throw new Error(
                   'La librería no existe en la base de datos',
                   item,
                 );
@@ -84,7 +84,7 @@ const InventoryImportExcelForm = () => {
                 );
                 storage = getLibraryStore.payload[0];
                 if (storage === undefined) {
-                  console.error(
+                  throw new Error(
                     `La librería ${documentoDeIdentidadDeBodega} no existe en la base de datos`,
                     item,
                   );
@@ -106,16 +106,13 @@ const InventoryImportExcelForm = () => {
           const successNotification = () => toast.success('El archivo fue cargado con éxito');
           successNotification();
         } catch (error) {
-          console.log(
-            '🚀 ~ file: ImportExcelForm.jsx:88 ~ fetchDataFromExcel ~ error:',
-            error,
-          );
           const errorNotification = () => toast.error(
             `Hay un error en tu archivo.
             Verifica que los libros y librerías de tu archivo
             existan en el sistema y vuelve a intentarlo.`,
           );
           errorNotification();
+          throw new Error(error);
         }
       }
     };

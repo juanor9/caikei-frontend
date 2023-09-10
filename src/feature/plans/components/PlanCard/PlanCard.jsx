@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import './PlanCard.scss';
 
 const PlanCard = ({ plan, cost, titles }) => {
   const currencyCost = cost.toLocaleString('es-CO', {
@@ -20,15 +21,15 @@ const PlanCard = ({ plan, cost, titles }) => {
   };
   const PaymentLink = planPaymentLink[titles];
   return (
-    <div>
-      <p><b>{plan}</b></p>
-      {PaymentLink
-        ? <a href={PaymentLink}>Suscribirse</a>
-        : null}
+    <div className="plan-card">
+      <p className="plan-card__name"><b>{plan}</b></p>
       {cost > 0
-        ? <p>{currencyCost}+IVA/mes</p>
-        : <p>{currencyCost}</p>}
+        ? <p className="plan-card__cost"><span className="plan-card__cost--number">{currencyCost}</span> + IVA/mes</p>
+        : <p className="plan-card__cost--number">{currencyCost}</p>}
       <p>{titles} títulos activos</p>
+      {PaymentLink
+        ? <a href={PaymentLink} className="plan-card__link">Suscribirse</a>
+        : null}
     </div>
   );
 };
