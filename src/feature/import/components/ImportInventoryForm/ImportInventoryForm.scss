@@ -1,0 +1,9 @@
+@import "../../../../colors";
+@import "../../../../mixin.scss";
+
+.import-form{
+  @include upload-files-form;
+  &__button{
+    @include main-button;
+  }
+}

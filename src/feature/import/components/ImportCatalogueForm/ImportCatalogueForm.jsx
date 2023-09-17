@@ -7,6 +7,7 @@ import { excelDateToJSDate, convertCamelCaseToReadable } from '../../services/fu
 import { getUser } from '../../../users/services/users';
 import { createBook } from '../../../books/services/books';
 import { getPlan } from '../../../plans/services/plans';
+import './ImportCatalogueForm.scss';
 
 const ImportCatalogueForm = () => {
   const dispatch = useDispatch();
@@ -127,12 +128,12 @@ const ImportCatalogueForm = () => {
     <section>
       <h3>Importar desde formato de Excel</h3>
       <Link to={importCatalogueSampleURL}>Descarga el formato de Excel</Link>
-      <form action="" onSubmit={handleSubmitFile}>
+      <form action="" onSubmit={handleSubmitFile} className="import-form">
         <label htmlFor="excel-file">
           Carga tu catálogo en Excel
           <input type="file" accept=".xlsx" onChange={handleChangeFile} />
         </label>
-        <button type="submit">Cargar archivo</button>
+        <button type="submit" className="import-form__button">Cargar archivo</button>
       </form>
       {importItems && Array.isArray(importItems) && importItems.length > 0 ? (
         <>
@@ -154,7 +155,7 @@ const ImportCatalogueForm = () => {
               </article>
             );
           })}
-          <button type="submit" onClick={importCatalogue}>
+          <button type="submit" onClick={importCatalogue} className="import-form__button">
             Verificar
           </button>
         </>

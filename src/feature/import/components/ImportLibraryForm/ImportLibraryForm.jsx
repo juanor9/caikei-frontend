@@ -156,12 +156,12 @@ const ImportLibraryForm = () => {
     <section>
       <h3>Importar desde formato de Excel</h3>
       <Link to={importLibrariesSampleURL}>Descarga el formato de Excel</Link>
-      <form action="" onSubmit={handleSubmitFile}>
+      <form action="" onSubmit={handleSubmitFile} className="import-form">
         <label htmlFor="excel-file">
           Carga tus librerías en Excel
           <input type="file" accept=".xlsx" onChange={handleChangeFile} />
         </label>
-        <button type="submit">Cargar archivo</button>
+        <button type="submit" className="import-form__button">Cargar archivo</button>
       </form>
       {importItems && Array.isArray(importItems) && importItems.length > 0 ? (
         <>
@@ -183,7 +183,7 @@ const ImportLibraryForm = () => {
               </article>
             );
           })}
-          <button type="submit" onClick={importLibrary}>
+          <button type="submit" onClick={importLibrary} className="import-form__button">
             Verificar
           </button>
         </>
