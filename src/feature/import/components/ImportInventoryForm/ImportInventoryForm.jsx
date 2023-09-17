@@ -11,6 +11,7 @@ import {
   getBooksByFilter,
   updateBookById,
 } from '../../../books/services/books';
+import './ImportInventoryForm.scss';
 
 const InventoryImportExcelForm = () => {
   const [file, setFile] = useState('');
@@ -169,12 +170,12 @@ const InventoryImportExcelForm = () => {
     <section>
       <h3>Importar desde formato de Excel</h3>
       <Link to={importInventorySampleURL}>Descarga el formato de Excel</Link>
-      <form action="" onSubmit={handleSubmitFile}>
+      <form action="" onSubmit={handleSubmitFile} className="import-form">
         <label htmlFor="excel-file">
           Carga tu inventario en Excel
           <input type="file" accept=".xlsx" onChange={handleChangeFile} />
         </label>
-        <button type="submit">Cargar archivo</button>
+        <button type="submit" className="import-form__button">Cargar archivo</button>
       </form>
       {importItems && Array.isArray(importItems) && importItems.length > 0 ? (
         <>
@@ -186,7 +187,7 @@ const InventoryImportExcelForm = () => {
               <hr />
             </article>
           ))}
-          <button type="submit" onClick={importInventory}>
+          <button type="submit" onClick={importInventory} className="import-form__button">
             Verificar
           </button>
         </>
