@@ -37,7 +37,6 @@ const LoginForm = () => {
 
   return (
     <section className="login-form">
-      <h2 className="login-form__header">Iniciar sesión</h2>
       <form
         action=""
         className="login-form__form"

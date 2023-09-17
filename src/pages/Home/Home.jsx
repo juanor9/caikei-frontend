@@ -1,6 +1,6 @@
 import './Home.scss';
 import TopNav from '../../components/TopNav/TopNav';
-import RegisterForm from '../../feature/users/components/RegisterForm/RegisterForm';
+import HomeTabs from '../../feature/users/components/HomeTabs/HomeTabs';
 
 const HomePage = () => (
   <div className="homepage">
@@ -15,7 +15,7 @@ const HomePage = () => (
           </figure>
         </div>
         <div className="homepage_hero-right">
-          <RegisterForm />
+          <HomeTabs />
         </div>
       </section>
     </div>
