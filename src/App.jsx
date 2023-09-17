@@ -8,7 +8,6 @@ import Footer from './components/Footer/Footer';
 import HomePage from './pages/Home/Home';
 import LibrariesPage from './pages/Libraries/Libraries';
 import LibraryPage from './pages/Library/Library';
-import LoginPage from './pages/Login/Login';
 import PublisherRegister from './pages/PublisherRegister/PublisherRegister';
 import RegisterLibraryPage from './pages/LibraryRegister/LibraryRegister';
 import UserProfilePage from './pages/UserProfile/UserProfilePage';
@@ -39,7 +38,6 @@ const App = () => {
         <Route path="/library/:id" element={<LibraryPage />} />
         <Route path="/library/register" element={<RegisterLibraryPage />} />
         <Route path="/library/import" element={<ImportLibraries />} />
-        <Route path="/login" element={<LoginPage />} />
         <Route path="/profile" element={<UserProfilePage />} />
         <Route path="/publisher/register" element={<PublisherRegister />} />
         <Route path="/movements" element={<MovementsPage />} />
