@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import './LibraryCard.scss';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';

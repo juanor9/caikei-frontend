@@ -1,8 +1,7 @@
-/* eslint-disable no-unused-vars */
 import './ProfileTabs.scss';
 import PropTypes from 'prop-types';
 
-const ProfileTabs = ({ tabChange, selectedTab }) => {
+const ProfileTabs = ({ tabChange }) => {
   const handleClickProfile = () => {
     tabChange('userProfile');
   };
@@ -50,6 +49,5 @@ const ProfileTabs = ({ tabChange, selectedTab }) => {
 };
 ProfileTabs.propTypes = {
   tabChange: PropTypes.func.isRequired,
-  selectedTab: PropTypes.string.isRequired,
 };
 export default ProfileTabs;

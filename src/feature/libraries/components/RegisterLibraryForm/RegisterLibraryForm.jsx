@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import './RegisterLibraryForm.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';

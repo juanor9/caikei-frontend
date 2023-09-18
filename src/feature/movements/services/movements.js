@@ -1,4 +1,3 @@
-/* eslint-disable */
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
@@ -7,7 +6,7 @@ const token = localStorage.getItem('login-token');
 export const createMovement = createAsyncThunk(
   'movements/createMovement',
   async (data) => {
-    const {userToken, formfulldata} = data;
+    const { userToken, formfulldata } = data;
     const options = {
       method: 'POST',
       headers: {
@@ -41,7 +40,7 @@ export const getMovementsByPublisher = createAsyncThunk(
 export const getMovementById = createAsyncThunk(
   'movements/getMovement',
   async (data) => {
-    const {id} = data;
+    const { id } = data;
     const options = {
       method: 'GET',
       headers: {

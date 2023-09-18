@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import './Movements.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';

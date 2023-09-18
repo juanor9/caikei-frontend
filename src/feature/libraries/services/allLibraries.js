@@ -1,9 +1,6 @@
-/* eslint-disable no-unused-vars */
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
-const token = localStorage.getItem('login-token');
-
 const getLibrariesByPublisher = createAsyncThunk(
   'libraries/getLibrariesByPublisher',
   async (data) => {

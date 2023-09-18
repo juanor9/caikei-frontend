@@ -1,10 +1,10 @@
-/* eslint-disable react/prop-types */
 import './MovementCard.scss';
 import { PDFDownloadLink } from '@react-pdf/renderer';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { faSpinner, faFileArrowDown } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import PropTypes from 'prop-types';
 import { getPublisherById } from '../../../publishers/services/publishers';
 import getLibrariesByPublisher from '../../../libraries/services/allLibraries';
 import EntryPdf from '../pdf/EntryPdf/EntryPdf';
@@ -298,4 +298,22 @@ const MovementCard = ({
     </tr>
   );
 };
+
+MovementCard.propTypes = {
+  from: PropTypes.arrayOf(PropTypes.string).isRequired,
+  to: PropTypes.arrayOf(PropTypes.string).isRequired,
+  id: PropTypes.number.isRequired,
+  date: PropTypes.string.isRequired,
+  kind: PropTypes.string.isRequired,
+  grossTotal: PropTypes.number.isRequired,
+  netTotal: PropTypes.number,
+  books: PropTypes.arrayOf(PropTypes.shape({
+    copies: PropTypes.number,
+  })).isRequired,
+};
+
+MovementCard.defaultProps = {
+  netTotal: undefined,
+};
+
 export default MovementCard;

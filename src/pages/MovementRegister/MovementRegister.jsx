@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import './MovementRegister.scss';
 import TopNav from '../../components/TopNav/TopNav';
 import MovementRegisterForm from '../../feature/movements/components/MovementRegisterForm/MovementRegisterForm';

@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import './Movement.scss';
 import { faPenToSquare } from '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -40,15 +39,15 @@ const MovementPage = () => {
     }
   };
 
-  const handleClickDeactivate = () => {
-    try {
-      const deactivate = { isActive: false };
-      const data = { deactivate, id };
-      dispatch(updateLibrary(data));
-    } catch (error) {
-      throw new Error(error);
-    }
-  };
+  // const handleClickDeactivate = () => {
+  //   try {
+  //     const deactivate = { isActive: false };
+  //     const data = { deactivate, id };
+  //     dispatch(updateLibrary(data));
+  //   } catch (error) {
+  //     throw new Error(error);
+  //   }
+  // };
 
   useEffect(() => {
     if (id) {
