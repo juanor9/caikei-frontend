@@ -1,0 +1,17 @@
+@import "../../../../colors.scss";
+@import "../../../../mixin.scss";
+
+.hometabs{
+  margin-top: 2em;
+  &__button{
+    @include main-button;
+    &-container{
+      & > :first-child{
+        border-radius: 5em 0 0 5em;
+      }
+      & > :last-child{
+        border-radius: 0 5em 5em 0;
+      }
+    }
+  }
+}
