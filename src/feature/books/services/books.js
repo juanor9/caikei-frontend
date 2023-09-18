@@ -1,4 +1,3 @@
-/* eslint-disable */
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
@@ -7,7 +6,7 @@ const token = localStorage.getItem('login-token');
 export const createBook = createAsyncThunk(
   'books/createBook',
   async (book) => {
-    const{userToken, ...bookData} = book
+    const { userToken, ...bookData } = book;
     const options = {
       method: 'POST',
       headers: {
@@ -29,7 +28,7 @@ export const createBook = createAsyncThunk(
 export const getBooksByPublisher = createAsyncThunk(
   'books/getBooksByPublisher',
   async (filter) => {
-    const {publisher, userToken} = filter
+    const { publisher, userToken } = filter;
     const uriParams = publisher;
     const options = {
       method: 'GET',
@@ -51,12 +50,12 @@ export const getBooksByPublisher = createAsyncThunk(
 export const getBooksByFilter = createAsyncThunk(
   'books/getBooksByPublisher',
   async (data) => {
-    const {bookFilter, userToken} = data;
+    const { bookFilter, userToken } = data;
     const uriParams = new URLSearchParams();
-    Object.keys(bookFilter).forEach(key => {
+    Object.keys(bookFilter).forEach((key) => {
       const value = bookFilter[key];
       uriParams.append(key, value);
-    })
+    });
     const uri = `?${uriParams.toString()}`;
 
     const options = {

@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
 import TopNav from '../../components/TopNav/TopNav';

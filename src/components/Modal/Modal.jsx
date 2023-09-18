@@ -1,7 +1,7 @@
-/* eslint-disable react/prop-types */
 import './Modal.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleXmark } from '@fortawesome/free-regular-svg-icons';
+import PropTypes from 'prop-types';
 
 const Modal = ({ modalFunction, message, children }) => (
   <div className="modal-container" id="modal-container">
@@ -21,5 +21,16 @@ const Modal = ({ modalFunction, message, children }) => (
     </div>
   </div>
 );
+
+Modal.propTypes = {
+  modalFunction: PropTypes.func.isRequired,
+  message: PropTypes.string,
+  children: PropTypes.node,
+};
+
+Modal.defaultProps = {
+  message: '',
+  children: '',
+};
 
 export default Modal;

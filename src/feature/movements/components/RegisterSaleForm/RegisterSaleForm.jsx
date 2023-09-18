@@ -1,8 +1,7 @@
-/* eslint-disable react/prop-types */
-/* eslint-disable no-unused-vars */
 import Select from 'react-select';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import PropTypes from 'prop-types';
 import getLibrariesByPublisher from '../../../libraries/services/allLibraries';
 import { getPublisherById } from '../../../publishers/services/publishers';
 
@@ -69,6 +68,10 @@ const RegisterSaleForm = ({ from }) => {
     </div>
 
   );
+};
+
+RegisterSaleForm.propTypes = {
+  from: PropTypes.func.isRequired,
 };
 
 export default RegisterSaleForm;
