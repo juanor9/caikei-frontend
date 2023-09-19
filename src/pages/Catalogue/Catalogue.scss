@@ -5,15 +5,36 @@
 &__main-container{
   padding: 1em;
 }
-&__books-container{
+&__top-links{
   display: flex;
+  flex-direction: column;
   gap: 1em;
+  margin: 1em 0;
+}
+&__books-container{
+  display: grid;
+  gap: 1em;
+  grid-template-columns: 1fr;
+  justify-items: stretch;
   align-items: stretch;
-  flex-wrap: wrap;
-  justify-content: left;
 }
 &__add-button{
   @include main-button;
   width: 100%;
+  margin: 0;
 }
+}
+@media (min-width: 768px){
+  .catalogue{
+    &__books-container{
+      grid-template-columns: 1fr 1fr 1fr ;
+    }
+  }
+}
+@media (min-width: 1000px){
+  .catalogue{
+    &__books-container{
+      grid-template-columns: 1fr 1fr 1fr 1fr ;
+    }
+  }
 }

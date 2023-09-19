@@ -1,5 +1,3 @@
-/* eslint-disable camelcase */
-/* eslint-disable no-unused-vars */
 import './Book.scss';
 import { faPenToSquare } from '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';

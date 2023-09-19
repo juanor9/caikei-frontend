@@ -26,10 +26,18 @@
     font-size: .8em;
   }
   &__disclaimer{
-    width: 30em;
+    width: 100%;
     text-align: left;
     font-size: 0.6em;
     margin-bottom: 5em;
     line-height: 1.5;
+  }
+}
+
+@media (min-width: 768px) {
+  .register-form {
+    &__disclaimer{
+      width: 30em;
+    }
   }
 }

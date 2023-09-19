@@ -8,7 +8,6 @@ import Footer from './components/Footer/Footer';
 import HomePage from './pages/Home/Home';
 import LibrariesPage from './pages/Libraries/Libraries';
 import LibraryPage from './pages/Library/Library';
-import LoginPage from './pages/Login/Login';
 import PublisherRegister from './pages/PublisherRegister/PublisherRegister';
 import RegisterLibraryPage from './pages/LibraryRegister/LibraryRegister';
 import UserProfilePage from './pages/UserProfile/UserProfilePage';
@@ -19,6 +18,9 @@ import TermsAndConditions from './pages/TermsAndConditions/TermsAndConditions';
 import ImportInventory from './pages/ImportInventory/ImportInventory';
 import PrivacyPolicy from './pages/PrivacyPolicy/PrivacyPolicy';
 import BugReportForm from './components/BugReportForm/BugReportForm';
+import ImportCatalogue from './pages/ImportCatalogue/ImportCatalogue';
+import ImportLibraries from './pages/ImportLibraries/ImportLibraries';
+import PlansPage from './pages/Plans/Plans';
 
 const App = () => {
   useEffect(() => {
@@ -30,17 +32,19 @@ const App = () => {
         <Route path="/" element={<HomePage />} />
         <Route path="/book/:id" element={<BookPage />} />
         <Route path="/book/register" element={<BookRegisterPage />} />
+        <Route path="/book/import" element={<ImportCatalogue />} />
         <Route path="/catalogue" element={<CataloguePage />} />
         <Route path="/libraries" element={<LibrariesPage />} />
         <Route path="/library/:id" element={<LibraryPage />} />
         <Route path="/library/register" element={<RegisterLibraryPage />} />
-        <Route path="/login" element={<LoginPage />} />
+        <Route path="/library/import" element={<ImportLibraries />} />
         <Route path="/profile" element={<UserProfilePage />} />
         <Route path="/publisher/register" element={<PublisherRegister />} />
         <Route path="/movements" element={<MovementsPage />} />
         <Route path="/movement/:id" element={<MovementPage />} />
         <Route path="/movement/register" element={<RegisterMovementPage />} />
         <Route path="/movement/import" element={<ImportInventory />} />
+        <Route path="/plans" element={<PlansPage />} />
 
         <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
         <Route path="/privacy" element={<PrivacyPolicy />} />

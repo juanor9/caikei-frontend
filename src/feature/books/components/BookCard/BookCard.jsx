@@ -1,14 +1,13 @@
-/* eslint-disable no-unused-vars */
 import './BookCard.scss';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 const BookCard = ({ title, cover, bookId }) => (
   <Link to={`/book/${bookId}`} className="book__link">
-    <article className="book" style={{ backgroundImage: `url(${cover})` }}>
-      <div className="book__transition" />
+    <article className="book">
+      <div className="book__cover" style={{ backgroundImage: `url(${cover})` }} />
       <div className="book__info">
-        <p><b>{title}</b></p>
+        <b>{title}</b>
       </div>
     </article>
   </Link>

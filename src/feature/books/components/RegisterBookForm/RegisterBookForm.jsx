@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import { useDispatch, useSelector } from 'react-redux';
 import toast, { Toaster } from 'react-hot-toast';
 import { useEffect, useState } from 'react';

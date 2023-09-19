@@ -1,0 +1,19 @@
+@import "../../colors.scss";
+@import "../../mixin.scss";
+
+.import-inventory{
+  &__main-container{
+    padding: 1em;
+  }
+  &__warning{
+    @include warning;
+
+    & p{
+      margin: 0;
+    }
+    &-icon{
+      font-size: 2em;
+      margin-top: -0.2em
+    }
+  }
+}

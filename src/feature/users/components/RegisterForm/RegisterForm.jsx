@@ -31,7 +31,6 @@ const RegisterForm = () => {
 
   return (
     <section className="register-form">
-      <h2 className="register-form__header">Crea tu cuenta</h2>
       <form
         action=""
         onSubmit={handleSubmit}
@@ -66,7 +65,6 @@ const RegisterForm = () => {
         >
           Registrarse
         </button>
-        <Link to="/login" className="register-form__login-button">Iniciar sesión</Link>
       </form>
       {newUser === true
         ? (
@@ -79,10 +77,7 @@ const RegisterForm = () => {
       <div className="register-form__disclaimer">
         <p>Al hacer click en &quot;Registrarse&quot; confirmo que he leído y acepto los
           <Link to="/terms-and-conditions"> Términos y condiciones de la aplicación </Link>
-          así como nuestra
-          <Link to="/privacy">
-            Política de privacidad
-          </Link>.
+          así como nuestra <Link to="/privacy">Política de privacidad</Link>.
         </p>
       </div>
     </section>

@@ -100,3 +100,26 @@
     background-color: $darker;
   }
 }
+
+@mixin warning{
+  align-items: center;
+  background-color: $main-light;
+  border-radius: 1em;
+  border: solid 1px $main-dark;
+  color: $main-dark;
+  display: flex;
+  gap: 1em;
+  margin-bottom: 1em;
+  padding: 1em;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+@mixin upload-files-form{
+  margin-top: 1em;
+  display: flex;
+  flex-direction: column;
+  & label{
+    @include form-lable;
+  }
+}

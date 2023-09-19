@@ -28,7 +28,6 @@ const LoginForm = () => {
   };
   useEffect(() => {
     if (loginState && loginState.includes('Error')) {
-      console.log('🚀 ~ file: LoginForm.jsx:31 ~ useEffect ~ loginState:', loginState);
       setLoginFail(true);
     }
     if (loginState && loginState.includes('object')) {
@@ -38,7 +37,6 @@ const LoginForm = () => {
 
   return (
     <section className="login-form">
-      <h2 className="login-form__header">Iniciar sesión</h2>
       <form
         action=""
         className="login-form__form"

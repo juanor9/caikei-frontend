@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
 import { createSlice } from '@reduxjs/toolkit';
-import { createLibrary, getLibrariesById } from '../services/libraries';
+import { createLibrary, getLibrariesById, getLibrariesByFilter } from '../services/libraries';
 
 const initialState = {
   library: {},
@@ -15,6 +15,9 @@ const librarySlice = createSlice(
         state.library = action.payload;
       });
       builder.addCase(getLibrariesById.fulfilled, (state, action) => {
+        state.library = action.payload;
+      });
+      builder.addCase(getLibrariesByFilter.fulfilled, (state, action) => {
         state.library = action.payload;
       });
     },

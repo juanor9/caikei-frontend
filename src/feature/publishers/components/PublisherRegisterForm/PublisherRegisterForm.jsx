@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import './PublisherRegisterForm.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
