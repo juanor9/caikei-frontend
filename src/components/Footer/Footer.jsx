@@ -6,7 +6,7 @@ const Footer = () => (
     <div>
       <p className="footer__logo"><span className="footer__ja" lang="ja">計</span>Caikei</p>
       <p>Tanuki SAS | &copy; Todos los derechos reservados</p>
-      <p>V. 1.0.0</p>
+      <p>V. 1.0.1</p>
     </div>
     <div>
       <h4>Sobre Caikei</h4>
