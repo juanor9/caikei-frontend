@@ -4,7 +4,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Select from 'react-select';
-import { createMovement, getMovementsByPublisher } from '../../services/movements';
+import {
+  createMovement,
+  getMovementsByPublisher,
+} from '../../services/movements';
 import { getBooksByPublisher } from '../../../books/services/books';
 import { getLibrariesById } from '../../../libraries/services/libraries';
 import { getUser } from '../../../users/services/users';
@@ -32,10 +35,12 @@ const MovementRegisterForm = () => {
   const [catalogueSelect, setCatalogueSelect] = useState({});
   useEffect(() => {
     if (catalogue && Array.isArray(catalogue)) {
-      setCatalogueSelect(catalogue.map((book) => ({
-        value: book._id,
-        label: book.title,
-      })));
+      setCatalogueSelect(
+        catalogue.map((book) => ({
+          value: book._id,
+          label: book.title,
+        })),
+      );
     }
   }, [catalogue]);
   const [selectedBooks, setSelectedBooks] = useState(null);
@@ -187,9 +192,79 @@ const MovementRegisterForm = () => {
     }
   }, [salesDiscount, grossTotal]);
 
-  // crear datos para solicitud
+  // send data to backend
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    try {
+      dispatch(createMovement({ formfulldata, userToken }));
+      navigate('/movements');
+    } catch (error) {
+      throw new Error(error);
+    }
+  };
+
   useEffect(() => {
-    const { internalId, date } = form;
+    const formButton = document.getElementById('form-button');
+    const { books } = formfulldata;
+    const formKind = formfulldata.kind;
+
+    if (formKind && books && Array.isArray(books) && books.length > 0) {
+      formButton.classList.remove('movement-form__submit-button--disabled');
+      formButton.classList.add('movement-form__submit-button');
+    }
+    if (Array.isArray(books) && books.length === 0) {
+      formButton.classList.remove('movement-form__submit-button');
+      formButton.classList.add('movement-form__submit-button--disabled');
+    }
+  }, [formfulldata]);
+
+  const { movement } = useSelector((state) => state.movements);
+  const [movementsNumber, setMovementsNumber] = useState(0);
+  useEffect(() => {
+    if (publisher) {
+      dispatch(getMovementsByPublisher(publisher));
+    }
+  }, [publisher]);
+
+  useEffect(() => {
+    if (Array.isArray(movement)) {
+      setMovementsNumber(movement.length);
+    }
+  }, [movement]);
+
+  const todayFull = new Date();
+  const year = todayFull.getFullYear();
+  const month = String(todayFull.getMonth() + 1).padStart(2, '0');
+  const day = String(todayFull.getDate()).padStart(2, '0');
+  const today = `${year}-${month}-${day}`;
+
+  const [internalId, setInternalId] = useState(null);
+  useEffect(() => {
+    if (movementsNumber > 0) {
+      const currentMovementNumber = movementsNumber + 1;
+      setInternalId(currentMovementNumber);
+    }
+  }, [movementsNumber]);
+  const handleInternalIdChange = ({ target }) => {
+    const { value } = target;
+    setInternalId(value);
+  };
+
+  const [date, setDate] = useState(null);
+
+  useEffect(() => {
+    if (today) {
+      setDate(today);
+    }
+  }, [today]);
+  const handleDateChange = ({ target }) => {
+    const { value } = target;
+    setDate(value);
+  };
+
+  // crear datos para solicitud ------------------------------------
+  useEffect(() => {
     setFormfulldata({
       ...formfulldata,
       internalId,
@@ -257,54 +332,9 @@ const MovementRegisterForm = () => {
     salesDiscount,
     publisher,
     netTotal,
+    internalId,
+    date,
   ]);
-
-  // send data to backend
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-
-    try {
-      dispatch(createMovement({ formfulldata, userToken }));
-      navigate('/movements');
-    } catch (error) {
-      throw new Error(error);
-    }
-  };
-
-  useEffect(() => {
-    const formButton = document.getElementById('form-button');
-    const { books } = formfulldata;
-    const formKind = formfulldata.kind;
-
-    if (formKind && books && Array.isArray(books) && books.length > 0) {
-      formButton.classList.remove('movement-form__submit-button--disabled');
-      formButton.classList.add('movement-form__submit-button');
-    }
-    if (Array.isArray(books) && books.length === 0) {
-      formButton.classList.remove('movement-form__submit-button');
-      formButton.classList.add('movement-form__submit-button--disabled');
-    }
-  }, [formfulldata]);
-
-  const { movement } = useSelector((state) => state.movements);
-  const [movementsNumber, setMovementsNumber] = useState(0);
-  useEffect(() => {
-    if (publisher) {
-      dispatch(getMovementsByPublisher(publisher));
-    }
-  }, [publisher]);
-
-  useEffect(() => {
-    if (Array.isArray(movement)) {
-      setMovementsNumber(movement.length);
-    }
-  }, [movement]);
-
-  const todayFull = new Date();
-  const year = todayFull.getFullYear();
-  const month = String(todayFull.getMonth() + 1).padStart(2, '0');
-  const day = String(todayFull.getDate()).padStart(2, '0');
-  const today = `${year}-${month}-${day}`;
 
   return (
     <form action="" className="movement-form" onSubmit={handleSubmit}>
@@ -315,8 +345,8 @@ const MovementRegisterForm = () => {
           name="internalId"
           id="internalId"
           required
-          defaultValue={movementsNumber > 0 ? movementsNumber + 1 : null}
-          onChange={handleChange}
+          defaultValue={internalId}
+          onChange={handleInternalIdChange}
           className="movement-form__input"
         />
       </label>
@@ -327,7 +357,7 @@ const MovementRegisterForm = () => {
           name="date"
           id="date"
           required
-          onChange={handleChange}
+          onChange={handleDateChange}
           defaultValue={today}
           className="movement-form__input"
         />
@@ -386,7 +416,7 @@ const MovementRegisterForm = () => {
               name="discount"
               id="discount"
               required
-              key={`${Math.floor((Math.random() * 1000))}-min`}
+              key={`${Math.floor(Math.random() * 1000)}-min`}
               defaultValue={remisionDiscount}
               onChange={handleChangeRemisionDiscount}
               className="movement-form__input"
@@ -407,7 +437,7 @@ const MovementRegisterForm = () => {
               name="discount"
               id="discount"
               required
-              key={`${Math.floor((Math.random() * 1000))}-min`}
+              key={`${Math.floor(Math.random() * 1000)}-min`}
               defaultValue={salesDiscount}
               onChange={handleChangeSalesDiscount}
               className="movement-form__input"
@@ -440,7 +470,10 @@ const MovementRegisterForm = () => {
                 className="movement-form__input"
               />
             </label>
-            <label htmlFor={`${book.value}-copies`} className="movement-form__label">
+            <label
+              htmlFor={`${book.value}-copies`}
+              className="movement-form__label"
+            >
               Ejemplares
               <input
                 type="number"
@@ -451,7 +484,10 @@ const MovementRegisterForm = () => {
                 className="movement-form__input"
               />
             </label>
-            <label htmlFor={`${book.value}-cost`} className="movement-form__label">
+            <label
+              htmlFor={`${book.value}-cost`}
+              className="movement-form__label"
+            >
               costo unitario
               <input
                 type="number"
@@ -471,7 +507,7 @@ const MovementRegisterForm = () => {
                   </p>
                   <p key={`${e.id}-netSubtotal`}>
                     <b>Subtotal neto: </b>
-                    {e.total - (e.total * (remisionDiscount / 100))}
+                    {e.total - e.total * (remisionDiscount / 100)}
                   </p>
                 </div>
               ) : null))
@@ -485,7 +521,7 @@ const MovementRegisterForm = () => {
                   </p>
                   <p key={`${e.id}-netSubtotal`}>
                     <b>Subtotal neto: </b>
-                    {e.total - (e.total * (salesDiscount / 100))}
+                    {e.total - e.total * (salesDiscount / 100)}
                   </p>
                 </div>
               ) : null))
@@ -494,21 +530,25 @@ const MovementRegisterForm = () => {
         ))
         : null}
       <div key="totals">
-        <p key={`${Math.floor((Math.random() * 1000))}-min`}>
+        <p key={`${Math.floor(Math.random() * 1000)}-min`}>
           <b>Total bruto: </b>
           {grossTotal}
         </p>
-        {kind === 'remisión' || kind === 'liquidación'
-          ? (
-            <p key={`${Math.floor((Math.random() * 1000))}-min`}>
-              <b>Total neto: </b>
-              {netTotal}
-            </p>
-          )
-          : null}
+        {kind === 'remisión' || kind === 'liquidación' ? (
+          <p key={`${Math.floor(Math.random() * 1000)}-min`}>
+            <b>Total neto: </b>
+            {netTotal}
+          </p>
+        ) : null}
       </div>
 
-      <button id="form-button" type="submit" className="movement-form__submit-button--disabled">Guardar {kind}</button>
+      <button
+        id="form-button"
+        type="submit"
+        className="movement-form__submit-button--disabled"
+      >
+        Guardar {kind}
+      </button>
     </form>
   );
 };
