@@ -59,6 +59,20 @@ const CataloguePage = () => {
     }
   }, [titles, catalogue]);
 
+  const [sortedCatalogue, setSortedCatalogue] = useState([]);
+
+  useEffect(() => {
+    if (catalogue && Array.isArray(catalogue) && catalogue.length > 0) {
+      const sortedList = [...catalogue].sort(((a, b) => {
+        const dateA = new Date(a.pubDate);
+        const dateB = new Date(b.pubDate);
+
+        return dateB - dateA;
+      }));
+      setSortedCatalogue(sortedList);
+    }
+  }, [catalogue]);
+
   return (
     <div className="catalogue">
       <TopNav />
@@ -83,8 +97,11 @@ const CataloguePage = () => {
         )}
 
         <section className="catalogue__books-container">
-          {catalogue && Array.isArray(catalogue) && publisher
-            ? catalogue.map((book) => (
+          {sortedCatalogue
+          && Array.isArray(sortedCatalogue)
+          && publisher
+          && sortedCatalogue.length > 0
+            ? sortedCatalogue.map((book) => (
               <BookCard
                 key={book._id}
                 title={book.title}
