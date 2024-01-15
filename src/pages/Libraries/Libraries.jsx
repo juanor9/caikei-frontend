@@ -1,6 +1,6 @@
 import './Libraries.scss';
 import { Link } from 'react-router-dom';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
@@ -35,6 +35,20 @@ const LibrariesPage = () => {
       }
     }
   }, [publisher]);
+
+  const [sortedLibraries, setSortedLibraries] = useState([]);
+
+  useEffect(() => {
+    if (allLibraries && Array.isArray(allLibraries) && allLibraries.length > 0) {
+      const sortedList = [...allLibraries].sort(((a, b) => {
+        const dateA = new Date(a.createdAt);
+        const dateB = new Date(b.createdAt);
+
+        return dateB - dateA;
+      }));
+      setSortedLibraries(sortedList);
+    }
+  }, [allLibraries]);
   return (
     <div className="libraries">
       <TopNav />
@@ -46,8 +60,8 @@ const LibrariesPage = () => {
         </Link>
         <Link to="/library/import">Importar librerías</Link>
         <section className="libraries__libraries-container" key={`${Math.floor((Math.random() * 1000))}-min`}>
-          {allLibraries && Array.isArray(allLibraries)
-            ? allLibraries.map((lib) => (
+          {sortedLibraries && Array.isArray(sortedLibraries) && sortedLibraries.length > 0
+            ? sortedLibraries.map((lib) => (
               <LibraryCard
                 key={lib._id}
                 name={lib.name}
