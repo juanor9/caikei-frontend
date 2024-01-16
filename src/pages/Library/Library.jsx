@@ -21,7 +21,7 @@ const LibraryPage = () => {
   const navigate = useNavigate();
   const { library } = useSelector((state) => state.library);
   const {
-    name, email, city, address, phone, publishers,
+    name, email, city, address, phone, publishers, libraryIds,
   } = library;
   const { catalogue } = useSelector((state) => state.catalogue);
   const userToken = localStorage.getItem('login-token'); // get user token from local storage
@@ -34,6 +34,10 @@ const LibraryPage = () => {
     const targetInput = event.target.parentNode.nextElementSibling;
     targetInput.disabled = false;
   };
+
+  const libraryId = libraryIds[0];
+  const libraryIdType = libraryId.type;
+  const libraryIdNumber = libraryId.number;
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -97,7 +101,9 @@ const LibraryPage = () => {
     if (catalogue && Array.isArray(catalogue) && catalogue.length > 0) {
       const filteredCatalogue = catalogue.map((book) => {
         if (book.inventory && Array.isArray(book.inventory)) {
-          const b = book.inventory.find((place) => String(place.placeId) === String(id));
+          const b = book.inventory.find(
+            (place) => String(place.placeId) === String(id),
+          );
           if (!b) {
             return {
               id: book._id,
@@ -126,6 +132,10 @@ const LibraryPage = () => {
       <main className="library-page__main-container">
         <h2>{name}</h2>
         <form action="" onSubmit={handleSubmit} className="library-page__form">
+          <label htmlFor="phone" className="library-page__form-label">
+            Documento de identidad
+            <p>{`${libraryIdType}: ${libraryIdNumber}`}</p>
+          </label>
           <label htmlFor="name" className="library-page__form-label">
             Nombre
             <div className="library-page__button-input">
