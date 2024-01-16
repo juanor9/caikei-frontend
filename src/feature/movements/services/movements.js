@@ -54,3 +54,20 @@ export const getMovementById = createAsyncThunk(
     return result;
   },
 );
+
+export const deleteMovementById = createAsyncThunk(
+  'movements/deleteMovement',
+  async (data) => {
+    const { id } = data;
+    const options = {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    const res = await fetch(`${BASE_URL}/api/movements/${id}`, options);
+    const result = await res.json();
+    return result;
+  },
+);

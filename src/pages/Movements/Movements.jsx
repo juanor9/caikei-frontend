@@ -46,6 +46,18 @@ const MovementsPage = () => {
       setSortedMovements(sortedList);
     }
   }, [movement]);
+
+  const [isDeleted, setIsDeleted] = useState(false);
+
+  useEffect(() => {
+    if (isDeleted === true) {
+      try {
+        dispatch(getMovementsByPublisher(publisher));
+      } catch (error) {
+        throw new Error(error);
+      }
+    }
+  }, [isDeleted]);
   return (
     <div className="movements">
       <TopNav />
@@ -79,6 +91,8 @@ const MovementsPage = () => {
                   grossTotal={m.grossTotal}
                   netTotal={m.netTotal}
                   books={m.books}
+                  movementId={m._id}
+                  deletedFunc={setIsDeleted}
                 />
               )))
               : null}
