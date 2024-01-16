@@ -1,10 +1,17 @@
+/* eslint-disable no-unused-vars */
 import './MovementCard.scss';
 import { PDFDownloadLink } from '@react-pdf/renderer';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
-import { faSpinner, faFileArrowDown } from '@fortawesome/free-solid-svg-icons';
+import {
+  faSpinner,
+  faFileArrowDown,
+  faTrashCan,
+} from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import PropTypes from 'prop-types';
+import toast from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
 import { getPublisherById } from '../../../publishers/services/publishers';
 import getLibrariesByPublisher from '../../../libraries/services/allLibraries';
 import EntryPdf from '../pdf/EntryPdf/EntryPdf';
@@ -12,6 +19,7 @@ import { getBookById } from '../../../books/services/books';
 import RemisionPdf from '../pdf/RemissionPdf/RemisionPdf';
 import DevolutionPdf from '../pdf/DevolutionPdf/DevolutionPdf';
 import SalePdf from '../pdf/SalePdf/SalePdf';
+import { deleteMovementById } from '../../services/movements';
 
 const MovementCard = ({
   id,
@@ -22,8 +30,12 @@ const MovementCard = ({
   grossTotal,
   netTotal,
   books,
+  movementId,
+  deletedFunc,
 }) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const { publisher } = useSelector((state) => state.user.userData);
   const { allLibraries } = useSelector((state) => state.allLibraries);
   const publisherName = useSelector((state) => state.publisher.publisher.name);
@@ -37,20 +49,22 @@ const MovementCard = ({
 
   const [discount, setDiscount] = useState();
 
-  const currencyGrossTotal = grossTotal ? grossTotal.toLocaleString('es-CO', {
-    style: 'currency',
-    currency: 'COP',
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 0,
-  })
+  const currencyGrossTotal = grossTotal
+    ? grossTotal.toLocaleString('es-CO', {
+      style: 'currency',
+      currency: 'COP',
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+    })
     : null;
 
-  const currencyNetTotal = netTotal ? netTotal.toLocaleString('es-CO', {
-    style: 'currency',
-    currency: 'COP',
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 0,
-  })
+  const currencyNetTotal = netTotal
+    ? netTotal.toLocaleString('es-CO', {
+      style: 'currency',
+      currency: 'COP',
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+    })
     : null;
 
   useEffect(() => {
@@ -66,13 +80,17 @@ const MovementCard = ({
         if (String(to) === String(library._id)) {
           setToName(library.name);
           setToData(library);
-          const pubInLibrary = library.publishers.find((pub) => pub.publisherId === publisher);
+          const pubInLibrary = library.publishers.find(
+            (pub) => pub.publisherId === publisher,
+          );
           setDiscount(pubInLibrary.discount);
         }
         if (String(from) === String(library._id)) {
           setFromName(library.name);
           setFromData(library);
-          const pubInLibrary = library.publishers.find((pub) => pub.publisherId === publisher);
+          const pubInLibrary = library.publishers.find(
+            (pub) => pub.publisherId === publisher,
+          );
           setDiscount(pubInLibrary.discount);
         }
         return library;
@@ -129,13 +147,15 @@ const MovementCard = ({
     const fetchData = async () => {
       const booksData = await Promise.all(
         books.map(async (book) => {
-          const fetchBookDBdata = await dispatch(getBookById({ id: book.id, userToken }));
+          const fetchBookDBdata = await dispatch(
+            getBookById({ id: book.id, userToken }),
+          );
           const bookDBdata = fetchBookDBdata.payload;
-          const subTotal = (book.copies * bookDBdata.price);
-          const discountPercentage = (discount / 100);
-          const dicAmount = ((bookDBdata.price * discountPercentage) * book.copies);
+          const subTotal = book.copies * bookDBdata.price;
+          const discountPercentage = discount / 100;
+          const dicAmount = bookDBdata.price * discountPercentage * book.copies;
           const total = subTotal - dicAmount;
-          return ({
+          return {
             id: book.id,
             copies: book.copies,
             title: bookDBdata.title,
@@ -144,7 +164,7 @@ const MovementCard = ({
             subTotal,
             dicAmount,
             total,
-          });
+          };
         }),
       );
       setMovementBookData(booksData);
@@ -155,11 +175,32 @@ const MovementCard = ({
   const [copiesTotal, setCopiesTotal] = useState(0);
   const [fullTotal, setFullTotal] = useState('');
   useEffect(() => {
-    const $copiesTotal = movementBookData.reduce((acc, book) => acc + book.copies, 0);
+    const $copiesTotal = movementBookData.reduce(
+      (acc, book) => acc + book.copies,
+      0,
+    );
     setCopiesTotal($copiesTotal);
-    const $fullTotal = movementBookData.reduce((acc, book) => acc + book.total, 0);
+    const $fullTotal = movementBookData.reduce(
+      (acc, book) => acc + book.total,
+      0,
+    );
     setFullTotal($fullTotal);
   }, [movementBookData]);
+
+  const handleDelete = async (event) => {
+    event.preventDefault();
+
+    try {
+      await dispatch(deleteMovementById({ id: movementId }));
+      toast.success(
+        `El movimiento con número ${id} fue exitosamente eliminado`,
+      );
+      deletedFunc(true);
+    } catch (error) {
+      toast.error(`Hubo un error al eliminar el movimiento con número ${id}`);
+      throw new Error(error);
+    }
+  };
 
   return (
     <tr>
@@ -191,11 +232,19 @@ const MovementCard = ({
             filename="FORM"
           >
             {({ loading }) => (loading ? (
-              <button type="button" aria-label="loading" className="movements__loading">
+              <button
+                type="button"
+                aria-label="loading"
+                className="movements__loading"
+              >
                 <FontAwesomeIcon icon={faSpinner} spin />
               </button>
             ) : (
-              <button type="button" aria-label="download" className="movements__download">
+              <button
+                type="button"
+                aria-label="download"
+                className="movements__download"
+              >
                 <FontAwesomeIcon icon={faFileArrowDown} />
               </button>
             ))}
@@ -222,11 +271,19 @@ const MovementCard = ({
             filename="FORM"
           >
             {({ loading }) => (loading ? (
-              <button type="button" aria-label="loading" className="movements__loading">
+              <button
+                type="button"
+                aria-label="loading"
+                className="movements__loading"
+              >
                 <FontAwesomeIcon icon={faSpinner} spin />
               </button>
             ) : (
-              <button type="button" aria-label="download" className="movements__download">
+              <button
+                type="button"
+                aria-label="download"
+                className="movements__download"
+              >
                 <FontAwesomeIcon icon={faFileArrowDown} />
               </button>
             ))}
@@ -253,11 +310,19 @@ const MovementCard = ({
             filename="FORM"
           >
             {({ loading }) => (loading ? (
-              <button type="button" aria-label="loading" className="movements__loading">
+              <button
+                type="button"
+                aria-label="loading"
+                className="movements__loading"
+              >
                 <FontAwesomeIcon icon={faSpinner} spin />
               </button>
             ) : (
-              <button type="button" aria-label="download" className="movements__download">
+              <button
+                type="button"
+                aria-label="download"
+                className="movements__download"
+              >
                 <FontAwesomeIcon icon={faFileArrowDown} />
               </button>
             ))}
@@ -284,16 +349,29 @@ const MovementCard = ({
             filename="FORM"
           >
             {({ loading }) => (loading ? (
-              <button type="button" aria-label="loading" className="movements__loading">
+              <button
+                type="button"
+                aria-label="loading"
+                className="movements__loading"
+              >
                 <FontAwesomeIcon icon={faSpinner} spin />
               </button>
             ) : (
-              <button type="button" aria-label="download" className="movements__download">
+              <button
+                type="button"
+                aria-label="download"
+                className="movements__download"
+              >
                 <FontAwesomeIcon icon={faFileArrowDown} />
               </button>
             ))}
           </PDFDownloadLink>
         ) : null}
+      </td>
+      <td>
+        <button type="button" onClick={handleDelete}>
+          <FontAwesomeIcon icon={faTrashCan} />
+        </button>
       </td>
     </tr>
   );
@@ -307,9 +385,13 @@ MovementCard.propTypes = {
   kind: PropTypes.string.isRequired,
   grossTotal: PropTypes.number.isRequired,
   netTotal: PropTypes.number,
-  books: PropTypes.arrayOf(PropTypes.shape({
-    copies: PropTypes.number,
-  })).isRequired,
+  books: PropTypes.arrayOf(
+    PropTypes.shape({
+      copies: PropTypes.number,
+    }),
+  ).isRequired,
+  movementId: PropTypes.string.isRequired,
+  deletedFunc: PropTypes.func.isRequired,
 };
 
 MovementCard.defaultProps = {
