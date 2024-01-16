@@ -484,20 +484,39 @@ const MovementRegisterForm = () => {
                 className="movement-form__input"
               />
             </label>
-            <label
-              htmlFor={`${book.value}-cost`}
-              className="movement-form__label"
-            >
-              costo unitario
-              <input
-                type="number"
-                required
-                name={`${book.value}-cost`}
-                id={`${book.value}-cost`}
-                onChange={handleChangeBook}
-                className="movement-form__input"
-              />
-            </label>
+            {kind === 'ingreso'
+              ? (
+                <label
+                  htmlFor={`${book.value}-cost`}
+                  className="movement-form__label"
+                >
+                  costo unitario
+                  <input
+                    type="number"
+                    required
+                    name={`${book.value}-cost`}
+                    id={`${book.value}-cost`}
+                    onChange={handleChangeBook}
+                    className="movement-form__input"
+                  />
+                </label>
+              )
+              : (
+                <label
+                  htmlFor={`${book.value}-cost`}
+                  className="movement-form__label"
+                >
+                  precio de venta
+                  <input
+                    type="number"
+                    required
+                    name={`${book.value}-cost`}
+                    id={`${book.value}-pvp`}
+                    onChange={handleChangeBook}
+                    className="movement-form__input"
+                  />
+                </label>
+              )}
             {formBookData.length > 0 && kind === 'remisión'
               ? formBookData.map((e) => (e.id === book.value && e.total ? (
                 <div key={`${e.id}-totals`}>
