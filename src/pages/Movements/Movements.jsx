@@ -1,6 +1,6 @@
 import './Movements.scss';
 import { useDispatch, useSelector } from 'react-redux';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import TopNav from '../../components/TopNav/TopNav';
 import { getMovementsByPublisher } from '../../feature/movements/services/movements';
@@ -32,6 +32,20 @@ const MovementsPage = () => {
     }
   }, [publisher]);
   const { movement } = useSelector((state) => state.movements);
+
+  const [sortedMovements, setSortedMovements] = useState([]);
+
+  useEffect(() => {
+    if (movement && Array.isArray(movement) && movement.length > 0) {
+      const sortedList = [...movement].sort(((a, b) => {
+        const dateA = new Date(a.createdAt);
+        const dateB = new Date(b.createdAt);
+
+        return dateB - dateA;
+      }));
+      setSortedMovements(sortedList);
+    }
+  }, [movement]);
   return (
     <div className="movements">
       <TopNav />
@@ -52,8 +66,8 @@ const MovementsPage = () => {
             </tr>
           </thead>
           <tbody>
-            {movement && Array.isArray(movement)
-              ? (movement.map((m) => (
+            {sortedMovements && Array.isArray(sortedMovements) && sortedMovements.length > 0
+              ? (sortedMovements.map((m) => (
                 <MovementCard
                   key={m._id}
                   dbid={m._id}
