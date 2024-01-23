@@ -1,74 +1,54 @@
-import Select from 'react-select';
-import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
+import Select from 'react-select';
+import { useDispatch, useSelector } from 'react-redux';
 import getLibrariesByPublisher from '../../../libraries/services/allLibraries';
 import { getPublisherById } from '../../../publishers/services/publishers';
 
 const RegisterDevolutionForm = ({ from, to }) => {
   const dispatch = useDispatch();
   const { publisher } = useSelector((state) => state.user.userData);
-  const userToken = localStorage.getItem('login-token');
 
-  // get all storages
+  const [storages, setStorages] = useState([]);
+  const [selectedFrom, setSelectedFrom] = useState(null);
+  const [selectedTo, setSelectedTo] = useState(null);
+
   useEffect(() => {
     if (publisher) {
+      const userToken = localStorage.getItem('login-token');
       try {
-        dispatch(getLibrariesByPublisher(publisher));
+        dispatch(getLibrariesByPublisher({ publisher, userToken }));
         dispatch(getPublisherById({ publisher, userToken }));
       } catch (error) {
         throw new Error(error);
       }
     }
-  }, [publisher]);
-  const { allLibraries } = useSelector((state) => state.allLibraries);
+  }, [publisher, dispatch]);
+
+  const allLibraries = useSelector((state) => state.allLibraries.allLibraries);
   const publisherData = useSelector((state) => state.publisher.publisher);
-  const [storages, setStorages] = useState([]);
-  const [storagesSelect, setStoragesSelect] = useState([]);
-  // FROM
-  const [selectedFrom, setSelectedFrom] = useState(null);
-  const handleChangeFrom = (selected) => {
-    setSelectedFrom(selected);
-  };
-  //----------------------------------------------
 
-  // TO
-  const [selectedTo, setSelectedTo] = useState({
-    value: publisherData._id,
-    label: publisherData.name,
-  });
-  const handleChangeTo = (selected) => {
-    setSelectedTo(selected);
-  };
-  //----------------------------------------------
-
-  // Get all storages, publisher included
   useEffect(() => {
-    if (Array.isArray(allLibraries)) {
+    if (Array.isArray(allLibraries) && publisherData) {
       setStorages([...allLibraries, publisherData]);
+      setSelectedTo({
+        value: publisherData._id,
+        label: publisherData.name,
+      });
     }
   }, [allLibraries, publisherData]);
-  useEffect(() => {
-    setStoragesSelect(storages.map((storage) => ({
-      value: storage._id,
-      label: storage.name,
-    })));
-  }, [storages]);
 
-  // Send values to main form
+  const storagesSelect = storages.map((storage) => ({
+    value: storage._id,
+    label: storage.name,
+  }));
+
   useEffect(() => {
-    if (!selectedFrom) {
-      return;
+    if (selectedFrom && selectedTo) {
+      from(selectedFrom.value);
+      to(selectedTo.value);
     }
-    if (!selectedTo) {
-      return;
-    }
-    const fromValue = selectedFrom.value;
-    const toValue = selectedTo.value;
-    from(fromValue);
-    to(toValue);
-  }, [selectedFrom, selectedTo]);
-  //
+  }, [selectedFrom, selectedTo, from, to]);
 
   return (
     <>
@@ -80,7 +60,7 @@ const RegisterDevolutionForm = ({ from, to }) => {
           isSearchable
           isClearable
           required
-          onChange={handleChangeFrom}
+          onChange={setSelectedFrom}
         />
       </div>
       <div>
@@ -91,14 +71,10 @@ const RegisterDevolutionForm = ({ from, to }) => {
           isSearchable
           isClearable
           required
-          onChange={handleChangeTo}
-          defaultValue={{
-            value: publisherData._id,
-            label: publisherData.name,
-          }}
+          onChange={setSelectedTo}
+          value={selectedTo}
         />
       </div>
-
     </>
   );
 };

@@ -1,106 +1,40 @@
-/* eslint-disable no-param-reassign */
-import './MovementRegisterForm.scss';
-import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import Select from 'react-select';
-import {
-  createMovement,
-  getMovementsByPublisher,
-} from '../../services/movements';
+import useForm from '../../../../hooks/useForm';
+import { getUser } from '../../../users/services/users';
 import { getBooksByPublisher } from '../../../books/services/books';
 import { getLibrariesById } from '../../../libraries/services/libraries';
-import { getUser } from '../../../users/services/users';
+import { createMovement } from '../../services/movements';
+import FormHeader from './FormHeader/FormHeader';
+import MovementTypeSelector from './MovementTypeSelector/MovementTypeSelector';
+import BookDetailsForm from './BookDetailsForm/BookDetailsForm';
+import BooksSelector from './BooksSelector/BooksSelector';
 import RegisterDevolutionForm from '../RegisterDevolutionForm/RegisterDevolutionForm';
 import RegisterRemisionForm from '../RegisterRemisionForm/RegisterRemisionForm';
 import RegisterSaleForm from '../RegisterSaleForm/RegisterSaleForm';
-import useForm from '../../../../hooks/useForm';
+import MovementTotals from './MovementTotals/MovementTotals';
+import './MovementRegisterForm.scss';
 
 const MovementRegisterForm = () => {
-  const [kind, setKind] = useState('');
-  const { form, handleChange } = useForm({});
-  // States for remsion
-  const [remisionFrom, setRemisionFrom] = useState(null);
-  const [remisionTo, setRemisionTo] = useState(null);
-
-  // Get data from redux
-  const userToken = localStorage.getItem('login-token');
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { handleChange } = useForm({});
   const { publisher } = useSelector((state) => state.user.userData);
-  const { catalogue } = useSelector((state) => state.catalogue);
+  const userToken = localStorage.getItem('login-token');
 
-  const [formfulldata, setFormfulldata] = useState({});
-  // for React Select
-  const [catalogueSelect, setCatalogueSelect] = useState({});
-  useEffect(() => {
-    if (catalogue && Array.isArray(catalogue)) {
-      setCatalogueSelect(
-        catalogue.map((book) => ({
-          value: book._id,
-          label: book.title,
-        })),
-      );
-    }
-  }, [catalogue]);
+  const [kind, setKind] = useState('');
+  const [remisionFrom, setRemisionFrom] = useState(null);
+  const [remisionTo, setRemisionTo] = useState(null);
+  const [remisionDiscount, setremisionDiscount] = useState(0);
+  const [salesDiscount, setSalesDiscount] = useState(0);
+  const [internalId, setInternalId] = useState(null);
+  const [date, setDate] = useState(null);
   const [selectedBooks, setSelectedBooks] = useState(null);
-  const handleChangeBooks = (selected) => {
-    setSelectedBooks(selected);
-  };
-  // Add selected books to the book data
-
   const [formBookData, setFormBookData] = useState([]);
-  useEffect(() => {
-    if (selectedBooks && selectedBooks.length > 0) {
-      selectedBooks.map((option) => {
-        const { value } = option;
-        setFormBookData(formBookData.concat({ id: value }));
-        return formBookData;
-      });
-    }
-  }, [selectedBooks]);
-  // gross total
   const [grossTotal, setGrossTotal] = useState(0);
-
-  // add info from form to book data
-
-  const handleChangeBook = (event) => {
-    const { name, value } = event.target;
-    const nameSplit = name.split('-');
-    const bookId = nameSplit[0];
-    const key = nameSplit[1];
-    const NewFormData = formBookData.map((bookData) => {
-      if (bookData.id === bookId) {
-        let total = 0;
-        bookData = { ...bookData, [key]: value };
-        if (bookData.copies && bookData.cost) {
-          total = bookData.copies * bookData.cost;
-          bookData = { ...bookData, total };
-        }
-        return bookData;
-      }
-      return bookData;
-    });
-    setFormBookData(NewFormData);
-  };
-
-  useEffect(() => {
-    const totals = formBookData.map((i) => i.total);
-    if (totals.length > 0) {
-      setGrossTotal(totals.reduce((a, b) => a + b));
-    }
-  }, [formBookData]);
-
-  // catch kind of movement
-  const handleChangeKindMod = (event) => {
-    const { value } = event.target;
-    if (value) {
-      setKind(value);
-    }
-    if (event) {
-      handleChange(event);
-    }
-  };
+  const [netTotal, setNetTotal] = useState(0);
+  const [formfulldata, setFormfulldata] = useState({});
 
   useEffect(() => {
     if (userToken) {
@@ -110,7 +44,7 @@ const MovementRegisterForm = () => {
         throw new Error(error);
       }
     }
-  }, []);
+  }, [userToken]);
 
   useEffect(() => {
     if (publisher) {
@@ -122,80 +56,36 @@ const MovementRegisterForm = () => {
     }
   }, [publisher]);
 
-  // for remision discount
-  const [remisionDiscount, setremisionDiscount] = useState(0);
   useEffect(() => {
     if (remisionTo) {
       dispatch(getLibrariesById({ id: remisionTo, userToken }));
     }
   }, [remisionTo]);
 
-  const { library } = useSelector((state) => state.library);
   useEffect(() => {
-    if (kind === 'remisión' && library) {
-      const libraryPublisherList = library.publishers;
-      if (Array.isArray(libraryPublisherList)) {
-        const PublisherInLibrary = libraryPublisherList.find(
-          (pub) => pub.publisherId === publisher,
-        );
-        setremisionDiscount(PublisherInLibrary.discount);
-      }
-    }
-  }, [library]);
-  const handleChangeRemisionDiscount = (event) => {
-    const { value } = event.target;
-    setremisionDiscount(value);
-  };
-  // for remision net total
-  const [netTotal, setNetTotal] = useState(0);
-  useEffect(() => {
-    if (remisionDiscount) {
-      const decimalDiscount = remisionDiscount / 100;
-      const totalDiscount = grossTotal * decimalDiscount;
-      const $netTotal = grossTotal - totalDiscount;
-      setNetTotal($netTotal);
-    }
-  }, [remisionDiscount, grossTotal]);
+    setFormfulldata((prevState) => ({
+      ...prevState,
+      internalId,
+      date,
+      kind,
+      books: formBookData,
+      grossTotal,
+      publisher,
+      createdBy: publisher,
+      ...(kind === 'remisión' && {
+        netTotal, from: remisionFrom, to: remisionTo, discount: remisionDiscount,
+      }),
+      ...(kind === 'devolución' && { from: remisionFrom, to: remisionTo }),
+      ...(kind === 'liquidación' && { netTotal, from: remisionFrom, discount: salesDiscount }),
+    }));
+  }, [
+    internalId, date, kind, formBookData, grossTotal,
+    netTotal, remisionFrom, remisionTo, remisionDiscount,
+    salesDiscount, publisher,
+  ]);
 
-  // for remision discount
-  const [salesDiscount, setSalesDiscount] = useState(0);
-  useEffect(() => {
-    if (remisionFrom && remisionFrom !== publisher) {
-      dispatch(getLibrariesById({ id: remisionFrom, userToken }));
-    }
-  }, [remisionFrom]);
-
-  useEffect(() => {
-    if (kind === 'liquidación') {
-      const libraryPublisherList = library.publishers;
-      if (Array.isArray(libraryPublisherList)) {
-        const PublisherInLibrary = libraryPublisherList.find(
-          (pub) => pub.publisherId === publisher,
-        );
-        setSalesDiscount(PublisherInLibrary.discount);
-      }
-    }
-  }, [library]);
-
-  const handleChangeSalesDiscount = (event) => {
-    const { value } = event.target;
-    setSalesDiscount(value);
-  };
-
-  // for sales net total
-  useEffect(() => {
-    if (salesDiscount) {
-      const decimalDiscount = salesDiscount / 100;
-      const totalDiscount = grossTotal * decimalDiscount;
-      const $netTotal = grossTotal - totalDiscount;
-      setNetTotal($netTotal);
-    }
-  }, [salesDiscount, grossTotal]);
-
-  // send data to backend
   const handleSubmit = async (event) => {
     event.preventDefault();
-
     try {
       dispatch(createMovement({ formfulldata, userToken }));
       navigate('/movements');
@@ -204,370 +94,84 @@ const MovementRegisterForm = () => {
     }
   };
 
-  useEffect(() => {
-    const formButton = document.getElementById('form-button');
-    const { books } = formfulldata;
-    const formKind = formfulldata.kind;
-
-    if (formKind && books && Array.isArray(books) && books.length > 0) {
-      formButton.classList.remove('movement-form__submit-button--disabled');
-      formButton.classList.add('movement-form__submit-button');
-    }
-    if (Array.isArray(books) && books.length === 0) {
-      formButton.classList.remove('movement-form__submit-button');
-      formButton.classList.add('movement-form__submit-button--disabled');
-    }
-  }, [formfulldata]);
-
-  const { movement } = useSelector((state) => state.movements);
-  const [movementsNumber, setMovementsNumber] = useState(0);
-  useEffect(() => {
-    if (publisher) {
-      dispatch(getMovementsByPublisher(publisher));
-    }
-  }, [publisher]);
-
-  useEffect(() => {
-    if (Array.isArray(movement)) {
-      setMovementsNumber(movement.length);
-    }
-  }, [movement]);
-
-  const todayFull = new Date();
-  const year = todayFull.getFullYear();
-  const month = String(todayFull.getMonth() + 1).padStart(2, '0');
-  const day = String(todayFull.getDate()).padStart(2, '0');
-  const today = `${year}-${month}-${day}`;
-
-  const [internalId, setInternalId] = useState(null);
-  useEffect(() => {
-    if (movementsNumber > 0) {
-      const currentMovementNumber = movementsNumber + 1;
-      setInternalId(currentMovementNumber);
-    }
-  }, [movementsNumber]);
-  const handleInternalIdChange = ({ target }) => {
-    const { value } = target;
-    setInternalId(value);
-  };
-
-  const [date, setDate] = useState(null);
-
-  useEffect(() => {
-    if (today) {
-      setDate(today);
-    }
-  }, [today]);
-  const handleDateChange = ({ target }) => {
-    const { value } = target;
-    setDate(value);
-  };
-
-  // crear datos para solicitud ------------------------------------
-  useEffect(() => {
-    setFormfulldata({
-      ...formfulldata,
-      internalId,
-      date,
-      kind,
-      books: formBookData,
-      grossTotal,
-      publisher,
-      createdBy: publisher,
-    });
-    if (kind === 'remisión') {
-      setFormfulldata({
-        ...formfulldata,
-        internalId,
-        date,
-        kind,
-        books: formBookData,
-        grossTotal,
-        netTotal,
-        publisher,
-        from: remisionFrom,
-        to: remisionTo,
-        discount: remisionDiscount,
-        createdBy: publisher,
-      });
-    }
-    if (kind === 'devolución') {
-      setFormfulldata({
-        ...formfulldata,
-        internalId,
-        date,
-        kind,
-        books: formBookData,
-        grossTotal,
-        publisher,
-        from: remisionFrom,
-        to: remisionTo,
-        createdBy: publisher,
-      });
-    }
-    if (kind === 'liquidación') {
-      setFormfulldata({
-        ...formfulldata,
-        internalId,
-        date,
-        kind,
-        books: formBookData,
-        grossTotal,
-        netTotal,
-        publisher,
-        from: remisionFrom,
-        discount: salesDiscount,
-        createdBy: publisher,
-      });
-    }
-  }, [
-    form,
-    kind,
-    formBookData,
-    grossTotal,
-    publisher,
-    remisionFrom,
-    remisionTo,
-    remisionDiscount,
-    salesDiscount,
-    publisher,
-    netTotal,
-    internalId,
-    date,
-  ]);
-
   return (
     <form action="" className="movement-form" onSubmit={handleSubmit}>
-      <label htmlFor="internalId" className="movement-form__label">
-        Número de referencia
-        <input
-          type="number"
-          name="internalId"
-          id="internalId"
-          required
-          defaultValue={internalId}
-          onChange={handleInternalIdChange}
-          className="movement-form__input"
-        />
-      </label>
-      <label htmlFor="date" className="movement-form__label">
-        Fecha
-        <input
-          type="date"
-          name="date"
-          id="date"
-          required
-          onChange={handleDateChange}
-          defaultValue={today}
-          className="movement-form__input"
-        />
-      </label>
-      <label htmlFor="kind" className="movement-form__label--double">
-        <p>Tipo</p>
-        <label htmlFor="kind">
-          <input
-            type="radio"
-            name="kind"
-            id="ingreso"
-            value="ingreso"
-            required
-            onChange={handleChangeKindMod}
-          />{' '}
-          Ingreso
-        </label>
-        <label htmlFor="kind">
-          <input
-            type="radio"
-            name="kind"
-            id="remisión"
-            value="remisión"
-            onChange={handleChangeKindMod}
-          />{' '}
-          Remisión
-        </label>
-        <label htmlFor="kind">
-          <input
-            type="radio"
-            name="kind"
-            id="devolución"
-            value="devolución"
-            onChange={handleChangeKindMod}
-          />{' '}
-          Devolución
-        </label>
-        <label htmlFor="kind">
-          <input
-            type="radio"
-            name="kind"
-            id="liquidación"
-            value="liquidación"
-            onChange={handleChangeKindMod}
-          />{' '}
-          Liquidación
-        </label>
-      </label>
-      {kind === 'remisión' ? (
-        <>
-          <RegisterRemisionForm from={setRemisionFrom} to={setRemisionTo} />
-          <label htmlFor="discount" className="movement-form__label--double">
-            Descuento
-            <input
-              type="discount"
-              name="discount"
-              id="discount"
-              required
-              key={`${Math.floor(Math.random() * 1000)}-min`}
-              defaultValue={remisionDiscount}
-              onChange={handleChangeRemisionDiscount}
-              className="movement-form__input"
-            />
-          </label>
-        </>
-      ) : null}
-      {kind === 'devolución' ? (
-        <RegisterDevolutionForm from={setRemisionFrom} to={setRemisionTo} />
-      ) : null}
-      {kind === 'liquidación' ? (
-        <>
-          <RegisterSaleForm from={setRemisionFrom} />
-          <label htmlFor="discount" className="movement-form__label">
-            Descuento
-            <input
-              type="discount"
-              name="discount"
-              id="discount"
-              required
-              key={`${Math.floor(Math.random() * 1000)}-min`}
-              defaultValue={salesDiscount}
-              onChange={handleChangeSalesDiscount}
-              className="movement-form__input"
-            />
-          </label>
-        </>
-      ) : null}
-      <div className="movement-form__label--double">
-        <p> Libros</p>
-        <Select
-          id="books"
-          options={catalogueSelect}
-          isSearchable
-          // isClearable
-          isMulti
-          onChange={handleChangeBooks}
-        />
-      </div>
-      {selectedBooks && selectedBooks.length > 0
-        ? selectedBooks.map((book) => (
-          <div key={book.value}>
-            <label htmlFor={book.value} className="movement-form__label">
-              Libro
-              <input
-                type="text"
-                name={book.value}
-                id={book.value}
-                value={book.label}
-                readOnly
-                className="movement-form__input"
-              />
-            </label>
-            <label
-              htmlFor={`${book.value}-copies`}
-              className="movement-form__label"
-            >
-              Ejemplares
-              <input
-                type="number"
-                required
-                name={`${book.value}-copies`}
-                id={`${book.value}-copies`}
-                onChange={handleChangeBook}
-                className="movement-form__input"
-              />
-            </label>
-            {kind === 'ingreso'
-              ? (
-                <label
-                  htmlFor={`${book.value}-cost`}
-                  className="movement-form__label"
-                >
-                  costo unitario
-                  <input
-                    type="number"
-                    required
-                    name={`${book.value}-cost`}
-                    id={`${book.value}-cost`}
-                    onChange={handleChangeBook}
-                    className="movement-form__input"
-                  />
-                </label>
-              )
-              : (
-                <label
-                  htmlFor={`${book.value}-cost`}
-                  className="movement-form__label"
-                >
-                  precio de venta
-                  <input
-                    type="number"
-                    required
-                    name={`${book.value}-cost`}
-                    id={`${book.value}-pvp`}
-                    onChange={handleChangeBook}
-                    className="movement-form__input"
-                  />
-                </label>
-              )}
-            {formBookData.length > 0 && kind === 'remisión'
-              ? formBookData.map((e) => (e.id === book.value && e.total ? (
-                <div key={`${e.id}-totals`}>
-                  <p key={`${e.id}-grossSubtotal`}>
-                    <b>Subtotal bruto: </b>
-                    {e.total}
-                  </p>
-                  <p key={`${e.id}-netSubtotal`}>
-                    <b>Subtotal neto: </b>
-                    {e.total - e.total * (remisionDiscount / 100)}
-                  </p>
-                </div>
-              ) : null))
-              : null}
-            {formBookData.length > 0 && kind === 'liquidación'
-              ? formBookData.map((e) => (e.id === book.value && e.total ? (
-                <div key={`${e.id}-totals`}>
-                  <p key={`${e.id}-grossSubtotal`}>
-                    <b>Subtotal bruto: </b>
-                    {e.total}
-                  </p>
-                  <p key={`${e.id}-netSubtotal`}>
-                    <b>Subtotal neto: </b>
-                    {e.total - e.total * (salesDiscount / 100)}
-                  </p>
-                </div>
-              ) : null))
-              : null}
-          </div>
-        ))
-        : null}
-      <div key="totals">
-        <p key={`${Math.floor(Math.random() * 1000)}-min`}>
-          <b>Total bruto: </b>
-          {grossTotal}
-        </p>
-        {kind === 'remisión' || kind === 'liquidación' ? (
-          <p key={`${Math.floor(Math.random() * 1000)}-min`}>
-            <b>Total neto: </b>
-            {netTotal}
-          </p>
-        ) : null}
-      </div>
+      <FormHeader
+        setId={setInternalId}
+        internalId={internalId}
+        setDate={setDate}
+      />
+      <MovementTypeSelector setKind={setKind} handleChange={handleChange} />
 
-      <button
-        id="form-button"
-        type="submit"
-        className="movement-form__submit-button--disabled"
-      >
-        Guardar {kind}
-      </button>
+      {kind === 'remisión' && (
+        <RegisterRemisionForm
+          from={setRemisionFrom}
+          to={setRemisionTo}
+          remisionDiscount={remisionDiscount}
+          setRemisionDiscount={setremisionDiscount}
+          userToken={userToken}
+        />
+      )}
+
+      {kind === 'devolución' && (
+        <RegisterDevolutionForm
+          from={setRemisionFrom}
+          to={setRemisionTo}
+          publisher={publisher}
+        />
+      )}
+
+      {kind === 'liquidación' && (
+        <RegisterSaleForm
+          setFrom={setRemisionFrom}
+          salesDiscount={salesDiscount}
+          setSalesDiscount={setSalesDiscount}
+          remisionFrom={remisionFrom}
+          userToken={userToken}
+        />
+      )}
+
+      <BooksSelector
+        setSelectedBooks={setSelectedBooks}
+        selectedBooks={selectedBooks}
+        userToken={userToken}
+      />
+      <BookDetailsForm
+        selectedBooks={selectedBooks}
+        kind={kind}
+        formBookData={formBookData}
+        setFormBookData={setFormBookData}
+        remisionDiscount={remisionDiscount}
+        salesDiscount={salesDiscount}
+      />
+      <MovementTotals
+        formBookData={formBookData}
+        kind={kind}
+        setGrossTotal={setGrossTotal}
+        setNetTotal={setNetTotal}
+        grossTotal={grossTotal}
+        netTotal={netTotal}
+      />
+      {formfulldata.grossTotal === 0
+        ? (
+          <button
+            id="form-button"
+            type="submit"
+            className="movement-form__submit-button--disabled"
+          >
+            Guardar {kind}
+          </button>
+        )
+        : (
+          <button
+            id="form-button"
+            type="submit"
+            className="movement-form__submit-button"
+          >
+            Guardar {kind}
+          </button>
+        )}
+
     </form>
   );
 };
