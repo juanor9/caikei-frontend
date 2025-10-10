@@ -1,5 +1,5 @@
-@import "../../colors";
-@import "../../mixin.scss";
+@use "../../_colors.scss" as *;
+@use "../../_mixin.scss" as *;
 
 .homepage{
   text-align: center;

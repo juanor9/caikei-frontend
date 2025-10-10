@@ -1,5 +1,5 @@
-@import "../../colors.scss";
-@import "../../mixin.scss";
+@use "../../_colors.scss" as colors;
+@use "../../_mixin.scss" as mixin;
 
 .book-page {
   &__main-container {
@@ -16,13 +16,13 @@
   }
   &__form {
     &-label {
-      @include form-lable;
+      @include mixin.form-lable;
     }
     &-input {
-      @include form-input;
+      @include mixin.form-input;
     }
     &-button {
-      @include main-button;
+      @include mixin.main-button;
       width: 100%;
     }
   }
@@ -33,12 +33,12 @@
     gap: 0.3em;
   }
   &__edit-button {
-    background-color: $main;
-    border: solid 1px $black;
+    background-color: colors.$main;
+    border: solid 1px colors.$black;
     border-radius: 0.2em;
   }
   &__deactivate-button {
-    @include ternary-button;
+    @include mixin.ternary-button;
     margin:auto;
   }
   &__inventory-container{

@@ -1,10 +1,10 @@
-@import "./colors.scss";
+@use "colors";
 
 @mixin main-button {
-  background-color: $main;
+  background-color: colors.$main;
   border-radius: 5em;
-  border: solid 1px $black;
-  color: $black;
+  border: solid 1px colors.$black;
+  color: colors.$black;
   font-family: "Merriweather", serif;
   font-weight: 600;
   padding: 1em;
@@ -14,15 +14,15 @@
   margin-bottom: 1em;
   cursor: pointer;
   &:hover {
-    box-shadow: 0px 0.5em 0px 0px $black;
+    box-shadow: 0px 0.5em 0px 0px colors.$black;
   }
 }
 
 @mixin main-button-disabled {
-  background-color: $black-light;
+  background-color: colors.$black-light;
   pointer-events: none;
   border-radius: 5em;
-  border: solid 1px $black;
+  border: solid 1px colors.$black;
   color: white;
   font-family: "Merriweather", serif;
   font-weight: 600;
@@ -36,8 +36,8 @@
 @mixin secondary-button {
   background-color: transparent;
   border-radius: 5em;
-  border: solid 1px $black;
-  color: $black;
+  border: solid 1px colors.$black;
+  color: colors.$black;
   font-family: "Merriweather", serif;
   font-weight: 600;
   padding: 1em;
@@ -47,7 +47,7 @@
   margin-bottom: 1em;
   cursor: pointer;
   &:hover {
-    box-shadow: 0px 0.5em 0px 0px $black;
+    box-shadow: 0px 0.5em 0px 0px colors.$black;
   }
 }
 
@@ -57,13 +57,13 @@
   padding: 0;
   background-color: transparent;
   font-weight: 100;
-  color: $accent;
+  color: colors.$accent;
   text-decoration: none;
   text-align: center;
   cursor: pointer;
   &:hover {
     text-decoration: underline;
-    color: $dark-accent;
+    color: colors.$dark-accent;
   }
 }
 
@@ -77,17 +77,17 @@
 @mixin form-input {
   background-color: transparent;
   border: none;
-  border-bottom: solid 1px $black;
+  border-bottom: solid 1px colors.$black;
   font-family: "Merriweather", serif;
   padding: 0.5em;
   width: 100%;
   padding-left: 0;
   border-radius: 0;
   &:read-only {
-    background-color: $darker;
+    background-color: colors.$darker;
   }
   &:disabled {
-    background-color: $darker;
+    background-color: colors.$darker;
   }
 }
 
@@ -97,16 +97,16 @@
     background-color: transparent;
   }
   & tr:hover {
-    background-color: $darker;
+    background-color: colors.$darker;
   }
 }
 
 @mixin warning{
   align-items: center;
-  background-color: $main-light;
+  background-color: colors.$main-light;
   border-radius: 1em;
-  border: solid 1px $main-dark;
-  color: $main-dark;
+  border: solid 1px colors.$main-dark;
+  color: colors.$main-dark;
   display: flex;
   gap: 1em;
   margin-bottom: 1em;

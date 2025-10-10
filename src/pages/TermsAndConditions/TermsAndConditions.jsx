@@ -19,15 +19,7 @@ const TermsAndConditions = () => (
       </p>
       <h3>Consentimiento del Usuario</h3>
       <p>
-        Al utilizar la Aplicación, el Usuario acepta expresamente
-        que la Empresa recopile, utilice y almacene sus datos
-        personales con el fin de obtener estadísticas generales.
-        El Usuario tiene derecho a retirar su consentimiento en cualquier
-        momento, lo que implicará la eliminación de sus datos personales
-        incluida su cuenta de usuario según los términos aquí pactados.
-        La solicitud de retiro de consentimiento
-        debe hacerse por un medio en el que quede constancia, como un correo
-        electrónico.
+        Al utilizar la Aplicación, el Usuario acepta expresamente que la Empresa recopile, utilice y almacene sus datos con el fin de que sean procesados para, de forma agregada y anónima, generar estadísticas generales del sector editorial. El Usuario tiene derecho a retirar su consentimiento en cualquier momento, lo que implicará la eliminación de su cuenta de usuario y sus datos asociados según los términos aquí pactados. La solicitud de retiro de consentimiento debe hacerse por un medio en el que quede constancia, como un correo electrónico.
       </p>
       <h3>Recopilación de Datos</h3>
       <p>
@@ -46,36 +38,25 @@ const TermsAndConditions = () => (
         correo electrónico, ciudad, dirección y teléfono.
         Estos datos se recopilan de acuerdo con la Política de Privacidad de la Empresa
         y se utilizan exclusivamente para el funcionamiento mismo de la aplicación y los servicios
-        que presta, así como con fines estadísticos.
+        que presta.
       </p>
       <h3>Protección de Datos Personales</h3>
       <p>
-        La Empresa se compromete a proteger los datos personales del Usuario
-        mediante el uso de medidas de seguridad adecuadas. La Empresa
-        implementa medidas técnicas y organizativas adecuadas para garantizar
-        la seguridad de los datos personales del Usuario.
+        La Empresa se compromete a proteger los datos personales del Usuario mediante la implementación de medidas de seguridad técnicas, administrativas y físicas. Estas medidas incluyen, entre otras: cifrado de datos en tránsito (HTTPS) y en reposo, un estricto control de acceso basado en roles (RBAC) para prevenir el acceso no autorizado entre cuentas, y la gestión segura de credenciales y secretos de la aplicación utilizando servicios especializados.
       </p>
       <h3>Uso de Datos</h3>
       <p>
-        La Empresa utilizará los datos personales del Usuario exclusivamente
-        con el fin del funcionamiento y la prestación de los servicios de la Aplicación,
-        así como para obtener estadísticas generales. Para la generación de estas
-        estadísticas se anonimizará toda la información. La Empresa nunca mostrará
-        estadísticas individuales de cada Usuario, editorial, libro o punto de venta.
-        La Empresa no utilizará
-        los datos personales del Usuario para ningún otro fin, como publicidad
-        o venta de datos a terceros.
+        La Empresa utilizará los datos personales del Usuario exclusivamente con el fin del funcionamiento y la prestación de los servicios de la Aplicación. Para la generación de estadísticas generales, la información es sometida a un proceso de anonimización irreversible que desvincula los datos de cualquier Usuario, editorial, libro o punto de venta específico. La Empresa se compromete a nunca mostrar estadísticas individuales y a no utilizar los datos personales del Usuario para ningún otro fin, como publicidad no consentida o venta de datos a terceros.
       </p>
       <h3>Transparencia</h3>
       <p>
-        La Empresa proporcionará al Usuario información clara sobre cómo se
-        utilizan sus datos personales para obtener estadísticas generales.
+        La Empresa proporcionará al Usuario información clara sobre cómo se utilizan sus datos personales, tal como se detalla en nuestra Política de Privacidad.
       </p>
       <h3>Derecho a retirar el consentimiento</h3>
       <p>
         El Usuario tiene derecho a retirar su consentimiento para el uso de sus
         datos personales en cualquier momento. La Empresa proporcionará información
-        clara sobre cómo hacerlo.
+        clara sobre cómo hacerlo a través de los canales de contacto especificados.
       </p>
       <h3>Almacenamiento de Datos</h3>
       <p>

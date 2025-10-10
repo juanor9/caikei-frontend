@@ -1,4 +1,4 @@
-@import '../../colors.scss';
+@use '../../_colors.scss' as *;
 
 .modal-container{
   background-color: rgba(0,0,0,.4);
