@@ -1,6 +1,9 @@
+/**
+ * Publishers Service - Refactored
+ * Applies DIP (Dependency Inversion Principle) - uses centralized apiClient
+ */
 import { createAsyncThunk } from '@reduxjs/toolkit';
-
-const BASE_URL = process.env.REACT_APP_BASE_URL;
+import { apiGet, apiPost, apiPatch, buildQueryString } from '../../../utils/apiClient';
 
 export const createPublisher = createAsyncThunk(
   'publishers/createPublisher',
@@ -15,6 +18,7 @@ export const createPublisher = createAsyncThunk(
       phone,
       publisherLogo,
     } = publisher;
+
     const newPublisherModel = {
       name,
       publisherIds: [{
@@ -26,25 +30,14 @@ export const createPublisher = createAsyncThunk(
       address,
       phone,
     };
-    const options = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(newPublisherModel),
-    };
 
-    const res = await fetch(`${BASE_URL}/api/publishers`, options);
-    const result = await res.json();
-    return result;
+    return apiPost('/api/publishers', token, newPublisherModel);
   },
 );
 
 export const getPublisherById = createAsyncThunk(
   'publishers/getPublisherById',
-  async (data) => {
-    const { publisher, userToken } = data;
+  async ({ publisher, userToken }) => {
     if (publisher === undefined) {
       return {
         address: '',
@@ -54,57 +47,19 @@ export const getPublisherById = createAsyncThunk(
         publisherIds: [],
       };
     }
-    const options = {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${userToken}`,
-      },
-    };
-    const res = await fetch(`${BASE_URL}/api/publishers/${publisher}`, options);
-    const result = await res.json();
-    return result;
+    return apiGet(`/api/publishers/${publisher}`, userToken);
   },
 );
 
 export const getPublisherByFilter = createAsyncThunk(
   'publishers/getPublisherByFilter',
-  async (data) => {
-    const { filter, userToken } = data;
-    const uriParams = new URLSearchParams();
-    Object.keys(filter).forEach((key) => {
-      const value = filter[key];
-      uriParams.append(key, value);
-    });
-    const uri = `?${uriParams.toString()}`;
-
-    const options = {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${userToken}`,
-      },
-    };
-    const res = await fetch(`${BASE_URL}/api/publishers/search${uri}`, options);
-    const result = await res.json();
-    return result;
+  async ({ filter, userToken }) => {
+    const queryString = buildQueryString(filter);
+    return apiGet(`/api/publishers/search?${queryString}`, userToken);
   },
 );
 
 export const updatePublisher = createAsyncThunk(
   'publishers/updatePublisher',
-  async (updateData) => {
-    const { userToken, publisherId, ...form } = updateData;
-    const options = {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${userToken}`,
-      },
-      body: JSON.stringify(form),
-    };
-    const res = await fetch(`${BASE_URL}/api/publishers/${publisherId}`, options);
-    const result = await res.json();
-    return result;
-  },
+  async ({ userToken, publisherId, ...form }) => apiPatch(`/api/publishers/${publisherId}`, userToken, form),
 );

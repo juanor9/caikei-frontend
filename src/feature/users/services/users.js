@@ -1,62 +1,32 @@
+/**
+ * Users Service - Refactored
+ * Applies DIP (Dependency Inversion Principle) - uses centralized apiClient
+ */
 import { createAsyncThunk } from '@reduxjs/toolkit';
-
-const BASE_URL = process.env.REACT_APP_BASE_URL;
+import { apiGet, apiPost, apiPatch, getAuthToken, setAuthToken } from '../../../utils/apiClient';
 
 export const createUser = createAsyncThunk(
   'users/createUser',
-  async (user) => {
-    const options = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(user),
-    };
-
-    const res = await fetch(`${BASE_URL}/api/users`, options);
-    const result = await res.json();
-    return result;
-  },
+  async (user) => apiPost('/api/users', null, user),
 );
+
 export const getUser = createAsyncThunk(
   'users/getUser',
-  async (token) => {
-    const options = {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
-    };
-    const res = await fetch(`${BASE_URL}/api/users`, options);
-    const result = await res.json();
-    return result;
-  },
+  async (token) => apiGet('/api/users', token),
 );
 
 export const updateUser = createAsyncThunk(
   'users/updateUser',
   async (formData) => {
-    const token = localStorage.getItem('login-token');
-    let { form } = formData;
+    const token = getAuthToken();
     const { userId } = formData;
-    if (!formData.form) {
-      form = formData.deactivate;
-    }
-    const options = {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(form),
-    };
-    const res = await fetch(`${BASE_URL}/api/users/${userId}`, options);
-    const result = await res.json();
+    const form = formData.form || formData.deactivate;
 
-    const { newToken } = result;
-    localStorage.clear();
-    localStorage.setItem('login-token', newToken);
+    const result = await apiPatch(`/api/users/${userId}`, token, form);
+
+    if (result.newToken) {
+      setAuthToken(result.newToken);
+    }
 
     return result;
   },

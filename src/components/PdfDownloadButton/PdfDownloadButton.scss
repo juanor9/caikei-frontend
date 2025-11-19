@@ -1,0 +1,19 @@
+.pdf-download {
+  &__loading,
+  &__button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem;
+    color: var(--primary-color, #333);
+    transition: color 0.2s ease;
+
+    &:hover {
+      color: var(--primary-hover, #007bff);
+    }
+  }
+
+  &__loading {
+    cursor: wait;
+  }
+}

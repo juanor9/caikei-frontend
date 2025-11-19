@@ -1,73 +1,35 @@
+/**
+ * Movements Service - Refactored
+ * Applies DIP (Dependency Inversion Principle) - uses centralized apiClient
+ */
 import { createAsyncThunk } from '@reduxjs/toolkit';
-
-const BASE_URL = process.env.REACT_APP_BASE_URL;
-const token = localStorage.getItem('login-token');
+import { apiGet, apiPost, apiDelete, getAuthToken } from '../../../utils/apiClient';
 
 export const createMovement = createAsyncThunk(
   'movements/createMovement',
-  async (data) => {
-    const { userToken, formfulldata } = data;
-    const options = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${userToken}`,
-      },
-      body: JSON.stringify(formfulldata),
-    };
-
-    const res = await fetch(`${BASE_URL}/api/movements`, options);
-    const result = await res.json();
-    return result;
-  },
+  async ({ userToken, formfulldata }) => apiPost('/api/movements', userToken, formfulldata),
 );
+
 export const getMovementsByPublisher = createAsyncThunk(
   'movements/getMovements',
   async (id) => {
-    const options = {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
-    };
-    const res = await fetch(`${BASE_URL}/api/movements?createdBy=${id}`, options);
-    const result = await res.json();
-    return result;
+    const token = getAuthToken();
+    return apiGet(`/api/movements?createdBy=${id}`, token);
   },
 );
 
 export const getMovementById = createAsyncThunk(
   'movements/getMovement',
-  async (data) => {
-    const { id } = data;
-    const options = {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
-    };
-
-    const res = await fetch(`${BASE_URL}/api/movements/${id}`, options);
-    const result = await res.json();
-    return result;
+  async ({ id }) => {
+    const token = getAuthToken();
+    return apiGet(`/api/movements/${id}`, token);
   },
 );
 
 export const deleteMovementById = createAsyncThunk(
   'movements/deleteMovement',
-  async (data) => {
-    const { id } = data;
-    const options = {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
-    };
-    const res = await fetch(`${BASE_URL}/api/movements/${id}`, options);
-    const result = await res.json();
-    return result;
+  async ({ id }) => {
+    const token = getAuthToken();
+    return apiDelete(`/api/movements/${id}`, token);
   },
 );

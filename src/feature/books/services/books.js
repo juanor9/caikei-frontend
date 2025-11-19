@@ -1,112 +1,47 @@
+/**
+ * Books Service - Refactored
+ * Applies DIP (Dependency Inversion Principle) - uses centralized apiClient
+ */
 import { createAsyncThunk } from '@reduxjs/toolkit';
-
-const BASE_URL = process.env.REACT_APP_BASE_URL;
-const token = localStorage.getItem('login-token');
+import { apiGet, apiPost, apiPatch, buildQueryString } from '../../../utils/apiClient';
 
 export const createBook = createAsyncThunk(
   'books/createBook',
-  async (book) => {
-    const { userToken, ...bookData } = book;
-    const options = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${userToken}`,
-      },
-      body: JSON.stringify(bookData),
-    };
-
-    if (!token) {
-      return { mesage: 'no token available' };
+  async ({ userToken, ...bookData }) => {
+    if (!userToken) {
+      return { message: 'no token available' };
     }
-    const res = await fetch(`${BASE_URL}/api/books`, options);
-    const result = await res.json();
-    return result;
+    return apiPost('/api/books', userToken, bookData);
   },
 );
 
 export const getBooksByPublisher = createAsyncThunk(
   'books/getBooksByPublisher',
-  async (filter) => {
-    const { publisher, userToken } = filter;
-    const uriParams = publisher;
-    const options = {
-      method: 'GET',
-      headers: {
-        'content-type': 'application/json',
-        Authorization: `Bearer ${userToken}`,
-      },
-    };
+  async ({ publisher, userToken }) => {
     if (!userToken) {
-      return { mesage: 'no token available' };
+      return { message: 'no token available' };
     }
-
-    const res = await fetch(`${BASE_URL}/api/books/search?publisher=${uriParams}`, options);
-    const result = await res.json();
-    return result;
+    return apiGet(`/api/books/search?publisher=${publisher}`, userToken);
   },
 );
 
 export const getBooksByFilter = createAsyncThunk(
-  'books/getBooksByPublisher',
-  async (data) => {
-    const { bookFilter, userToken } = data;
-    const uriParams = new URLSearchParams();
-    Object.keys(bookFilter).forEach((key) => {
-      const value = bookFilter[key];
-      uriParams.append(key, value);
-    });
-    const uri = `?${uriParams.toString()}`;
-
-    const options = {
-      method: 'GET',
-      headers: {
-        'content-type': 'application/json',
-        Authorization: `Bearer ${userToken}`,
-      },
-    };
+  'books/getBooksByFilter',
+  async ({ bookFilter, userToken }) => {
     if (!userToken) {
-      return { mesage: 'no token available' };
+      return { message: 'no token available' };
     }
-
-    const res = await fetch(`${BASE_URL}/api/books/search${uri}`, options);
-    const result = await res.json();
-    return result;
+    const queryString = buildQueryString(bookFilter);
+    return apiGet(`/api/books/search?${queryString}`, userToken);
   },
 );
 
 export const getBookById = createAsyncThunk(
   'books/getBookById',
-  async (data) => {
-    const { id, userToken } = data;
-    const options = {
-      method: 'GET',
-      headers: {
-        'content-type': 'application/json',
-        Authorization: `Bearer ${userToken}`,
-      },
-    };
-    const res = await fetch(`${BASE_URL}/api/books/${id}`, options);
-    const result = await res.json();
-    return result;
-  },
+  async ({ id, userToken }) => apiGet(`/api/books/${id}`, userToken),
 );
 
 export const updateBookById = createAsyncThunk(
   'books/updateBook',
-  async (data) => {
-    const { form, id, userToken } = data;
-    const options = {
-      method: 'PATCH',
-      headers: {
-        'content-type': 'application/json',
-        Authorization: `Bearer ${userToken}`,
-      },
-      body: JSON.stringify(form),
-    };
-
-    const res = await fetch(`${BASE_URL}/api/books/${id}`, options);
-    const result = await res.json();
-    return result;
-  },
+  async ({ form, id, userToken }) => apiPatch(`/api/books/${id}`, userToken, form),
 );
