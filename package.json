@@ -28,7 +28,16 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "test:coverage": "react-scripts test --coverage --watchAll=false",
+    "test:ci": "react-scripts test --watchAll=false",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
+    "test:e2e:headed": "playwright test --headed",
+    "test:a11y": "react-scripts test --testPathPattern=a11y --watchAll=false",
+    "test:a11y:e2e": "playwright test accessibility.a11y.spec.js",
+    "eject": "react-scripts eject",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
   },
   "eslintConfig": {
     "extends": [
@@ -47,5 +56,21 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "^4.11.0",
+    "@axe-core/react": "^4.11.0",
+    "@playwright/test": "^1.56.1",
+    "@storybook/addon-docs": "^10.0.8",
+    "@storybook/addon-onboarding": "^10.0.8",
+    "@storybook/preset-create-react-app": "^10.0.8",
+    "@storybook/react-webpack5": "^10.0.8",
+    "axe-core": "^4.11.0",
+    "chai": "^6.2.1",
+    "eslint-plugin-storybook": "^10.0.8",
+    "jest-axe": "^10.0.0",
+    "playwright": "^1.56.1",
+    "storybook": "^10.0.8",
+    "webpack": "^5.103.0"
   }
 }

@@ -1,26 +1,23 @@
+/**
+ * Auth Service - Refactored
+ * Applies DIP (Dependency Inversion Principle) - uses centralized apiClient
+ */
 import { createAsyncThunk } from '@reduxjs/toolkit';
-
-const BASE_URL = process.env.REACT_APP_BASE_URL;
+import { apiRequest, setAuthToken } from '../../../utils/apiClient';
 
 export const login = createAsyncThunk(
   'auth/login',
   async (user) => {
-    const options = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(user),
-    };
-
     try {
-      const res = await fetch(`${BASE_URL}/auth/local/login`, options);
-      if (res.status === 401) {
-        return new Error('Authentication failed');
+      const result = await apiRequest('/auth/local/login', {
+        method: 'POST',
+        body: user,
+      });
+
+      if (result.userToken) {
+        setAuthToken(result.userToken);
       }
-      const result = await res.json();
-      const { userToken } = result;
-      localStorage.setItem('login-token', userToken);
+
       return result;
     } catch (error) {
       return error;

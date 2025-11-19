@@ -1,25 +1,33 @@
-/* eslint-disable no-unused-vars */
+/**
+ * MovementCard Component - Refactored
+ * Applies SRP (Single Responsibility Principle)
+ * Applies OCP (Open/Closed Principle) - uses configuration for PDF types
+ */
 import './MovementCard.scss';
-import { PDFDownloadLink } from '@react-pdf/renderer';
-import { useDispatch, useSelector } from 'react-redux';
-import { useEffect, useState } from 'react';
-import {
-  faSpinner,
-  faFileArrowDown,
-  faTrashCan,
-} from '@fortawesome/free-solid-svg-icons';
+import { useDispatch } from 'react-redux';
+import { useEffect, useState, useMemo } from 'react';
+import { faTrashCan } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import PropTypes from 'prop-types';
 import toast from 'react-hot-toast';
-import { useNavigate } from 'react-router-dom';
-import { getPublisherById } from '../../../publishers/services/publishers';
-import getLibrariesByPublisher from '../../../libraries/services/allLibraries';
-import EntryPdf from '../pdf/EntryPdf/EntryPdf';
 import { getBookById } from '../../../books/services/books';
+import EntryPdf from '../pdf/EntryPdf/EntryPdf';
 import RemisionPdf from '../pdf/RemissionPdf/RemisionPdf';
 import DevolutionPdf from '../pdf/DevolutionPdf/DevolutionPdf';
 import SalePdf from '../pdf/SalePdf/SalePdf';
 import { deleteMovementById } from '../../services/movements';
+import PdfDownloadButton from '../../../../components/PdfDownloadButton';
+import useInitializeUser from '../../../../hooks/useInitializeUser';
+import useCurrency from '../../../../hooks/useCurrency';
+import useDate from '../../../../hooks/useDate';
+
+// PDF component configuration - OCP: easy to add new movement types
+const PDF_COMPONENTS = {
+  ingreso: EntryPdf,
+  remision: RemisionPdf,
+  devolucion: DevolutionPdf,
+  liquidacion: SalePdf,
+};
 
 const MovementCard = ({
   id,
@@ -34,342 +42,182 @@ const MovementCard = ({
   deletedFunc,
 }) => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const formatCurrency = useCurrency();
+  const { formatDate } = useDate();
 
-  const { publisher } = useSelector((state) => state.user.userData);
-  const { allLibraries } = useSelector((state) => state.allLibraries);
-  const publisherName = useSelector((state) => state.publisher.publisher.name);
-  const publisherData = useSelector((state) => state.publisher.publisher);
-  const userToken = localStorage.getItem('login-token');
+  const {
+    userToken,
+    publisher,
+    publisherData,
+    allLibraries,
+  } = useInitializeUser();
 
-  const [toName, setToName] = useState('');
   const [toData, setToData] = useState({});
-  const [fromName, setFromName] = useState('');
   const [fromData, setFromData] = useState({});
+  const [discount, setDiscount] = useState(0);
+  const [movementBookData, setMovementBookData] = useState([]);
 
-  const [discount, setDiscount] = useState();
+  // Format currency values
+  const currencyTotal = useMemo(() => {
+    const total = netTotal || grossTotal;
+    return formatCurrency(total);
+  }, [netTotal, grossTotal, formatCurrency]);
 
-  const currencyGrossTotal = grossTotal
-    ? grossTotal.toLocaleString('es-CO', {
-      style: 'currency',
-      currency: 'COP',
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0,
-    })
-    : null;
+  // Format date
+  const formattedDate = useMemo(() => formatDate(date), [date, formatDate]);
 
-  const currencyNetTotal = netTotal
-    ? netTotal.toLocaleString('es-CO', {
-      style: 'currency',
-      currency: 'COP',
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0,
-    })
-    : null;
+  // Get place names and data
+  const { toName, fromName } = useMemo(() => {
+    let toNameResult = '';
+    let fromNameResult = '';
 
-  useEffect(() => {
     if (String(to) === String(publisher)) {
-      setToName(publisher.name);
+      toNameResult = publisherData.name || '';
     }
 
     if (String(from) === String(publisher)) {
-      setFromName(publisherName);
+      fromNameResult = publisherData.name || '';
     }
+
     if (allLibraries && Array.isArray(allLibraries)) {
-      allLibraries.map((library) => {
-        if (String(to) === String(library._id)) {
-          setToName(library.name);
-          setToData(library);
-          const pubInLibrary = library.publishers.find(
-            (pub) => pub.publisherId === publisher,
-          );
-          setDiscount(pubInLibrary.discount);
-        }
-        if (String(from) === String(library._id)) {
-          setFromName(library.name);
-          setFromData(library);
-          const pubInLibrary = library.publishers.find(
-            (pub) => pub.publisherId === publisher,
-          );
-          setDiscount(pubInLibrary.discount);
-        }
-        return library;
-      });
-    }
-  }, [publisher, allLibraries]);
+      const toLibrary = allLibraries.find((lib) => String(to) === String(lib._id));
+      const fromLibrary = allLibraries.find((lib) => String(from) === String(lib._id));
 
-  const setDate = new Date(date);
-  const dateOptions = {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-  };
-  const dateN = setDate.toLocaleDateString('es-ES', dateOptions);
+      if (toLibrary) {
+        toNameResult = toLibrary.name;
+        setToData(toLibrary);
+        const pubInLibrary = toLibrary.publishers?.find(
+          (pub) => pub.publisherId === publisher,
+        );
+        if (pubInLibrary) setDiscount(pubInLibrary.discount);
+      }
 
-  useEffect(() => {
-    if (publisher && userToken) {
-      try {
-        dispatch(getLibrariesByPublisher({ publisher, userToken }));
-        dispatch(getPublisherById({ publisher, userToken }));
-      } catch (error) {
-        throw new Error(error);
+      if (fromLibrary) {
+        fromNameResult = fromLibrary.name;
+        setFromData(fromLibrary);
+        const pubInLibrary = fromLibrary.publishers?.find(
+          (pub) => pub.publisherId === publisher,
+        );
+        if (pubInLibrary) setDiscount(pubInLibrary.discount);
       }
     }
-  }, [publisher]);
-  const { logo } = publisherData;
-  const [greyLogo, setGreyLogo] = useState('');
 
-  useEffect(() => {
-    if (logo !== undefined) {
-      const grey = logo.replace('/upload', '/upload/c_scale,e_grayscale,w_200');
-      setGreyLogo(grey);
-    }
-  }, [logo]);
+    return { toName: toNameResult, fromName: fromNameResult };
+  }, [publisher, publisherData.name, allLibraries, to, from]);
 
-  const [publisherId, setPublisherId] = useState({});
-  useEffect(() => {
-    if (publisherData !== undefined) {
-      const pubids = publisherData.publisherIds;
-      let index;
-      if (pubids && Array.isArray(pubids)) {
-        index = pubids.length - 1;
-      }
-      let pubid;
-      if (index >= 0) {
-        pubid = pubids[index];
-      }
-      setPublisherId(pubid);
-    }
-  }, [publisherData]);
+  // Get grey logo
+  const greyLogo = useMemo(() => {
+    if (!publisherData.logo) return '';
+    return publisherData.logo.replace('/upload', '/upload/c_scale,e_grayscale,w_200');
+  }, [publisherData.logo]);
 
-  const [movementBookData, setMovementBookData] = useState([]);
+  // Get publisher ID
+  const publisherId = useMemo(() => {
+    const pubIds = publisherData.publisherIds;
+    if (!pubIds || !Array.isArray(pubIds) || pubIds.length === 0) return {};
+    return pubIds[pubIds.length - 1];
+  }, [publisherData.publisherIds]);
+
+  // Fetch book data
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchBookData = async () => {
       const booksData = await Promise.all(
         books.map(async (book) => {
-          const fetchBookDBdata = await dispatch(
-            getBookById({ id: book.id, userToken }),
-          );
-          const bookDBdata = fetchBookDBdata.payload;
-          const subTotal = book.copies * bookDBdata.price;
+          const result = await dispatch(getBookById({ id: book.id, userToken }));
+          const bookDBData = result.payload;
+          const subTotal = book.copies * bookDBData.price;
           const discountPercentage = discount / 100;
-          const dicAmount = bookDBdata.price * discountPercentage * book.copies;
-          const total = subTotal - dicAmount;
+          const discountAmount = bookDBData.price * discountPercentage * book.copies;
+          const total = subTotal - discountAmount;
+
           return {
             id: book.id,
             copies: book.copies,
-            title: bookDBdata.title,
-            isbn: bookDBdata.isbn,
-            pvp: bookDBdata.price,
+            title: bookDBData.title,
+            isbn: bookDBData.isbn,
+            pvp: bookDBData.price,
             subTotal,
-            dicAmount,
+            dicAmount: discountAmount,
             total,
           };
         }),
       );
       setMovementBookData(booksData);
     };
-    fetchData();
-  }, [books, discount]);
 
-  const [copiesTotal, setCopiesTotal] = useState(0);
-  const [fullTotal, setFullTotal] = useState('');
-  useEffect(() => {
-    const $copiesTotal = movementBookData.reduce(
-      (acc, book) => acc + book.copies,
-      0,
-    );
-    setCopiesTotal($copiesTotal);
-    const $fullTotal = movementBookData.reduce(
-      (acc, book) => acc + book.total,
-      0,
-    );
-    setFullTotal($fullTotal);
-  }, [movementBookData]);
+    if (books.length > 0 && userToken) {
+      fetchBookData();
+    }
+  }, [books, discount, userToken, dispatch]);
+
+  // Calculate totals
+  const { copiesTotal, fullTotal } = useMemo(() => ({
+    copiesTotal: movementBookData.reduce((acc, book) => acc + book.copies, 0),
+    fullTotal: movementBookData.reduce((acc, book) => acc + book.total, 0),
+  }), [movementBookData]);
 
   const handleDelete = async (event) => {
     event.preventDefault();
 
     try {
       await dispatch(deleteMovementById({ id: movementId }));
-      toast.success(
-        `El movimiento con número ${id} fue exitosamente eliminado`,
-      );
+      toast.success(`El movimiento con numero ${id} fue exitosamente eliminado`);
       deletedFunc(true);
     } catch (error) {
-      toast.error(`Hubo un error al eliminar el movimiento con número ${id}`);
+      toast.error(`Hubo un error al eliminar el movimiento con numero ${id}`);
       throw new Error(error);
     }
+  };
+
+  // Normalize kind for PDF component lookup
+  const normalizedKind = kind.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+  const PdfComponent = PDF_COMPONENTS[normalizedKind];
+
+  // Common PDF props
+  const basePdfProps = {
+    publisher: publisherData,
+    logo: greyLogo,
+    kind,
+    pubId: publisherId,
+    internalId: id,
+    date: formattedDate,
+    books: movementBookData,
+  };
+
+  // Render PDF button based on movement type
+  const renderPdfButton = () => {
+    if (!greyLogo || !publisherId || !PdfComponent) return null;
+
+    const pdfProps = normalizedKind === 'ingreso'
+      ? { ...basePdfProps, total: grossTotal }
+      : {
+        ...basePdfProps,
+        destination: normalizedKind === 'remision' ? toData : fromData,
+        discount,
+        copiesTotal,
+        fullTotal,
+      };
+
+    return (
+      <PdfDownloadButton
+        // eslint-disable-next-line react/jsx-props-no-spreading
+        document={<PdfComponent {...pdfProps} />}
+        filename={`${kind}-${id}.pdf`}
+      />
+    );
   };
 
   return (
     <tr>
       <td>{id}</td>
-      <td>{dateN}</td>
+      <td>{formattedDate}</td>
       <td>{kind}</td>
       <td className="movements__cell--not-mobile">{fromName}</td>
       <td className="movements__cell--not-mobile">{toName}</td>
-      {netTotal ? (
-        <td className="movements__cell--not-mobile">{currencyNetTotal}</td>
-      ) : (
-        <td className="movements__cell--not-mobile">{currencyGrossTotal}</td>
-      )}
+      <td className="movements__cell--not-mobile">{currencyTotal}</td>
+      <td>{renderPdfButton()}</td>
       <td>
-        {greyLogo && publisherId && kind === 'ingreso' ? (
-          <PDFDownloadLink
-            document={(
-              <EntryPdf
-                publisher={publisherData}
-                logo={greyLogo}
-                kind={kind}
-                pubId={publisherId}
-                internalId={id}
-                date={dateN}
-                books={movementBookData}
-                total={grossTotal}
-              />
-            )}
-            filename="FORM"
-          >
-            {({ loading }) => (loading ? (
-              <button
-                type="button"
-                aria-label="loading"
-                className="movements__loading"
-              >
-                <FontAwesomeIcon icon={faSpinner} spin />
-              </button>
-            ) : (
-              <button
-                type="button"
-                aria-label="download"
-                className="movements__download"
-              >
-                <FontAwesomeIcon icon={faFileArrowDown} />
-              </button>
-            ))}
-          </PDFDownloadLink>
-        ) : null}
-
-        {greyLogo && publisherId && kind === 'remisión' ? (
-          <PDFDownloadLink
-            document={(
-              <RemisionPdf
-                publisher={publisherData}
-                destination={toData}
-                logo={greyLogo}
-                kind={kind}
-                pubId={publisherId}
-                internalId={id}
-                date={dateN}
-                books={movementBookData}
-                discount={discount}
-                copiesTotal={copiesTotal}
-                fullTotal={fullTotal}
-              />
-            )}
-            filename="FORM"
-          >
-            {({ loading }) => (loading ? (
-              <button
-                type="button"
-                aria-label="loading"
-                className="movements__loading"
-              >
-                <FontAwesomeIcon icon={faSpinner} spin />
-              </button>
-            ) : (
-              <button
-                type="button"
-                aria-label="download"
-                className="movements__download"
-              >
-                <FontAwesomeIcon icon={faFileArrowDown} />
-              </button>
-            ))}
-          </PDFDownloadLink>
-        ) : null}
-
-        {greyLogo && publisherId && kind === 'devolución' ? (
-          <PDFDownloadLink
-            document={(
-              <DevolutionPdf
-                publisher={publisherData}
-                destination={fromData}
-                logo={greyLogo}
-                kind={kind}
-                pubId={publisherId}
-                internalId={id}
-                date={dateN}
-                books={movementBookData}
-                discount={discount}
-                copiesTotal={copiesTotal}
-                fullTotal={fullTotal}
-              />
-            )}
-            filename="FORM"
-          >
-            {({ loading }) => (loading ? (
-              <button
-                type="button"
-                aria-label="loading"
-                className="movements__loading"
-              >
-                <FontAwesomeIcon icon={faSpinner} spin />
-              </button>
-            ) : (
-              <button
-                type="button"
-                aria-label="download"
-                className="movements__download"
-              >
-                <FontAwesomeIcon icon={faFileArrowDown} />
-              </button>
-            ))}
-          </PDFDownloadLink>
-        ) : null}
-
-        {greyLogo && publisherId && kind === 'liquidación' ? (
-          <PDFDownloadLink
-            document={(
-              <SalePdf
-                publisher={publisherData}
-                destination={fromData}
-                logo={greyLogo}
-                kind={kind}
-                pubId={publisherId}
-                internalId={id}
-                date={dateN}
-                books={movementBookData}
-                discount={discount}
-                copiesTotal={copiesTotal}
-                fullTotal={fullTotal}
-              />
-            )}
-            filename="FORM"
-          >
-            {({ loading }) => (loading ? (
-              <button
-                type="button"
-                aria-label="loading"
-                className="movements__loading"
-              >
-                <FontAwesomeIcon icon={faSpinner} spin />
-              </button>
-            ) : (
-              <button
-                type="button"
-                aria-label="download"
-                className="movements__download"
-              >
-                <FontAwesomeIcon icon={faFileArrowDown} />
-              </button>
-            ))}
-          </PDFDownloadLink>
-        ) : null}
-      </td>
-      <td>
-        <button type="button" onClick={handleDelete}>
+        <button type="button" onClick={handleDelete} aria-label="Eliminar movimiento">
           <FontAwesomeIcon icon={faTrashCan} />
         </button>
       </td>
@@ -378,8 +226,14 @@ const MovementCard = ({
 };
 
 MovementCard.propTypes = {
-  from: PropTypes.arrayOf(PropTypes.string).isRequired,
-  to: PropTypes.arrayOf(PropTypes.string).isRequired,
+  from: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.arrayOf(PropTypes.string),
+  ]).isRequired,
+  to: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.arrayOf(PropTypes.string),
+  ]).isRequired,
   id: PropTypes.number.isRequired,
   date: PropTypes.string.isRequired,
   kind: PropTypes.string.isRequired,
@@ -387,6 +241,7 @@ MovementCard.propTypes = {
   netTotal: PropTypes.number,
   books: PropTypes.arrayOf(
     PropTypes.shape({
+      id: PropTypes.string,
       copies: PropTypes.number,
     }),
   ).isRequired,

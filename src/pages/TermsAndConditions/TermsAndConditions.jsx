@@ -19,7 +19,13 @@ const TermsAndConditions = () => (
       </p>
       <h3>Consentimiento del Usuario</h3>
       <p>
-        Al utilizar la Aplicación, el Usuario acepta expresamente que la Empresa recopile, utilice y almacene sus datos con el fin de que sean procesados para, de forma agregada y anónima, generar estadísticas generales del sector editorial. El Usuario tiene derecho a retirar su consentimiento en cualquier momento, lo que implicará la eliminación de su cuenta de usuario y sus datos asociados según los términos aquí pactados. La solicitud de retiro de consentimiento debe hacerse por un medio en el que quede constancia, como un correo electrónico.
+        Al utilizar la Aplicación, el Usuario acepta expresamente que la Empresa
+        recopile, utilice y almacene sus datos con el fin de que sean procesados para,
+        de forma agregada y anónima, generar estadísticas generales del sector editorial.
+        El Usuario tiene derecho a retirar su consentimiento en cualquier momento, lo
+        que implicará la eliminación de su cuenta de usuario y sus datos asociados según
+        los términos aquí pactados. La solicitud de retiro de consentimiento debe hacerse
+        por un medio en el que quede constancia, como un correo electrónico.
       </p>
       <h3>Recopilación de Datos</h3>
       <p>
@@ -42,15 +48,28 @@ const TermsAndConditions = () => (
       </p>
       <h3>Protección de Datos Personales</h3>
       <p>
-        La Empresa se compromete a proteger los datos personales del Usuario mediante la implementación de medidas de seguridad técnicas, administrativas y físicas. Estas medidas incluyen, entre otras: cifrado de datos en tránsito (HTTPS) y en reposo, un estricto control de acceso basado en roles (RBAC) para prevenir el acceso no autorizado entre cuentas, y la gestión segura de credenciales y secretos de la aplicación utilizando servicios especializados.
+        La Empresa se compromete a proteger los datos personales del Usuario mediante
+        la implementación de medidas de seguridad técnicas, administrativas y físicas.
+        Estas medidas incluyen, entre otras: cifrado de datos en tránsito (HTTPS) y en
+        reposo, un estricto control de acceso basado en roles (RBAC) para prevenir el
+        acceso no autorizado entre cuentas, y la gestión segura de credenciales y
+        secretos de la aplicación utilizando servicios especializados.
       </p>
       <h3>Uso de Datos</h3>
       <p>
-        La Empresa utilizará los datos personales del Usuario exclusivamente con el fin del funcionamiento y la prestación de los servicios de la Aplicación. Para la generación de estadísticas generales, la información es sometida a un proceso de anonimización irreversible que desvincula los datos de cualquier Usuario, editorial, libro o punto de venta específico. La Empresa se compromete a nunca mostrar estadísticas individuales y a no utilizar los datos personales del Usuario para ningún otro fin, como publicidad no consentida o venta de datos a terceros.
+        La Empresa utilizará los datos personales del Usuario exclusivamente con el
+        fin del funcionamiento y la prestación de los servicios de la Aplicación.
+        Para la generación de estadísticas generales, la información es sometida a
+        un proceso de anonimización irreversible que desvincula los datos de cualquier
+        Usuario, editorial, libro o punto de venta específico. La Empresa se compromete
+        a nunca mostrar estadísticas individuales y a no utilizar los datos personales
+        del Usuario para ningún otro fin, como publicidad no consentida o venta de
+        datos a terceros.
       </p>
       <h3>Transparencia</h3>
       <p>
-        La Empresa proporcionará al Usuario información clara sobre cómo se utilizan sus datos personales, tal como se detalla en nuestra Política de Privacidad.
+        La Empresa proporcionará al Usuario información clara sobre cómo se utilizan
+        sus datos personales, tal como se detalla en nuestra Política de Privacidad.
       </p>
       <h3>Derecho a retirar el consentimiento</h3>
       <p>

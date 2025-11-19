@@ -251,6 +251,7 @@ const PublisherProfile = () => {
                   htmlFor="new-logo"
                   className="publisher-profile__modal-label"
                 >
+                  Seleccionar archivo
                   <input
                     type="file"
                     id="new-logo"
