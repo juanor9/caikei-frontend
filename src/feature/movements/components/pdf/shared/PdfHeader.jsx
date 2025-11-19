@@ -4,10 +4,19 @@
  * Applies SRP and DRY
  */
 import PropTypes from 'prop-types';
-import { View, Text, Image } from '@react-pdf/renderer';
+import {
+  View,
+  Text,
+  Image,
+} from '@react-pdf/renderer';
 import { sharedStyles } from './pdfStyles';
 
-const PdfHeader = ({ publisher, logo, pubId, destination }) => (
+const PdfHeader = ({
+  publisher,
+  logo,
+  pubId,
+  destination,
+}) => (
   <View style={sharedStyles.generalData}>
     <View style={sharedStyles.publisherData}>
       <View style={sharedStyles.logoContainer}>

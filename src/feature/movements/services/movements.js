@@ -3,7 +3,12 @@
  * Applies DIP (Dependency Inversion Principle) - uses centralized apiClient
  */
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { apiGet, apiPost, apiDelete, getAuthToken } from '../../../utils/apiClient';
+import {
+  apiGet,
+  apiPost,
+  apiDelete,
+  getAuthToken,
+} from '../../../utils/apiClient';
 
 export const createMovement = createAsyncThunk(
   'movements/createMovement',

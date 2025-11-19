@@ -1,1 +1,3 @@
-export { default } from './EditableField';
+import EditableField from './EditableField';
+
+export default EditableField;

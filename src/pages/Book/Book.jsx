@@ -47,7 +47,6 @@ const BookPage = () => {
 
   const {
     title,
-    isbn,
     cover,
     pubDate,
     height,
@@ -146,7 +145,7 @@ const BookPage = () => {
             />
 
             {/* Size fields group */}
-            <label htmlFor="size" className="book-page__form-label">
+            <span className="book-page__form-label">
               Medidas
               <div className="book-page__size-container">
                 <EditableField
@@ -166,7 +165,7 @@ const BookPage = () => {
                   onChange={handleChange}
                 />
               </div>
-            </label>
+            </span>
 
             {/* Color field */}
             <EditableField

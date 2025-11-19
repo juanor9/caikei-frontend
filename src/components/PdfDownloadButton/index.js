@@ -1,1 +1,3 @@
-export { default } from './PdfDownloadButton';
+import PdfDownloadButton from './PdfDownloadButton';
+
+export default PdfDownloadButton;

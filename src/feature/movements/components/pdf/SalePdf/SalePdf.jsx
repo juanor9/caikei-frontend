@@ -4,7 +4,13 @@
  * Applies DRY principle
  */
 import PropTypes from 'prop-types';
-import { Page, Text, View, Document, Image } from '@react-pdf/renderer';
+import {
+  Page,
+  Text,
+  View,
+  Document,
+  Image,
+} from '@react-pdf/renderer';
 import { sharedStyles, formatPdfCurrency } from '../shared';
 
 const SalePdf = ({

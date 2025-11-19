@@ -200,6 +200,7 @@ const MovementCard = ({
 
     return (
       <PdfDownloadButton
+        // eslint-disable-next-line react/jsx-props-no-spreading
         document={<PdfComponent {...pdfProps} />}
         filename={`${kind}-${id}.pdf`}
       />
