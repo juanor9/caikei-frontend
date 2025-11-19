@@ -1,5 +1,9 @@
 // jest-dom adds custom jest matchers for asserting on DOM nodes.
 import '@testing-library/jest-dom';
+import { toHaveNoViolations } from 'jest-axe';
+
+// Add jest-axe matchers for accessibility testing
+expect.extend(toHaveNoViolations);
 
 // Mock localStorage
 const localStorageMock = {
