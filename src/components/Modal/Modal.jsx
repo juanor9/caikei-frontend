@@ -11,6 +11,7 @@ const Modal = ({ modalFunction, message, children }) => (
           className="modal__close"
           type="button"
           onClick={() => modalFunction(false)}
+          aria-label="Cerrar modal"
         >
           <FontAwesomeIcon icon={faCircleXmark} />
         </button>

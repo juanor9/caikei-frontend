@@ -49,12 +49,13 @@ const TopNav = () => {
                 </button>
               </nav>
               <nav className="topnav__user" key={`${Math.floor((Math.random() * 1000))}-min`}>
-                <Link to="/profile"><FontAwesomeIcon icon={faUser} /></Link>
+                <Link to="/profile" aria-label="Ir a perfil"><FontAwesomeIcon icon={faUser} /></Link>
                 <button
                   type="button"
                   className="topnav__logout-button"
                   onClick={handleLogout}
                   key={`${Math.floor((Math.random() * 1000))}-min`}
+                  aria-label="Cerrar sesión"
                 >
                   <FontAwesomeIcon icon={faPowerOff} />
                 </button>
@@ -71,6 +72,7 @@ const TopNav = () => {
               type="button"
               onClick={() => { setMobileMenu(false); }}
               className="topnav__close-button"
+              aria-label="Cerrar menú de navegación"
             >
               <FontAwesomeIcon icon={faXmark} />
             </button>

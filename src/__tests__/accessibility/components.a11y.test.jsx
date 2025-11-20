@@ -6,8 +6,11 @@ import React from 'react';
 import { render } from '@testing-library/react';
 import { axe } from 'jest-axe';
 import { Provider } from 'react-redux';
-import { BrowserRouter } from 'react-router-dom';
+import { MemoryRouter } from 'react-router';
 import { configureStore } from '@reduxjs/toolkit';
+
+// Mock react-router-dom before importing components
+jest.mock('react-router-dom');
 
 // Import components
 import Logo from '../../components/Logo/Logo';
@@ -34,9 +37,9 @@ const createMockStore = (initialState = {}) => configureStore({
 // Wrapper component for tests
 const TestWrapper = ({ children }) => (
   <Provider store={createMockStore()}>
-    <BrowserRouter>
+    <MemoryRouter>
       {children}
-    </BrowserRouter>
+    </MemoryRouter>
   </Provider>
 );
 
@@ -181,18 +184,12 @@ describe('Component Accessibility Tests', () => {
 
   describe('PlanCard', () => {
     it('should have no accessibility violations', async () => {
-      const mockPlan = {
-        name: 'Basic Plan',
-        price: 9.99,
-        features: ['Feature 1', 'Feature 2', 'Feature 3'],
-      };
-
       const { container } = render(
         <TestWrapper>
           <PlanCard
-            name={mockPlan.name}
-            price={mockPlan.price}
-            features={mockPlan.features}
+            plan="Plan Básico"
+            cost={10000}
+            titles={10}
           />
         </TestWrapper>,
       );

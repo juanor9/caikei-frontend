@@ -91,7 +91,7 @@ const RegisterBookForm = () => {
 
           {uploads ? (
             <figure className="register-book__cover-preview">
-              <img src={uploads} alt="" />
+              <img src={uploads} alt="Vista previa de la cubierta del libro" />
               <figcaption className="register-book__cover-caption">Cubierta</figcaption>
             </figure>
           ) : null}

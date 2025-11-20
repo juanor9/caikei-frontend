@@ -15,7 +15,7 @@ const PdfDownloadButton = ({ document, filename }) => (
       loading ? (
         <button
           type="button"
-          aria-label="loading"
+          aria-label="Generando PDF"
           className="pdf-download__loading"
         >
           <FontAwesomeIcon icon={faSpinner} spin />
@@ -23,7 +23,7 @@ const PdfDownloadButton = ({ document, filename }) => (
       ) : (
         <button
           type="button"
-          aria-label="download"
+          aria-label="Descargar PDF"
           className="pdf-download__button"
         >
           <FontAwesomeIcon icon={faFileArrowDown} />
