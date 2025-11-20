@@ -82,7 +82,7 @@ const PublisherRegisterForm = () => {
         </form>
         {uploads ? (
           <figure className="publisher-registration__logo-preview">
-            <img src={uploads} alt="" />
+            <img src={uploads} alt="Vista previa del logo de la editorial" />
             <figcaption className="publisher-registration__logo-caption">Tu logo</figcaption>
           </figure>
         ) : null}
