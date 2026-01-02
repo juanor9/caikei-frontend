@@ -1,8 +1,9 @@
-@use '../../_colors.scss' as *;
+@import "../../colors.scss";
 
-.modal-container{
-  background-color: rgba(0,0,0,.4);
-  position: absolute;
+.modal-container {
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
@@ -10,30 +11,215 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 3;
+  z-index: 1000;
+  animation: fadeIn 0.2s ease-out;
 }
-.modal{
-  &__main{
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.modal {
+  &__main {
     background-color: #fff;
-    padding: 2em;
-    box-shadow: 0px 1em 1em 0px rgba(0,0,0,0.2);
+    padding: 2.5em;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
+      0 10px 10px -5px rgba(0, 0, 0, 0.04);
     position: relative;
-    display: block;
-    border-radius: 1em;
-  }
-  &__header{
     display: flex;
-    margin-bottom: 1em;
-    height: 2em;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 1em;
+    max-width: 90vw;
+    width: 500px;
+    border-top: 4px solid;
+    animation: scaleIn 0.3s ease-out;
+
+    // Semantic type colors
+    &--success {
+      border-top-color: #10b981;
+
+      .modal__icon {
+        color: #10b981;
+        background-color: #d1fae5;
+      }
+    }
+
+    &--error {
+      border-top-color: #ef4444;
+
+      .modal__icon {
+        color: #ef4444;
+        background-color: #fee2e2;
+      }
+    }
+
+    &--warning {
+      border-top-color: #f59e0b;
+
+      .modal__icon {
+        color: #f59e0b;
+        background-color: #fef3c7;
+      }
+    }
+
+    &--info {
+      border-top-color: #3b82f6;
+
+      .modal__icon {
+        color: #3b82f6;
+        background-color: #dbeafe;
+      }
+    }
   }
-  &__close{
+
+  &__header {
+    display: flex;
+    width: 100%;
+    justify-content: flex-end;
+    margin-bottom: 0;
+    height: 0;
+  }
+
+  &__close {
     position: absolute;
     top: 1em;
     right: 1em;
-    padding: .5em;
-    background-color: #fff;
-    color: $accent;
+    padding: 0.5em;
+    background-color: transparent;
+    color: #6b7280;
     border: none;
     font-size: 1.5em;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border-radius: 0.5em;
+
+    &:hover {
+      background-color: #f3f4f6;
+      color: #374151;
+      transform: scale(1.1);
+    }
+
+    &:active {
+      transform: scale(0.95);
+    }
+  }
+
+  &__icon {
+    font-size: 3em;
+    margin-bottom: 0.5em;
+    width: 1.5em;
+    height: 1.5em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: transform 0.3s ease;
+  }
+
+  &__copy {
+    text-align: center;
+    font-size: 1.1em;
+    line-height: 1.6;
+    color: #374151;
+    margin: 0.5em 0 1em;
+    max-width: 100%;
+  }
+
+  &__modal-form,
+  &__modal-label,
+  &__modal-input,
+  &__modal-button {
+    width: 100%;
+  }
+
+  &__modal-form {
+    margin-top: 1em;
+
+    h3 {
+      text-align: center;
+      margin-bottom: 1em;
+      color: #1f2937;
+    }
+  }
+
+  &__modal-label {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1em;
+    font-weight: 500;
+    color: #374151;
+  }
+
+  &__modal-input {
+    margin-top: 0.5em;
+    padding: 0.75em;
+    border: 1px solid #d1d5db;
+    border-radius: 0.5em;
+    font-size: 1em;
+    transition: border-color 0.2s ease;
+
+    &:focus {
+      outline: none;
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    }
+  }
+
+  &__modal-button {
+    margin-top: 1em;
+    padding: 0.75em 1.5em;
+    background-color: $accent;
+    color: white;
+    border: none;
+    border-radius: 0.5em;
+    font-size: 1em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover {
+      background-color: darken($accent, 10%);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    }
+
+    &:active {
+      transform: translateY(0);
+    }
+  }
+}
+
+// Responsive adjustments
+@media (max-width: 640px) {
+  .modal {
+    &__main {
+      width: 95vw;
+      padding: 2em 1.5em;
+    }
+
+    &__icon {
+      font-size: 2.5em;
+    }
+
+    &__copy {
+      font-size: 1em;
+    }
   }
 }

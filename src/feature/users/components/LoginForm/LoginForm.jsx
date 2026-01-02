@@ -71,14 +71,13 @@ const LoginForm = () => {
           Iniciar sesión
         </button>
       </form>
-      {loginFail === true
-        ? (
-          <Modal
-            modalFunction={setLoginFail}
-            message="Hubo un error al iniciar sesión. Vuelve a intentarlo. Si el error persiste, contacta con tu línea de soporte."
-          />
-        )
-        : null}
+      {loginFail === true ? (
+        <Modal
+          modalFunction={setLoginFail}
+          message="Hubo un error al iniciar sesión. Vuelve a intentarlo. Si el error persiste, contacta con tu línea de soporte."
+          type="error"
+        />
+      ) : null}
     </section>
   );
 };
