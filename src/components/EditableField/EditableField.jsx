@@ -3,11 +3,10 @@
  * Applies SRP (Single Responsibility Principle) - handles editable input fields
  * Applies DRY - eliminates duplicated code in Book.jsx
  */
-import PropTypes from 'prop-types';
-import { faPenToSquare } from '@fortawesome/free-regular-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useRef } from 'react';
-import './EditableField.scss';
+import PropTypes from "prop-types";
+import { SquarePen } from "lucide-react";
+import { useRef } from "react";
+import "./EditableField.scss";
 
 const EditableField = ({
   label,
@@ -39,7 +38,7 @@ const EditableField = ({
           onClick={handleToggleReadOnly}
           aria-label={`Editar ${label}`}
         >
-          <FontAwesomeIcon icon={faPenToSquare} />
+          <SquarePen size={16} />
         </button>
         <input
           ref={inputRef}
@@ -71,11 +70,11 @@ EditableField.propTypes = {
 };
 
 EditableField.defaultProps = {
-  type: 'text',
+  type: "text",
   defaultValue: undefined,
   value: undefined,
   readOnly: true,
-  className: '',
+  className: "",
   disabled: false,
 };
 

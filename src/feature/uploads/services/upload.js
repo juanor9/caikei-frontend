@@ -1,35 +1,44 @@
-import { createAsyncThunk } from '@reduxjs/toolkit';
+import { createAsyncThunk } from "@reduxjs/toolkit";
 
-const BASE_URL = process.env.REACT_APP_BASE_URL;
+const BASE_URL = import.meta.env.VITE_APP_BASE_URL;
 
-export const uploadImage = createAsyncThunk('uploads/uploadImage', async (file) => {
-  const formData = new FormData();
-  const options = {
-    method: 'POST',
-    body: formData,
-  };
+export const uploadImage = createAsyncThunk(
+  "uploads/uploadImage",
+  async (file) => {
+    const formData = new FormData();
+    const options = {
+      method: "POST",
+      body: formData,
+    };
 
-  formData.append('file', file);
-  formData.append('fileName', file.name);
+    formData.append("file", file);
+    formData.append("fileName", file.name);
 
-  const response = await fetch(`${BASE_URL}/api/upload/file`, options);
-  const data = await response.json();
-  const url = await data.url;
-  return url;
-});
+    const response = await fetch(`${BASE_URL}/api/upload/file`, options);
+    const data = await response.json();
+    const url = await data.url;
+    return url;
+  }
+);
 
-export const uploadExcel = createAsyncThunk('uploads/uploadExcel', async (file) => {
-  const formData = new FormData();
-  const options = {
-    method: 'POST',
-    body: formData,
-  };
+export const uploadExcel = createAsyncThunk(
+  "uploads/uploadExcel",
+  async (file) => {
+    const formData = new FormData();
+    const options = {
+      method: "POST",
+      body: formData,
+    };
 
-  formData.append('file', file);
-  formData.append('fileName', file.name);
+    formData.append("file", file);
+    formData.append("fileName", file.name);
 
-  const response = await fetch(`${BASE_URL}/api/upload/import-inventory`, options);
-  const data = await response.json();
+    const response = await fetch(
+      `${BASE_URL}/api/upload/import-inventory`,
+      options
+    );
+    const data = await response.json();
 
-  return data;
-});
+    return data;
+  }
+);

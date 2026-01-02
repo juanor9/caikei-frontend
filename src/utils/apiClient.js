@@ -11,9 +11,9 @@ import {
   secureGetToken,
   secureSetToken,
   secureClearToken,
-} from './security';
+} from "./security";
 
-const BASE_URL = process.env.REACT_APP_BASE_URL;
+const BASE_URL = import.meta.env.VITE_APP_BASE_URL;
 const DEFAULT_TIMEOUT = 30000; // 30 seconds
 
 // =============================================================================
@@ -30,7 +30,7 @@ export const getAuthToken = () => {
   if (secureToken) return secureToken;
 
   // Legacy support
-  return localStorage.getItem('login-token');
+  return localStorage.getItem("login-token");
 };
 
 /**
@@ -38,7 +38,7 @@ export const getAuthToken = () => {
  * @param {string} token - The token to store
  */
 export const setAuthToken = (token) => {
-  if (!token || typeof token !== 'string') return;
+  if (!token || typeof token !== "string") return;
 
   // Clear old data
   localStorage.clear();
@@ -47,7 +47,7 @@ export const setAuthToken = (token) => {
   secureSetToken(token);
 
   // Also store in legacy format for backward compatibility
-  localStorage.setItem('login-token', token);
+  localStorage.setItem("login-token", token);
 };
 
 /**
@@ -55,7 +55,7 @@ export const setAuthToken = (token) => {
  */
 export const clearAuthToken = () => {
   secureClearToken();
-  localStorage.removeItem('login-token');
+  localStorage.removeItem("login-token");
 };
 
 // =============================================================================
@@ -75,12 +75,12 @@ const buildOptions = (method, token, body = null) => {
   const options = {
     method,
     headers: {
-      'Content-Type': 'application/json',
-      'X-Requested-With': 'XMLHttpRequest', // CSRF protection
+      "Content-Type": "application/json",
+      "X-Requested-With": "XMLHttpRequest", // CSRF protection
       ...(token && { Authorization: `Bearer ${token}` }),
-      ...(csrfToken && { 'X-CSRF-Token': csrfToken }),
+      ...(csrfToken && { "X-CSRF-Token": csrfToken }),
     },
-    credentials: 'same-origin', // Include cookies for same-origin requests
+    credentials: "same-origin", // Include cookies for same-origin requests
   };
 
   if (body) {
@@ -110,33 +110,35 @@ const buildOptions = (method, token, body = null) => {
 export const apiRequest = async (
   endpoint,
   {
-    method = 'GET',
+    method = "GET",
     token = null,
     body = null,
     timeout = DEFAULT_TIMEOUT,
     skipRateLimit = false,
-  } = {},
+  } = {}
 ) => {
   // Check rate limiting
   if (!skipRateLimit && shouldRateLimit(endpoint)) {
     return {
       error: true,
-      message: 'Demasiadas solicitudes. Por favor, espere un momento.',
-      code: 'RATE_LIMITED',
+      message: "Demasiadas solicitudes. Por favor, espere un momento.",
+      code: "RATE_LIMITED",
     };
   }
 
   // Validate endpoint
-  if (!endpoint || typeof endpoint !== 'string') {
+  if (!endpoint || typeof endpoint !== "string") {
     return {
       error: true,
-      message: 'Endpoint inválido',
-      code: 'INVALID_ENDPOINT',
+      message: "Endpoint inválido",
+      code: "INVALID_ENDPOINT",
     };
   }
 
   // Ensure endpoint starts with /
-  const normalizedEndpoint = endpoint.startsWith('/') ? endpoint : `/${endpoint}`;
+  const normalizedEndpoint = endpoint.startsWith("/")
+    ? endpoint
+    : `/${endpoint}`;
 
   const options = buildOptions(method, token, body);
 
@@ -158,32 +160,32 @@ export const apiRequest = async (
       clearAuthToken();
       return {
         error: true,
-        message: 'Sesión expirada. Por favor, inicie sesión nuevamente.',
-        code: 'UNAUTHORIZED',
+        message: "Sesión expirada. Por favor, inicie sesión nuevamente.",
+        code: "UNAUTHORIZED",
       };
     }
 
     if (response.status === 403) {
       return {
         error: true,
-        message: 'No tiene permisos para realizar esta acción.',
-        code: 'FORBIDDEN',
+        message: "No tiene permisos para realizar esta acción.",
+        code: "FORBIDDEN",
       };
     }
 
     if (response.status === 429) {
       return {
         error: true,
-        message: 'Demasiadas solicitudes. Por favor, espere un momento.',
-        code: 'RATE_LIMITED',
+        message: "Demasiadas solicitudes. Por favor, espere un momento.",
+        code: "RATE_LIMITED",
       };
     }
 
     if (response.status >= 500) {
       return {
         error: true,
-        message: 'Error del servidor. Por favor, intente más tarde.',
-        code: 'SERVER_ERROR',
+        message: "Error del servidor. Por favor, intente más tarde.",
+        code: "SERVER_ERROR",
       };
     }
 
@@ -194,8 +196,8 @@ export const apiRequest = async (
     if (!response.ok) {
       return {
         error: true,
-        message: data.message || 'Error en la solicitud',
-        code: data.code || 'REQUEST_ERROR',
+        message: data.message || "Error en la solicitud",
+        code: data.code || "REQUEST_ERROR",
         ...data,
       };
     }
@@ -205,26 +207,26 @@ export const apiRequest = async (
     clearTimeout(timeoutId);
 
     // Handle specific error types
-    if (error.name === 'AbortError') {
+    if (error.name === "AbortError") {
       return {
         error: true,
-        message: 'La solicitud tardó demasiado. Por favor, intente nuevamente.',
-        code: 'TIMEOUT',
+        message: "La solicitud tardó demasiado. Por favor, intente nuevamente.",
+        code: "TIMEOUT",
       };
     }
 
-    if (error instanceof TypeError && error.message === 'Failed to fetch') {
+    if (error instanceof TypeError && error.message === "Failed to fetch") {
       return {
         error: true,
-        message: 'Error de conexión. Verifique su conexión a internet.',
-        code: 'NETWORK_ERROR',
+        message: "Error de conexión. Verifique su conexión a internet.",
+        code: "NETWORK_ERROR",
       };
     }
 
     return {
       error: true,
-      message: 'Error inesperado. Por favor, intente nuevamente.',
-      code: 'UNKNOWN_ERROR',
+      message: "Error inesperado. Por favor, intente nuevamente.",
+      code: "UNKNOWN_ERROR",
     };
   }
 };
@@ -256,38 +258,43 @@ export const buildQueryString = (params) => {
 // Convenience Methods
 // =============================================================================
 
-export const apiGet = (endpoint, token, options = {}) => apiRequest(endpoint, {
-  method: 'GET',
-  token,
-  ...options,
-});
+export const apiGet = (endpoint, token, options = {}) =>
+  apiRequest(endpoint, {
+    method: "GET",
+    token,
+    ...options,
+  });
 
-export const apiPost = (endpoint, token, body, options = {}) => apiRequest(endpoint, {
-  method: 'POST',
-  token,
-  body,
-  ...options,
-});
+export const apiPost = (endpoint, token, body, options = {}) =>
+  apiRequest(endpoint, {
+    method: "POST",
+    token,
+    body,
+    ...options,
+  });
 
-export const apiPatch = (endpoint, token, body, options = {}) => apiRequest(endpoint, {
-  method: 'PATCH',
-  token,
-  body,
-  ...options,
-});
+export const apiPatch = (endpoint, token, body, options = {}) =>
+  apiRequest(endpoint, {
+    method: "PATCH",
+    token,
+    body,
+    ...options,
+  });
 
-export const apiDelete = (endpoint, token, options = {}) => apiRequest(endpoint, {
-  method: 'DELETE',
-  token,
-  ...options,
-});
+export const apiDelete = (endpoint, token, options = {}) =>
+  apiRequest(endpoint, {
+    method: "DELETE",
+    token,
+    ...options,
+  });
 
-export const apiPut = (endpoint, token, body, options = {}) => apiRequest(endpoint, {
-  method: 'PUT',
-  token,
-  body,
-  ...options,
-});
+export const apiPut = (endpoint, token, body, options = {}) =>
+  apiRequest(endpoint, {
+    method: "PUT",
+    token,
+    body,
+    ...options,
+  });
 
 // =============================================================================
 // Secure File Upload
@@ -305,13 +312,13 @@ export const apiUpload = async (endpoint, token, file, additionalData = {}) => {
   if (!file) {
     return {
       error: true,
-      message: 'No se proporcionó ningún archivo',
-      code: 'NO_FILE',
+      message: "No se proporcionó ningún archivo",
+      code: "NO_FILE",
     };
   }
 
   const formData = new FormData();
-  formData.append('file', file);
+  formData.append("file", file);
 
   // Add additional data
   Object.entries(additionalData).forEach(([key, value]) => {
@@ -322,13 +329,13 @@ export const apiUpload = async (endpoint, token, file, additionalData = {}) => {
 
   try {
     const response = await fetch(`${BASE_URL}${endpoint}`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'X-Requested-With': 'XMLHttpRequest',
+        "X-Requested-With": "XMLHttpRequest",
         ...(token && { Authorization: `Bearer ${token}` }),
-        ...(csrfToken && { 'X-CSRF-Token': csrfToken }),
+        ...(csrfToken && { "X-CSRF-Token": csrfToken }),
       },
-      credentials: 'same-origin',
+      credentials: "same-origin",
       body: formData,
     });
 
@@ -336,8 +343,8 @@ export const apiUpload = async (endpoint, token, file, additionalData = {}) => {
   } catch (error) {
     return {
       error: true,
-      message: 'Error al subir el archivo',
-      code: 'UPLOAD_ERROR',
+      message: "Error al subir el archivo",
+      code: "UPLOAD_ERROR",
     };
   }
 };

@@ -1,5 +1,5 @@
-@import "../../../../colors";
-@import "../../../../mixin.scss";
+@use '../../../../colors' as *;
+@use '../../../../mixin' as *;
 
 .import-form{
   @include upload-files-form;

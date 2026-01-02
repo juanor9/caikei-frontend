@@ -1,23 +1,24 @@
-import './Movement.scss';
-import { faPenToSquare } from '@fortawesome/free-regular-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useDispatch, useSelector } from 'react-redux';
-import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { getUser } from '../../feature/users/services/users';
-import { getLibrariesById, updateLibrary } from '../../feature/libraries/services/libraries';
-import TopNav from '../../components/TopNav/TopNav';
-import useForm from '../../hooks/useForm';
+import "./Movement.scss";
+import { SquarePen } from "lucide-react";
+
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { getUser } from "../../feature/users/services/users";
+import {
+  getLibrariesById,
+  updateLibrary,
+} from "../../feature/libraries/services/libraries";
+import TopNav from "../../components/TopNav/TopNav";
+import useForm from "../../hooks/useForm";
 
 const MovementPage = () => {
   const { id } = useParams();
   const { form, handleChange } = useForm({});
   const dispatch = useDispatch();
   const { library } = useSelector((state) => state.library);
-  const {
-    name, email, city, address, phone, publishers,
-  } = library;
-  const userToken = localStorage.getItem('login-token'); // get user token from local storage
+  const { name, email, city, address, phone, publishers } = library;
+  const userToken = localStorage.getItem("login-token"); // get user token from local storage
 
   const [discount, setDiscount] = useState(0);
   const { publisher } = useSelector((state) => state.user.userData);
@@ -60,7 +61,9 @@ const MovementPage = () => {
   }, []);
   useEffect(() => {
     if (publishers) {
-      const filteredPublisher = publishers.find((pub) => pub.publisherId === publisher);
+      const filteredPublisher = publishers.find(
+        (pub) => pub.publisherId === publisher
+      );
       const discountPublisher = filteredPublisher.discount;
       setDiscount(discountPublisher);
     }
@@ -87,7 +90,7 @@ const MovementPage = () => {
                 className="library-page__edit-button"
                 onClick={handleToggledisabled}
               >
-                <FontAwesomeIcon icon={faPenToSquare} />
+                <SquarePen size={16} />
               </button>
               <input
                 type="text"
@@ -107,7 +110,7 @@ const MovementPage = () => {
                 className="library-page__edit-button"
                 onClick={handleToggledisabled}
               >
-                <FontAwesomeIcon icon={faPenToSquare} />
+                <SquarePen size={16} />
               </button>
               <input
                 type="nmber"
@@ -127,7 +130,7 @@ const MovementPage = () => {
                 className="library-page__edit-button"
                 onClick={handleToggledisabled}
               >
-                <FontAwesomeIcon icon={faPenToSquare} />
+                <SquarePen size={16} />
               </button>
               <input
                 type="email"
@@ -147,7 +150,7 @@ const MovementPage = () => {
                 className="library-page__edit-button"
                 onClick={handleToggledisabled}
               >
-                <FontAwesomeIcon icon={faPenToSquare} />
+                <SquarePen size={16} />
               </button>
               <input
                 type="text"
@@ -167,7 +170,7 @@ const MovementPage = () => {
                 className="library-page__edit-button"
                 onClick={handleToggledisabled}
               >
-                <FontAwesomeIcon icon={faPenToSquare} />
+                <SquarePen size={16} />
               </button>
               <input
                 type="text"
@@ -187,7 +190,7 @@ const MovementPage = () => {
                 className="library-page__edit-button"
                 onClick={handleToggledisabled}
               >
-                <FontAwesomeIcon icon={faPenToSquare} />
+                <SquarePen size={16} />
               </button>
               <input
                 type="number"

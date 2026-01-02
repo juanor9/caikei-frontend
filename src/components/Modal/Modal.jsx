@@ -1,25 +1,17 @@
-import './Modal.scss';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faCircleXmark,
-  faCircleCheck,
-  faCircleInfo,
-  faTriangleExclamation,
-} from '@fortawesome/free-solid-svg-icons';
-import PropTypes from 'prop-types';
+import "./Modal.scss";
+import { CircleX, CircleCheck, Info, TriangleAlert } from "lucide-react";
+import PropTypes from "prop-types";
 
-const Modal = ({
-  modalFunction, message, children, type,
-}) => {
+const Modal = ({ modalFunction, message, children, type }) => {
   // Map type to icon
   const iconMap = {
-    success: faCircleCheck,
-    error: faCircleXmark,
-    warning: faTriangleExclamation,
-    info: faCircleInfo,
+    success: CircleCheck,
+    error: CircleX,
+    warning: TriangleAlert,
+    info: Info,
   };
 
-  const icon = iconMap[type] || iconMap.info;
+  const IconComponent = iconMap[type] || iconMap.info;
 
   return (
     <div className="modal-container" id="modal-container">
@@ -30,11 +22,11 @@ const Modal = ({
             type="button"
             onClick={() => modalFunction(false)}
           >
-            <FontAwesomeIcon icon={faCircleXmark} />
+            <CircleX size={20} />
           </button>
         </header>
         <div className="modal__icon">
-          <FontAwesomeIcon icon={icon} />
+          <IconComponent size={48} />
         </div>
         {message && <p className="modal__copy">{message}</p>}
         {children}
@@ -47,13 +39,13 @@ Modal.propTypes = {
   modalFunction: PropTypes.func.isRequired,
   message: PropTypes.string,
   children: PropTypes.node,
-  type: PropTypes.oneOf(['success', 'error', 'warning', 'info']),
+  type: PropTypes.oneOf(["success", "error", "warning", "info"]),
 };
 
 Modal.defaultProps = {
-  message: '',
-  children: '',
-  type: 'info',
+  message: "",
+  children: "",
+  type: "info",
 };
 
 export default Modal;

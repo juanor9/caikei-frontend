@@ -1,23 +1,22 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
-import TopNav from '../../components/TopNav/TopNav';
-import ImportExcelForm from '../../feature/import/components/ImportInventoryForm/ImportInventoryForm';
-import './ImportInventory.scss';
+import TopNav from "../../components/TopNav/TopNav";
+import ImportLibraryForm from "../../feature/import/components/ImportLibraryForm/ImportLibraryForm";
+import "./ImportInventory.scss";
+import { TriangleAlert } from "lucide-react";
 
 const ImportInventory = () => (
   <div className="import-inventory">
     <TopNav />
-    <main className="import-inventory__main-container">
-      <h2>Importa tu inventario</h2>
-      <div className="import-inventory__warning">
-        <FontAwesomeIcon icon={faExclamationTriangle} className="import-inventory__warning-icon" />
+    <main className="import-libraries__main-container">
+      <h2>Importa las librerías con las que trabajas</h2>
+      <div className="import-libraries__warning">
+        <TriangleAlert size={20} className="import-libraries__warning-icon" />
         <p>
-          Al importar un inventario nuevo se remplazan todos los datos del inventario actual.
-          Procede solo si estas seguro de querer eliminar el inventario actual.
+          Al importar un nuevo listado de librerías podrían reemplazarse todos
+          los datos del inventario actual. Procede solo si estas seguro.
         </p>
       </div>
       <div>
-        <ImportExcelForm />
+        <ImportLibraryForm />
       </div>
     </main>
   </div>

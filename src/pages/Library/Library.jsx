@@ -1,18 +1,17 @@
-import './Library.scss';
-import { faPenToSquare } from '@fortawesome/free-regular-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useDispatch, useSelector } from 'react-redux';
-import { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { getUser } from '../../feature/users/services/users';
+import "./Library.scss";
+import { SquarePen } from "lucide-react";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import { getUser } from "../../feature/users/services/users";
 import {
   getLibrariesById,
   updateLibrary,
-} from '../../feature/libraries/services/libraries';
-import { getBooksByPublisher } from '../../feature/books/services/books';
-import TopNav from '../../components/TopNav/TopNav';
-import useForm from '../../hooks/useForm';
-import BookInventoryCard from '../../feature/books/components/BookInventoryCard/BookInventoryCard';
+} from "../../feature/libraries/services/libraries";
+import { getBooksByPublisher } from "../../feature/books/services/books";
+import TopNav from "../../components/TopNav/TopNav";
+import useForm from "../../hooks/useForm";
+import BookInventoryCard from "../../feature/books/components/BookInventoryCard/BookInventoryCard";
 
 const LibraryPage = () => {
   const { id } = useParams();
@@ -20,11 +19,9 @@ const LibraryPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { library } = useSelector((state) => state.library);
-  const {
-    name, email, city, address, phone, publishers, libraryIds,
-  } = library;
+  const { name, email, city, address, phone, publishers, libraryIds } = library;
   const { catalogue } = useSelector((state) => state.catalogue);
-  const userToken = localStorage.getItem('login-token'); // get user token from local storage
+  const userToken = localStorage.getItem("login-token"); // get user token from local storage
 
   const [discount, setDiscount] = useState(0);
   const { publisher } = useSelector((state) => state.user.userData);
@@ -45,7 +42,7 @@ const LibraryPage = () => {
     try {
       dispatch(updateLibrary({ form, id }));
       setDisabled(true);
-      navigate('/libraries');
+      navigate("/libraries");
     } catch (error) {
       throw new Error(error);
     }
@@ -73,7 +70,7 @@ const LibraryPage = () => {
   useEffect(() => {
     if (publishers) {
       const filteredPublisher = publishers.find(
-        (pub) => pub.publisherId === publisher,
+        (pub) => pub.publisherId === publisher
       );
       const discountPublisher = filteredPublisher.discount;
       setDiscount(Number(discountPublisher));
@@ -102,7 +99,7 @@ const LibraryPage = () => {
       const filteredCatalogue = catalogue.map((book) => {
         if (book.inventory && Array.isArray(book.inventory)) {
           const b = book.inventory.find(
-            (place) => String(place.placeId) === String(id),
+            (place) => String(place.placeId) === String(id)
           );
           if (!b) {
             return {
@@ -144,7 +141,7 @@ const LibraryPage = () => {
                 className="library-page__edit-button"
                 onClick={handleToggledisabled}
               >
-                <FontAwesomeIcon icon={faPenToSquare} />
+                <SquarePen size={16} />
               </button>
               <input
                 type="text"
@@ -165,7 +162,7 @@ const LibraryPage = () => {
                 className="library-page__edit-button"
                 onClick={handleToggledisabled}
               >
-                <FontAwesomeIcon icon={faPenToSquare} />
+                <SquarePen size={16} />
               </button>
               <input
                 type="number"
@@ -187,7 +184,7 @@ const LibraryPage = () => {
                 className="library-page__edit-button"
                 onClick={handleToggledisabled}
               >
-                <FontAwesomeIcon icon={faPenToSquare} />
+                <SquarePen size={16} />
               </button>
               <input
                 type="email"
@@ -208,7 +205,7 @@ const LibraryPage = () => {
                 className="library-page__edit-button"
                 onClick={handleToggledisabled}
               >
-                <FontAwesomeIcon icon={faPenToSquare} />
+                <SquarePen size={16} />
               </button>
               <input
                 type="text"
@@ -229,7 +226,7 @@ const LibraryPage = () => {
                 className="library-page__edit-button"
                 onClick={handleToggledisabled}
               >
-                <FontAwesomeIcon icon={faPenToSquare} />
+                <SquarePen size={16} />
               </button>
               <input
                 type="text"
@@ -250,7 +247,7 @@ const LibraryPage = () => {
                 className="library-page__edit-button"
                 onClick={handleToggledisabled}
               >
-                <FontAwesomeIcon icon={faPenToSquare} />
+                <SquarePen size={16} />
               </button>
               <input
                 type="number"
