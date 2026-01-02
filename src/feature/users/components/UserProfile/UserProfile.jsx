@@ -110,7 +110,8 @@ const UserProfile = () => {
           </button>
         </div>
         <div className="user-profile__info">
-          <p><b>Password: </b>
+          <p>
+            <b>Password: </b>
             ****
           </p>
 
@@ -187,14 +188,13 @@ const UserProfile = () => {
             </>
           </Modal>
         ) : null}
-        {sucessModal === true
-          ? (
-            <Modal
-              modalFunction={setSucessModal}
-              message="Los cambios han sido guardados con éxito"
-            />
-          )
-          : null}
+        {sucessModal === true ? (
+          <Modal
+            modalFunction={setSucessModal}
+            message="Los cambios han sido guardados con éxito"
+            type="success"
+          />
+        ) : null}
       </article>
       <PlanDisplay />
     </section>
