@@ -1,24 +1,22 @@
-import { useDispatch, useSelector } from 'react-redux';
-import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
-import { getUser } from '../../../users/services/users';
-import { getPublisherById, updatePublisher } from '../../services/publishers';
-import { uploadImage } from '../../../uploads/services/upload';
-import Modal from '../../../../components/Modal/Modal';
-import useForm from '../../../../hooks/useForm';
-import './PublisherProfile.scss';
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { Plus } from "lucide-react";
+
+import { getUser } from "../../../users/services/users";
+import { getPublisherById, updatePublisher } from "../../services/publishers";
+import { uploadImage } from "../../../uploads/services/upload";
+import Modal from "../../../../components/Modal/Modal";
+import useForm from "../../../../hooks/useForm";
+import "./PublisherProfile.scss";
 
 const PublisherProfile = () => {
-  const [file, setFile] = useState('');
+  const [file, setFile] = useState("");
   const [infoModal, setInfoModal] = useState(false);
   const [logoModal, setLogoModal] = useState(false);
   const [sucessModal, setSucessModal] = useState(false);
-  const {
-    address, logo, name, phone, publisherIds,
-  } = useSelector(
-    (state) => state.publisher.publisher,
+  const { address, logo, name, phone, publisherIds } = useSelector(
+    (state) => state.publisher.publisher
   ); // get publisher
   const { form, handleChange } = useForm({});
   const { publisher } = useSelector((state) => state.publisher); // get user data from redux
@@ -26,9 +24,9 @@ const PublisherProfile = () => {
   const { email } = userData; // get publisher id from redux
   const dispatch = useDispatch(); // use dispatch hook
   const publisherEmail = useSelector(
-    (state) => state.publisher.publisher.email,
+    (state) => state.publisher.publisher.email
   );
-  const userToken = localStorage.getItem('login-token'); // get user token from local storage
+  const userToken = localStorage.getItem("login-token"); // get user token from local storage
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -36,11 +34,11 @@ const PublisherProfile = () => {
     try {
       const publisherId = userData.publisher;
       const infoRes = await dispatch(
-        updatePublisher({ ...form, publisherId, userToken }),
+        updatePublisher({ ...form, publisherId, userToken })
       );
       setInfoModal(false);
       const { requestStatus } = infoRes.meta;
-      if (requestStatus === 'fulfilled') {
+      if (requestStatus === "fulfilled") {
         setSucessModal(true);
       }
     } catch (error) {
@@ -78,16 +76,16 @@ const PublisherProfile = () => {
   }, []);
 
   // get publisher data
-  const [publisherFromUser, setPublisherFromUser] = useState('');
+  const [publisherFromUser, setPublisherFromUser] = useState("");
   const $publisherFromUser = useSelector(
-    (state) => state.user.userData.publisher,
+    (state) => state.user.userData.publisher
   );
   useEffect(() => {
     setPublisherFromUser($publisherFromUser);
     if (
-      (!publisher || Object.keys(publisher).length === 0)
-      && userToken
-      && publisherFromUser
+      (!publisher || Object.keys(publisher).length === 0) &&
+      userToken &&
+      publisherFromUser
     ) {
       try {
         dispatch(getPublisherById({ publisher: publisherFromUser, userToken }));
@@ -101,9 +99,9 @@ const PublisherProfile = () => {
     <>
       <h2>Editorial</h2>
       <section className="publisher-profile">
-        {publisher
-        && Object.keys(publisher).length > 0
-        && publisher.name !== '' ? (
+        {publisher &&
+        Object.keys(publisher).length > 0 &&
+        publisher.name !== "" ? (
           <>
             <article className="publisher-profile__logo">
               <div>
@@ -132,7 +130,7 @@ const PublisherProfile = () => {
               {publisherIds && publisherIds.length > 0 ? (
                 <div className="publisher-profile__info">
                   <b>Documento de identidad: </b>
-                  {publisherIds[publisherIds.length - 1].type}{' '}
+                  {publisherIds[publisherIds.length - 1].type}{" "}
                   {publisherIds[publisherIds.length - 1].number}
                 </div>
               ) : null}
@@ -163,18 +161,18 @@ const PublisherProfile = () => {
               </button> */}
             </article>
           </>
-          ) : (
-            <div className="publisher-profile__info">
-              <p>Aún no tienes una editorial registrada.</p>
-              <Link
-                to="/publisher/register"
-                className="publisher-profile__button"
-              >
-                <FontAwesomeIcon icon={faPlus} />
-                Registra una editorial
-              </Link>
-            </div>
-          )}
+        ) : (
+          <div className="publisher-profile__info">
+            <p>Aún no tienes una editorial registrada.</p>
+            <Link
+              to="/publisher/register"
+              className="publisher-profile__button"
+            >
+              <Plus size={20} />
+              Registra una editorial
+            </Link>
+          </div>
+        )}
         {infoModal === true ? (
           <Modal
             className="publisher-profile__modal"

@@ -1,16 +1,15 @@
-import './Libraries.scss';
-import { Link } from 'react-router-dom';
-import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
-import { getUser } from '../../feature/users/services/users';
-import TopNav from '../../components/TopNav/TopNav';
-import getLibrariesByPublisher from '../../feature/libraries/services/allLibraries';
-import LibraryCard from '../../feature/libraries/components/LibraryCard/LibraryCard';
+import "./Libraries.scss";
+import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Plus } from "lucide-react";
+import { getUser } from "../../feature/users/services/users";
+import TopNav from "../../components/TopNav/TopNav";
+import getLibrariesByPublisher from "../../feature/libraries/services/allLibraries";
+import LibraryCard from "../../feature/libraries/components/LibraryCard/LibraryCard";
 
 const LibrariesPage = () => {
-  const userToken = localStorage.getItem('login-token');
+  const userToken = localStorage.getItem("login-token");
   const { publisher } = useSelector((state) => state.user.userData);
   const dispatch = useDispatch();
 
@@ -39,13 +38,17 @@ const LibrariesPage = () => {
   const [sortedLibraries, setSortedLibraries] = useState([]);
 
   useEffect(() => {
-    if (allLibraries && Array.isArray(allLibraries) && allLibraries.length > 0) {
-      const sortedList = [...allLibraries].sort(((a, b) => {
+    if (
+      allLibraries &&
+      Array.isArray(allLibraries) &&
+      allLibraries.length > 0
+    ) {
+      const sortedList = [...allLibraries].sort((a, b) => {
         const dateA = new Date(a.createdAt);
         const dateB = new Date(b.createdAt);
 
         return dateB - dateA;
-      }));
+      });
       setSortedLibraries(sortedList);
     }
   }, [allLibraries]);
@@ -55,20 +58,25 @@ const LibrariesPage = () => {
       <main className="libraries__main-container">
         <h2>Librerías</h2>
         <Link to="/library/register" className="libraries__add-button">
-          <FontAwesomeIcon icon={faPlus} />
+          <Plus size={20} />
           Añadir librería
         </Link>
         <Link to="/library/import">Importar librerías</Link>
-        <section className="libraries__libraries-container" key={`${Math.floor((Math.random() * 1000))}-min`}>
-          {sortedLibraries && Array.isArray(sortedLibraries) && sortedLibraries.length > 0
+        <section
+          className="libraries__libraries-container"
+          key={`${Math.floor(Math.random() * 1000)}-min`}
+        >
+          {sortedLibraries &&
+          Array.isArray(sortedLibraries) &&
+          sortedLibraries.length > 0
             ? sortedLibraries.map((lib) => (
-              <LibraryCard
-                key={lib._id}
-                name={lib.name}
-                city={lib.city}
-                link={lib._id}
-              />
-            ))
+                <LibraryCard
+                  key={lib._id}
+                  name={lib.name}
+                  city={lib.city}
+                  link={lib._id}
+                />
+              ))
             : null}
         </section>
       </main>

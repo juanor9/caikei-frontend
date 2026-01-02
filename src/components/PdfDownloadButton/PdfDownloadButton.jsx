@@ -3,22 +3,21 @@
  * Applies SRP (Single Responsibility Principle)
  * Applies DRY - eliminates duplicated PDF download code
  */
-import PropTypes from 'prop-types';
-import { PDFDownloadLink } from '@react-pdf/renderer';
-import { faSpinner, faFileArrowDown } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import './PdfDownloadButton.scss';
+import PropTypes from "prop-types";
+import { PDFDownloadLink } from "@react-pdf/renderer";
+import { Loader2, FileDown } from "lucide-react";
+import "./PdfDownloadButton.scss";
 
 const PdfDownloadButton = ({ document, filename }) => (
   <PDFDownloadLink document={document} filename={filename}>
-    {({ loading }) => (
+    {({ loading }) =>
       loading ? (
         <button
           type="button"
           aria-label="Generando PDF"
           className="pdf-download__loading"
         >
-          <FontAwesomeIcon icon={faSpinner} spin />
+          <Loader2 size={20} className="animate-spin" />
         </button>
       ) : (
         <button
@@ -26,10 +25,10 @@ const PdfDownloadButton = ({ document, filename }) => (
           aria-label="Descargar PDF"
           className="pdf-download__button"
         >
-          <FontAwesomeIcon icon={faFileArrowDown} />
+          <FileDown size={20} />
         </button>
       )
-    )}
+    }
   </PDFDownloadLink>
 );
 
@@ -39,7 +38,7 @@ PdfDownloadButton.propTypes = {
 };
 
 PdfDownloadButton.defaultProps = {
-  filename: 'document.pdf',
+  filename: "document.pdf",
 };
 
 export default PdfDownloadButton;

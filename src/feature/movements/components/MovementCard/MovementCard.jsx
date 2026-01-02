@@ -3,23 +3,22 @@
  * Applies SRP (Single Responsibility Principle)
  * Applies OCP (Open/Closed Principle) - uses configuration for PDF types
  */
-import './MovementCard.scss';
-import { useDispatch } from 'react-redux';
-import { useEffect, useState, useMemo } from 'react';
-import { faTrashCan } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import PropTypes from 'prop-types';
-import toast from 'react-hot-toast';
-import { getBookById } from '../../../books/services/books';
-import EntryPdf from '../pdf/EntryPdf/EntryPdf';
-import RemisionPdf from '../pdf/RemissionPdf/RemisionPdf';
-import DevolutionPdf from '../pdf/DevolutionPdf/DevolutionPdf';
-import SalePdf from '../pdf/SalePdf/SalePdf';
-import { deleteMovementById } from '../../services/movements';
-import PdfDownloadButton from '../../../../components/PdfDownloadButton';
-import useInitializeUser from '../../../../hooks/useInitializeUser';
-import useCurrency from '../../../../hooks/useCurrency';
-import useDate from '../../../../hooks/useDate';
+import "./MovementCard.scss";
+import { useDispatch } from "react-redux";
+import { useEffect, useState, useMemo } from "react";
+import { Trash2 } from "lucide-react";
+import PropTypes from "prop-types";
+import toast from "react-hot-toast";
+import { getBookById } from "../../../books/services/books";
+import EntryPdf from "../pdf/EntryPdf/EntryPdf";
+import RemisionPdf from "../pdf/RemissionPdf/RemisionPdf";
+import DevolutionPdf from "../pdf/DevolutionPdf/DevolutionPdf";
+import SalePdf from "../pdf/SalePdf/SalePdf";
+import { deleteMovementById } from "../../services/movements";
+import PdfDownloadButton from "../../../../components/PdfDownloadButton";
+import useInitializeUser from "../../../../hooks/useInitializeUser";
+import useCurrency from "../../../../hooks/useCurrency";
+import useDate from "../../../../hooks/useDate";
 
 // PDF component configuration - OCP: easy to add new movement types
 const PDF_COMPONENTS = {
@@ -45,12 +44,8 @@ const MovementCard = ({
   const formatCurrency = useCurrency();
   const { formatDate } = useDate();
 
-  const {
-    userToken,
-    publisher,
-    publisherData,
-    allLibraries,
-  } = useInitializeUser();
+  const { userToken, publisher, publisherData, allLibraries } =
+    useInitializeUser();
 
   const [toData, setToData] = useState({});
   const [fromData, setFromData] = useState({});
@@ -68,26 +63,30 @@ const MovementCard = ({
 
   // Get place names and data
   const { toName, fromName } = useMemo(() => {
-    let toNameResult = '';
-    let fromNameResult = '';
+    let toNameResult = "";
+    let fromNameResult = "";
 
     if (String(to) === String(publisher)) {
-      toNameResult = publisherData.name || '';
+      toNameResult = publisherData.name || "";
     }
 
     if (String(from) === String(publisher)) {
-      fromNameResult = publisherData.name || '';
+      fromNameResult = publisherData.name || "";
     }
 
     if (allLibraries && Array.isArray(allLibraries)) {
-      const toLibrary = allLibraries.find((lib) => String(to) === String(lib._id));
-      const fromLibrary = allLibraries.find((lib) => String(from) === String(lib._id));
+      const toLibrary = allLibraries.find(
+        (lib) => String(to) === String(lib._id)
+      );
+      const fromLibrary = allLibraries.find(
+        (lib) => String(from) === String(lib._id)
+      );
 
       if (toLibrary) {
         toNameResult = toLibrary.name;
         setToData(toLibrary);
         const pubInLibrary = toLibrary.publishers?.find(
-          (pub) => pub.publisherId === publisher,
+          (pub) => pub.publisherId === publisher
         );
         if (pubInLibrary) setDiscount(pubInLibrary.discount);
       }
@@ -96,7 +95,7 @@ const MovementCard = ({
         fromNameResult = fromLibrary.name;
         setFromData(fromLibrary);
         const pubInLibrary = fromLibrary.publishers?.find(
-          (pub) => pub.publisherId === publisher,
+          (pub) => pub.publisherId === publisher
         );
         if (pubInLibrary) setDiscount(pubInLibrary.discount);
       }
@@ -107,8 +106,11 @@ const MovementCard = ({
 
   // Get grey logo
   const greyLogo = useMemo(() => {
-    if (!publisherData.logo) return '';
-    return publisherData.logo.replace('/upload', '/upload/c_scale,e_grayscale,w_200');
+    if (!publisherData.logo) return "";
+    return publisherData.logo.replace(
+      "/upload",
+      "/upload/c_scale,e_grayscale,w_200"
+    );
   }, [publisherData.logo]);
 
   // Get publisher ID
@@ -123,11 +125,14 @@ const MovementCard = ({
     const fetchBookData = async () => {
       const booksData = await Promise.all(
         books.map(async (book) => {
-          const result = await dispatch(getBookById({ id: book.id, userToken }));
+          const result = await dispatch(
+            getBookById({ id: book.id, userToken })
+          );
           const bookDBData = result.payload;
           const subTotal = book.copies * bookDBData.price;
           const discountPercentage = discount / 100;
-          const discountAmount = bookDBData.price * discountPercentage * book.copies;
+          const discountAmount =
+            bookDBData.price * discountPercentage * book.copies;
           const total = subTotal - discountAmount;
 
           return {
@@ -140,7 +145,7 @@ const MovementCard = ({
             dicAmount: discountAmount,
             total,
           };
-        }),
+        })
       );
       setMovementBookData(booksData);
     };
@@ -151,17 +156,22 @@ const MovementCard = ({
   }, [books, discount, userToken, dispatch]);
 
   // Calculate totals
-  const { copiesTotal, fullTotal } = useMemo(() => ({
-    copiesTotal: movementBookData.reduce((acc, book) => acc + book.copies, 0),
-    fullTotal: movementBookData.reduce((acc, book) => acc + book.total, 0),
-  }), [movementBookData]);
+  const { copiesTotal, fullTotal } = useMemo(
+    () => ({
+      copiesTotal: movementBookData.reduce((acc, book) => acc + book.copies, 0),
+      fullTotal: movementBookData.reduce((acc, book) => acc + book.total, 0),
+    }),
+    [movementBookData]
+  );
 
   const handleDelete = async (event) => {
     event.preventDefault();
 
     try {
       await dispatch(deleteMovementById({ id: movementId }));
-      toast.success(`El movimiento con numero ${id} fue exitosamente eliminado`);
+      toast.success(
+        `El movimiento con numero ${id} fue exitosamente eliminado`
+      );
       deletedFunc(true);
     } catch (error) {
       toast.error(`Hubo un error al eliminar el movimiento con numero ${id}`);
@@ -170,7 +180,10 @@ const MovementCard = ({
   };
 
   // Normalize kind for PDF component lookup
-  const normalizedKind = kind.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+  const normalizedKind = kind
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase();
   const PdfComponent = PDF_COMPONENTS[normalizedKind];
 
   // Common PDF props
@@ -188,15 +201,16 @@ const MovementCard = ({
   const renderPdfButton = () => {
     if (!greyLogo || !publisherId || !PdfComponent) return null;
 
-    const pdfProps = normalizedKind === 'ingreso'
-      ? { ...basePdfProps, total: grossTotal }
-      : {
-        ...basePdfProps,
-        destination: normalizedKind === 'remision' ? toData : fromData,
-        discount,
-        copiesTotal,
-        fullTotal,
-      };
+    const pdfProps =
+      normalizedKind === "ingreso"
+        ? { ...basePdfProps, total: grossTotal }
+        : {
+            ...basePdfProps,
+            destination: normalizedKind === "remision" ? toData : fromData,
+            discount,
+            copiesTotal,
+            fullTotal,
+          };
 
     return (
       <PdfDownloadButton
@@ -217,8 +231,12 @@ const MovementCard = ({
       <td className="movements__cell--not-mobile">{currencyTotal}</td>
       <td>{renderPdfButton()}</td>
       <td>
-        <button type="button" onClick={handleDelete} aria-label="Eliminar movimiento">
-          <FontAwesomeIcon icon={faTrashCan} />
+        <button
+          type="button"
+          onClick={handleDelete}
+          aria-label="Eliminar movimiento"
+        >
+          <Trash2 size={18} />
         </button>
       </td>
     </tr>
@@ -243,7 +261,7 @@ MovementCard.propTypes = {
     PropTypes.shape({
       id: PropTypes.string,
       copies: PropTypes.number,
-    }),
+    })
   ).isRequired,
   movementId: PropTypes.string.isRequired,
   deletedFunc: PropTypes.func.isRequired,

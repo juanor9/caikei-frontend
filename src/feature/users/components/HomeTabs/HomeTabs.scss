@@ -1,5 +1,5 @@
-@import "../../../../colors.scss";
-@import "../../../../mixin.scss";
+@use '../../../../colors' as *;
+@use '../../../../mixin' as *;
 
 .hometabs{
   margin-top: 2em;

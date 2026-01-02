@@ -1,19 +1,18 @@
-import './Catalogue.scss';
-import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
-import { getUser } from '../../feature/users/services/users';
-import { getBooksByPublisher } from '../../feature/books/services/books';
-import TopNav from '../../components/TopNav/TopNav';
-import BookCard from '../../feature/books/components/BookCard/BookCard';
-import { getPlan } from '../../feature/plans/services/plans';
+import "./Catalogue.scss";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+import { Plus } from "lucide-react";
+import { getUser } from "../../feature/users/services/users";
+import { getBooksByPublisher } from "../../feature/books/services/books";
+import TopNav from "../../components/TopNav/TopNav";
+import BookCard from "../../feature/books/components/BookCard/BookCard";
+import { getPlan } from "../../feature/plans/services/plans";
 
 const CataloguePage = () => {
   const dispatch = useDispatch();
   const [userToken, setUserToken] = useState(
-    localStorage.getItem('login-token'),
+    localStorage.getItem("login-token")
   );
 
   const { publisher } = useSelector((state) => state.user.userData);
@@ -22,7 +21,7 @@ const CataloguePage = () => {
   const { titles } = useSelector((state) => state.plan.plan);
 
   useEffect(() => {
-    setUserToken(localStorage.getItem('login-token'));
+    setUserToken(localStorage.getItem("login-token"));
   }, []);
 
   useEffect(() => {
@@ -63,12 +62,12 @@ const CataloguePage = () => {
 
   useEffect(() => {
     if (catalogue && Array.isArray(catalogue) && catalogue.length > 0) {
-      const sortedList = [...catalogue].sort(((a, b) => {
+      const sortedList = [...catalogue].sort((a, b) => {
         const dateA = new Date(a.pubDate);
         const dateB = new Date(b.pubDate);
 
         return dateB - dateA;
-      }));
+      });
       setSortedCatalogue(sortedList);
     }
   }, [catalogue]);
@@ -82,7 +81,7 @@ const CataloguePage = () => {
         {newTitleAvailable === true ? (
           <div className="catalogue__top-links">
             <Link to="/book/register" className="catalogue__add-button">
-              <FontAwesomeIcon icon={faPlus} />
+              <Plus size={20} />
               Añadir libro
             </Link>
             <Link to="/book/import">Importar catálogo</Link>
@@ -90,25 +89,25 @@ const CataloguePage = () => {
         ) : (
           <div className="catalogue__top-links">
             <p>
-              No puedes añadir más títulos a tu catálogo. Para hacerlo,{' '}
+              No puedes añadir más títulos a tu catálogo. Para hacerlo,{" "}
               <Link to="/plans">actualiza tu plan.</Link>
             </p>
           </div>
         )}
 
         <section className="catalogue__books-container">
-          {sortedCatalogue
-          && Array.isArray(sortedCatalogue)
-          && publisher
-          && sortedCatalogue.length > 0
+          {sortedCatalogue &&
+          Array.isArray(sortedCatalogue) &&
+          publisher &&
+          sortedCatalogue.length > 0
             ? sortedCatalogue.map((book) => (
-              <BookCard
-                key={book._id}
-                title={book.title}
-                cover={book.cover}
-                bookId={book._id}
-              />
-            ))
+                <BookCard
+                  key={book._id}
+                  title={book.title}
+                  cover={book.cover}
+                  bookId={book._id}
+                />
+              ))
             : null}
         </section>
       </main>

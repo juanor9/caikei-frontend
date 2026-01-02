@@ -1,4 +1,5 @@
-@import "../../colors.scss";
+@use 'sass:color';
+@use '../../colors' as *;
 
 .modal-container {
   background-color: rgba(0, 0, 0, 0.5);
@@ -195,7 +196,7 @@
     transition: all 0.2s ease;
 
     &:hover {
-      background-color: darken($accent, 10%);
+      background-color: color.adjust($accent, $lightness: -10%);
       transform: translateY(-2px);
       box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
     }

@@ -1,8 +1,7 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
-import TopNav from '../../components/TopNav/TopNav';
-import ImportLibraryForm from '../../feature/import/components/ImportLibraryForm/ImportLibraryForm';
-import './ImportLibraries.scss';
+import TopNav from "../../components/TopNav/TopNav";
+import ImportLibraryForm from "../../feature/import/components/ImportLibraryForm/ImportLibraryForm";
+import "./ImportLibraries.scss";
+import { TriangleAlert } from "lucide-react";
 
 const ImportLibraries = () => (
   <div className="import-libraries">
@@ -10,11 +9,10 @@ const ImportLibraries = () => (
     <main className="import-libraries__main-container">
       <h2>Importa las librerías con las que trabajas</h2>
       <div className="import-libraries__warning">
-        <FontAwesomeIcon icon={faExclamationTriangle} className="import-libraries__warning-icon" />
+        <TriangleAlert size={20} className="import-libraries__warning-icon" />
         <p>
-          Al importar un nuevo listado de librerías podrían reemplazarse
-          todos los datos del inventario actual.
-          Procede solo si estas seguro.
+          Al importar un nuevo listado de librerías podrían reemplazarse todos
+          los datos del inventario actual. Procede solo si estas seguro.
         </p>
       </div>
       <div>
